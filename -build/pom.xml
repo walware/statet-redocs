@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	
+	<parent>
+		<groupId>de.walware.statet</groupId>
+		<artifactId>statet</artifactId>
+		<version>3.5-SNAPSHOT</version>
+		<relativePath>../../statet/-build</relativePath>
+	</parent>
+	
+	<groupId>de.walware.statet</groupId>
+	<artifactId>statet-redocs</artifactId>
+	<version>3.5-SNAPSHOT</version>
+	<packaging>pom</packaging>
+	<name>StatET ReDocs</name>
+	
+	<modules>
+		<module>targetplatform</module>
+		
+		<module>../de.walware.statet.redocs.r</module>
+	</modules>
+	
+	<prerequisites>
+		<maven>3.1.1</maven>
+	</prerequisites>
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<tycho.version>0.22.0</tycho.version>
+		<tycho.scmUrl>scm:git:https://github.com/walware/statet-redocs.git</tycho.scmUrl>
+	</properties>
+	
+	<profiles>
+		<profile>
+			<id>docmlet.tex</id>
+			
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			
+			<modules>
+				<module>../../texlipse/net.sourceforge.texlipse</module>
+				<module>../de.walware.statet.redocs.tex.r</module>
+				<module>../de.walware.statet.redocs.tex.r.debug</module>
+				<module>../de.walware.statet.redocs.tex.r.doc</module>
+			</modules>
+		</profile>
+		
+		<profile>
+			<id>docmlet.wikitext</id>
+			
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			
+			<modules>
+				<module>../de.walware.statet.redocs.wikitext.r</module>
+				<module>../de.walware.statet.redocs.wikitext.r.markdown</module>
+				<module>../de.walware.statet.redocs.wikitext.r.textile</module>
+				<module>../de.walware.statet.redocs.wikitext.r.debug</module>
+			</modules>
+			
+			<repositories>
+				<repository>
+					<id>3rdparty-mylyn</id>
+					<url>${walware.repo.url.base}/3rdparty-mylyn</url>
+					<layout>p2</layout>
+				</repository>
+				<repository>
+					<id>3rdparty-snakeyaml</id>
+					<url>${walware.repo.url.base}/3rdparty-snakeyaml</url>
+					<layout>p2</layout>
+				</repository>
+			</repositories>
+		</profile>
+		
+		<profile>
+			<id>walware-releng</id>
+			<modules>
+				<module>de.walware.statet.redocs.tex.r-feature</module>
+				<module>de.walware.statet.redocs.wikitext.r-feature</module>
+				
+				<module>repo</module>
+			</modules>
+			
+			<build>
+				<plugins>
+					<!-- enable source reference generation -->
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-packaging-plugin</artifactId>
+						<version>${tycho.version}</version>
+						<configuration>
+							<sourceReferences>
+								<generate>true</generate>
+							</sourceReferences>
+						</configuration>
+						<dependencies>
+							<dependency>
+								<groupId>org.eclipse.tycho.extras</groupId>
+								<artifactId>tycho-sourceref-jgit</artifactId>
+								<version>${tycho.version}</version>
+							</dependency>
+						</dependencies>
+					</plugin>
+					
+					<!-- enable source feature generation -->
+					<plugin>
+						<groupId>org.eclipse.tycho.extras</groupId>
+						<artifactId>tycho-source-feature-plugin</artifactId>
+						<version>${tycho.version}</version>
+						<executions>
+							<execution>
+								<id>source-feature</id>
+								<phase>package</phase>
+								<goals>
+									<goal>source-feature</goal>
+								</goals>
+							</execution>
+						</executions>
+						<configuration>
+							<labelSuffix> - Sources</labelSuffix>
+							<excludes>
+								<plugin id="de.walware.statet.redocs.tex.r.doc"/>
+							</excludes>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.eclipse.tycho</groupId>
+						<artifactId>tycho-p2-plugin</artifactId>
+						<version>${tycho.version}</version>
+						<executions>
+							<execution>
+								<id>attach-p2-metadata</id>
+								<phase>package</phase>
+								<goals>
+									<goal>p2-metadata</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+	</profiles>
+	
+</project>

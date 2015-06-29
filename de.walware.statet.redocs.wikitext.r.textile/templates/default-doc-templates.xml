@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ #=============================================================================#
+ # Copyright (c) 2007-2015 Stephan Wahlbrink (WalWare.de) and others.
+ # All rights reserved. This program and the accompanying materials
+ # are made available under the terms of the Eclipse Public License v1.0
+ # which accompanies this distribution, and is available at
+ # http://www.eclipse.org/legal/epl-v10.html
+ # 
+ # Contributors:
+ #     Stephan Wahlbrink - initial API and implementation
+ #=============================================================================#
+-->
+
+<templates>
+
+<!-- New Document -->
+
+<template id="de.walware.statet.redocs.templates.TextileRweave_ArticleDoc"
+	context="Textile+Rweave_NewDoc"
+	name="TextileRweave.NewDoc:Article"
+	description="%Doc_Article_description"
+	>h1. RTextile
+</template>
+
+
+<!-- R Weave -->
+
+<template id="de.walware.statet.redocs.templates.TextileRweave_NewRChunk"
+	context="Textile+Rweave_Weave:DocDefault"
+	name="%Rweave_NewRChunk_name"
+	description="%Rweave_NewRChunk_description"
+	>###. begin.rcode
+	${cursor}
+###. end.rcode
+</template>
+
+</templates>

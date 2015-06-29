@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<category-def name="de.walware.libraries" label="WalWare - Libraries"/>
+	<category-def name="de.walware.statet" label="WalWare - StatET"/>
+	<category-def name="de.walware.utils" label="WalWare - Utilities"/>
+	
+	
+	<bundle id="de.walware.docmlet.base.ui" version="0.0.0">
+		<category name="de.walware.libraries"/>
+	</bundle>
+	<bundle id="de.walware.statet.redocs.r" version="0.0.0">
+		<category name="de.walware.libraries"/>
+	</bundle>
+	<feature id="de.walware.statet.r.sweave" version="0.0.0">
+		<category name="de.walware.statet"/>
+	</feature>
+	
+	<feature id="de.walware.statet.redocs.wikitext.r" version="0.0.0">
+		<category name="de.walware.statet"/>
+	</feature>
+	
+	<feature id="de.walware.eutils.yaml" version="0.0.0">
+		<category name="de.walware.utils"/>
+	</feature>
+	
+</site>

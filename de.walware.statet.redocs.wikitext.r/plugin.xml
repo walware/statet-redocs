@@ -1,0 +1,338 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+ #=============================================================================#
+ # Copyright (c) 2007-2015 Stephan Wahlbrink (WalWare.de) and others.
+ # All rights reserved. This program and the accompanying materials
+ # are made available under the terms of the Eclipse Public License v1.0
+ # which accompanies this distribution, and is available at
+ # http://www.eclipse.org/legal/epl-v10.html
+ # 
+ # Contributors:
+ #     Stephan Wahlbrink - initial API and implementation
+ #=============================================================================#
+-->
+
+<plugin>
+
+<!-- Common -->
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="de.walware.statet.redocs.internal.wikitext.r.ui.config.WikitextRweaveUIPreferenceInitializer"/>
+   </extension>
+   
+<!-- Core -->
+   <extension
+         point="de.walware.ecommons.ltk.modelTypes">
+      <modelType
+            id="WikidocRweave">
+         <baseType modelTypeId="Wikidoc"/>
+         <secondaryType modelTypeId="R"/>
+      </modelType>
+      <unitType modelTypeId="WikidocRweave"
+            contextKey="persistence.default"
+            unitFactory="de.walware.statet.redocs.internal.wikitext.r.core.WikidocRweavePersistenceUnitFactory">
+      </unitType>
+      <unitType modelTypeId="WikidocRweave"
+            contextKey="editor.default"
+            unitFactory="de.walware.statet.redocs.internal.wikitext.r.ui.WikidocRweaveEditorUnitFactory">
+      </unitType>
+   </extension>
+   
+<!-- UI -->
+   <extension
+         point="de.walware.ecommons.ltk.modelAdapters">
+      <adapterFactory
+            modelTypeId="WikidocRweave"
+            class="de.walware.statet.redocs.internal.wikitext.r.core.WikidocRweaveAdapterFactory">
+         <adapter
+               type="de.walware.docmlet.wikitext.core.WikitextBuildParticipant"/>
+      </adapterFactory>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.walware.statet.redocs.expressions.isEditorActive.WikidocRweaveEditor">
+         <with
+               variable="activeEditor">
+            <instanceof
+                  value="de.walware.statet.redocs.wikitext.r.ui.editors.IWikidocRweaveEditor">
+            </instanceof>
+         </with>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor">
+         <with
+               variable="activePart">
+            <instanceof
+                  value="de.walware.statet.redocs.wikitext.r.ui.editors.IWikidocRweaveEditor">
+            </instanceof>
+         </with>
+      </definition>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="de.walware.docmlet.base.commands.ConfigureMarkup"
+            class="de.walware.docmlet.wikitext.ui.actions.ConfigureMarkupHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="org.eclipse.jdt.ui.edit.text.java.toggleMarkOccurrences"
+            class="de.walware.docmlet.wikitext.ui.actions.WikitextToggleMarkOccurrencesHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="org.eclipse.ui.edit.text.folding.toggle"
+            class="de.walware.docmlet.wikitext.ui.actions.WikitextToggleFoldingHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      
+      <!-- navigate -->
+      <handler
+            commandId="org.eclipse.jdt.ui.edit.text.java.open.editor"
+            class="de.walware.statet.redocs.internal.wikitext.r.ui.editors.OpenDeclarationHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      
+      <!-- search -->
+      <handler
+            commandId="de.walware.ecommons.ltk.commands.SearchAllElementAccess"
+            class="de.walware.statet.redocs.internal.wikitext.r.ui.editors.ElementSearchHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="de.walware.ecommons.ltk.commands.SearchWriteElementAccess"
+            class="de.walware.statet.redocs.internal.wikitext.r.ui.editors.ElementSearchHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.menus">
+      <!-- search -->
+      <menuContribution
+            locationURI="menu:org.eclipse.search.menu?endof=contextMenuActionsGroup">
+         <menu
+               id="de.walware.statet.redocs.menus.WikidocRweaveSearchAllAccess"
+               label="%menus_Search_AllAccess_name"
+               mnemonic="%menus_Search_AllAccess_mnemonic">
+            <dynamic
+                  id="de.walware.ecommons.ltk.commands.SearchAllElementAccess"
+                  class="de.walware.statet.redocs.internal.wikitext.r.ui.editors.ElementSearchContributionItem">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+            </visibleWhen>
+         </menu>
+         <menu
+               id="de.walware.statet.redocs.menus.WikidocRweaveSearchWriteAccess"
+               label="%menus_Search_WriteAccess_name"
+               mnemonic="%menus_Search_WriteAccess_mnemonic">
+            <dynamic
+                  id="de.walware.ecommons.ltk.commands.SearchWriteElementAccess"
+                  class="de.walware.statet.redocs.internal.wikitext.r.ui.editors.ElementSearchContributionItem">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
+      
+      <!-- context -->
+      <menuContribution
+            locationURI="popup:de.walware.statet.redocs.menus.WikidocRweaveEditorContextMenu?after=group.edit">
+         <command
+               id="de.walware.ecommons.ltk.commands.ToggleComment"
+               commandId="de.walware.ecommons.ltk.commands.ToggleComment"
+               mnemonic="%menus_SweaveEditorContext_ToggleComment_mnemonic"
+               style="push">
+         </command>
+         <!--command
+               id="de.walware.ecommons.ltk.commands.CorrectIndent"
+               commandId="de.walware.ecommons.ltk.commands.CorrectIndent"
+               mnemonic="%menus_REditorContext_CorrectIndent_mnemonic"
+               style="push">
+         </command-->
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="de.walware.statet.redocs.legacy.WikidocRweaveEditorRulerMenuCommonContribution"
+            targetID="de.walware.statet.redocs.menus.WikidocRweaveEditorRulerMenu">
+         <action
+               id=".AddTask"
+               class="org.eclipse.ui.texteditor.TaskRulerAction"
+               label="AddTask"
+               menubarPath="add"
+               helpContextId="org.eclipse.ui.AddTask_action_context">
+         </action>
+         <action
+               id=".AddBookmark"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               label="AddBookmark"
+               menubarPath="add"
+               helpContextId="org.eclipse.ui.bookmark_action_context">
+         </action>
+      </viewerContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextTypeRegistry
+            id="de.walware.statet.redocs.templates.WikitextRweaveDoc">
+      </contextTypeRegistry>
+      <contextTypeRegistry
+            id="de.walware.statet.redocs.templates.WikitextRweaveCodegen">
+      </contextTypeRegistry>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            id="de.walware.statet.redocs.preferencePages.WikitextREditor"
+            category="de.walware.statet.base.preferencePages.Editors"
+            name="%preferencePages_WikitextRweaveEditorOptions"
+            class="de.walware.statet.redocs.internal.wikitext.r.ui.config.EditorPreferencePage">
+         <keywordReference id="de.walware.ecommons.ltk.keywords.SourceEditor"/>
+         <keywordReference id="de.walware.ecommons.ltk.keywords.SourceAppearance"/>
+         <keywordReference id="de.walware.ecommons.ltk.keywords.SpellChecking"/>
+      </page>
+   </extension>
+   
+<!-- Document Processing -->
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            id="de.walware.statet.redocs.launchConfigurations.WikitextRweaveDocProcessing"
+            category="org.eclipse.ui.externaltools"
+            modes="run"
+            delegate="de.walware.statet.redocs.internal.wikitext.r.ui.processing.WikitextRweaveLaunchDelegate"
+            name="%launchConfigurations_WikitextRweaveProcessing_name"
+            public="true">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            id="de.walware.statet.redocs.images.RweaveWikitextDocProcessing"
+            configTypeID="de.walware.statet.redocs.launchConfigurations.WikitextRweaveDocProcessing"
+            icon="icons/obj_16/wikidoc_rweave-file.png">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            id="de.walware.statet.redocs.launchConfigurationTabGroups.WikitextRweaveDocProcessing"
+            type="de.walware.statet.redocs.launchConfigurations.WikitextRweaveDocProcessing"
+            class="de.walware.statet.redocs.internal.wikitext.r.ui.processing.WikitextRweaveConfigTabGroup"
+            description="%launchConfigurations_WikitextRweaveProcessing_description">
+      </launchConfigurationTabGroup>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="de.walware.statet.redocs.commands.ProcessWeaveDefault">
+         <class class="de.walware.docmlet.base.ui.processing.RunActiveConfigWorkbenchHandler">
+            <parameter
+                  name="launchFlags"
+                  value="weave"/>
+         </class>
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isEditorActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="de.walware.docmlet.tex.commands.ProcessTexDefault">
+         <class class="de.walware.docmlet.base.ui.processing.RunActiveConfigWorkbenchHandler">
+            <parameter
+                  name="launchFlags"
+                  value="produce_output"/>
+         </class>
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isEditorActive.WikidocRweaveEditor"/>
+         </activeWhen>
+      </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:de.walware.docmlet.base.menus.MainDoc?after=processing">
+         <dynamic
+               id="de.walware.docmlet.base.menus.DocProcessingConfigItems"
+               class="de.walware.statet.redocs.internal.wikitext.r.ui.processing.WikitextRweaveConfigsMenuContribution:activeEditor">
+            <visibleWhen>
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isEditorActive.WikidocRweaveEditor"/>
+            </visibleWhen>
+         </dynamic>
+      </menuContribution>
+      
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         <separator
+               name="stat.submit">
+         </separator>
+      </menuContribution>
+      <menuContribution
+            locationURI="popup:org.eclipse.ui.popup.any?endof=stat.submit">
+         <menu
+               id="de.walware.statet.redocs.menus.DocumentMenu"
+               label="&amp;Document">
+            <visibleWhen
+                  checkEnabled="false">
+               <or>
+                  <iterate
+                        operator="or">
+                     <adapt
+                           type="org.eclipse.core.resources.IFile">
+                        <test
+                              forcePluginActivation="true"
+                              property="de.walware.ecommons.ltk.matchesActivatedContentType"
+                              value="de.walware.statet.redocs.contentTypes.WikidocRweave">
+                        </test>
+                     </adapt>
+                  </iterate>
+               </or>
+            </visibleWhen>
+            <dynamic
+                  id="de.walware.docmlet.base.menus.DocProcessingConfigItems"
+                  class="de.walware.statet.redocs.internal.wikitext.r.ui.processing.WikitextRweaveConfigsMenuContribution:activeMenuSelection">
+            </dynamic>
+         </menu>
+      </menuContribution>
+   </extension>
+   
+</plugin>

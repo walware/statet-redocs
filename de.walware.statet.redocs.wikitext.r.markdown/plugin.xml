@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+ #=============================================================================#
+ # Copyright (c) 2007-2015 Stephan Wahlbrink (WalWare.de) and others.
+ # All rights reserved. This program and the accompanying materials
+ # are made available under the terms of the Eclipse Public License v1.0
+ # which accompanies this distribution, and is available at
+ # http://www.eclipse.org/legal/epl-v10.html
+ # 
+ # Contributors:
+ #     Stephan Wahlbrink - initial API and implementation
+ #=============================================================================#
+-->
+
+<plugin>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="de.walware.statet.redocs.internal.wikitext.r.markdown.MarkdownRweavePreferenceInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            id="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            base-type="org.eclipse.mylyn.wikitext.markdown"
+            name="%contentTypes_MarkdownRweave_name"
+            file-extensions="Rmd,rmd"
+            priority="normal">
+         <property
+               name="bom">
+         </property>
+      </content-type>
+   </extension>
+   <extension
+         point="de.walware.docmlet.wikitext.markupLanguages">
+      <markupLanguage
+            name="Markdown+R"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.core.RMarkdownLanguage"
+            configClass="de.walware.statet.redocs.internal.wikitext.r.markdown.core.RMarkdownConfig"
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave">
+      </markupLanguage>
+   </extension>
+   <extension
+         point="de.walware.ecommons.ltk.contentTypeActivation">
+      <contentType
+            id="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            secondaryId="de.walware.statet.r.contentTypes.R"/>
+      <contentType
+            id="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            secondaryId="de.walware.statet.redocs.contentTypes.WikidocRweave"/>
+   </extension>
+   
+   <extension
+         point="de.walware.eutils.autonature.autoConfigurations">
+      <onFileContent
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            enable="true">
+         <ensureProjectNature
+               natureId="de.walware.statet.r.RNature"/>
+         <ensureProjectNature
+               natureId="de.walware.docmlet.wikitext.natures.Wikitext"/>
+      </onFileContent>
+   </extension>
+   
+   <extension
+         point="de.walware.ecommons.ltk.modelTypes">
+      <contentType
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            modelTypeId="WikidocRweave">
+      </contentType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.team.core.fileTypes">
+      <fileTypes
+            extension="Rmd"
+            type="text"/>
+      <fileTypes
+            extension="rmd"
+            type="text"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.MarkdownRweaveDocumentSetupParticipant">
+      </participant>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="de.walware.statet.redocs.internal.wikitext.r.markdown.core.RMarkdownConfig"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.UIAdapterFactory">
+         <adapter
+               type="de.walware.docmlet.wikitext.ui.sourceediting.IMarkupConfigUIAdapter">
+         </adapter>
+      </factory>
+   </extension>
+   
+   <extension
+         point="de.walware.docmlet.wikitext.docTemplates">
+      <category
+            id="MarkdownRweave.NewDoc"
+            image="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/tool_16/new-wikidoc_rweave-file.png"
+            label="%docTemplates_NewMarkdownRweave_name"
+            itemImage="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/obj_16/wikidoc_rweave-file.png"
+            configurationClass="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.NewDocTemplateCategoryConfiguration">
+      </category>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            id="de.walware.statet.redocs.editors.MarkdownRweave"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.MarkdownRweaveEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            icon="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/obj_16/wikidoc_rweave-file.png"
+            name="%editors_MarkdownRweave_name"
+            default="true">
+         <contentTypeBinding contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"/>
+      </editor>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            id="Markdown+Rweave_NewDoc"
+            registryId="de.walware.statet.redocs.templates.WikitextRweaveDoc"
+            class="de.walware.statet.redocs.wikitext.r.core.source.WikitextRweaveTemplatesContextType">
+      </contextType>
+      <contextType
+            id="Markdown+Rweave_Weave:DocDefault"
+            registryId="de.walware.statet.redocs.templates.WikitextRweaveCodegen"
+            class="de.walware.statet.redocs.wikitext.r.core.source.WikitextRweaveTemplatesContextType">
+      </contextType>
+      <include
+            file="templates/default-doc-templates.xml"
+            translations="templates/default-templates.properties">
+      </include>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            id="de.walware.statet.redocs.newWizards.MarkdownRweaveDocCreation"
+            category="de.walware.statet.r.newWizards.RCategory"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.NewDocCreationWizard"
+            icon="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/tool_16/new-wikidoc_rweave-file.png"
+            name="%wizards_NewMarkdownRweaveDoc_name"
+            project="false">
+         <description>
+            %wizards_NewMarkdownRweaveDoc_description
+         </description>
+      </wizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="de.walware.statet.base.perspectives.StatetPerspective">
+         <newWizardShortcut id="de.walware.statet.redocs.newWizards.MarkdownRweaveDocCreation"/>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="de.walware.statet"
+            type="new"
+            wizardId="de.walware.statet.redocs.newWizards.MarkdownRweaveDocCreation">
+         <enablement>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IContainer">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="de.walware.statet.r.RNature">
+                  </test>
+               </adapt>
+            </or></enablement>
+      </commonWizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.compare.contentViewers">
+      <viewer
+            id="de.walware.statet.redocs.compare.MarkdownRweaveContentViewer"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.MarkdownRweaveContentViewerCreator">
+      </viewer>
+      <contentTypeBinding
+            contentViewerId="de.walware.statet.redocs.compare.MarkdownRweaveContentViewer"
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"/>
+   </extension>
+   <extension
+         point="org.eclipse.compare.contentMergeViewers">
+      <viewer
+            id="de.walware.statet.redocs.compare.MarkdownRweaveMergeViewer"
+            class="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.MarkdownRweaveMergeViewerCreator">
+      </viewer>
+      <contentTypeBinding
+            contentMergeViewerId="de.walware.statet.redocs.compare.MarkdownRweaveMergeViewer"
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"/>
+   </extension>
+   
+<!-- R Code Launch -->
+   <extension
+         point="de.walware.statet.r.ui.rCodeLaunchContentHandler">
+      <contentHandler
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            handler="de.walware.statet.redocs.internal.wikitext.r.markdown.ui.MarkdownRweaveSubmitContentHandler">
+      </contentHandler>
+   </extension>
+   
+<!-- Document Processing -->
+   <extension
+         point="de.walware.docmlet.base.docProcessing">
+      <processingType
+            contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave"
+            configTypeId="de.walware.statet.redocs.launchConfigurations.WikitextRweaveDocProcessing"
+            managerClass="de.walware.statet.redocs.r.ui.processing.RweaveDocProcessingManager">
+      </processingType>
+   </extension>
+   
+</plugin>

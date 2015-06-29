@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+ #=============================================================================#
+ # Copyright (c) 2007-2015 Stephan Wahlbrink (WalWare.de) and others.
+ # All rights reserved. This program and the accompanying materials
+ # are made available under the terms of the Eclipse Public License v1.0
+ # which accompanies this distribution, and is available at
+ # http://www.eclipse.org/legal/epl-v10.html
+ # 
+ # Contributors:
+ #     Stephan Wahlbrink - initial API and implementation
+ #=============================================================================#
+-->
+
+<plugin>
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="de.walware.statet.redocs.internal.wikitext.r.textile.TextileRweavePreferenceInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            id="de.walware.statet.redocs.contentTypes.TextileRweave"
+            base-type="org.eclipse.mylyn.wikitext.textile"
+            name="%contentTypes_TextileRweave_name"
+            file-extensions="Rtextile,rtextile"
+            priority="normal">
+         <property
+               name="bom">
+         </property>
+      </content-type>
+   </extension>
+   <extension
+         point="de.walware.docmlet.wikitext.markupLanguages">
+      <markupLanguage
+            name="Textile+R"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage"
+            configClass="de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileConfig"
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave">
+      </markupLanguage>
+   </extension>
+   <extension
+         point="de.walware.ecommons.ltk.contentTypeActivation">
+      <contentType
+            id="de.walware.statet.redocs.contentTypes.TextileRweave"
+            secondaryId="de.walware.statet.r.contentTypes.R"/>
+      <contentType
+            id="de.walware.statet.redocs.contentTypes.TextileRweave"
+            secondaryId="de.walware.statet.redocs.contentTypes.WikidocRweave"/>
+   </extension>
+   
+   <extension
+         point="de.walware.eutils.autonature.autoConfigurations">
+      <onFileContent
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"
+            enable="true">
+         <ensureProjectNature
+               natureId="de.walware.statet.r.RNature"/>
+         <ensureProjectNature
+               natureId="de.walware.docmlet.wikitext.natures.Wikitext"/>
+      </onFileContent>
+   </extension>
+   
+   <extension
+         point="de.walware.ecommons.ltk.modelTypes">
+      <contentType
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"
+            modelTypeId="WikidocRweave">
+      </contentType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.team.core.fileTypes">
+      <fileTypes
+            extension="Rtextile"
+            type="text"/>
+      <fileTypes
+            extension="rtextile"
+            type="text"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.TextileRweaveDocumentSetupParticipant">
+      </participant>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.runtime.adapters">
+      <factory
+            adaptableType="de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileConfig"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.UIAdapterFactory">
+         <adapter
+               type="de.walware.docmlet.wikitext.ui.sourceediting.IMarkupConfigUIAdapter">
+         </adapter>
+      </factory>
+   </extension>
+   
+   <extension
+         point="de.walware.docmlet.wikitext.docTemplates">
+      <category
+            id="TextileRweave.NewDoc"
+            image="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/tool_16/new-wikidoc_rweave-file.png"
+            label="%docTemplates_NewTextileRweave_name"
+            itemImage="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/obj_16/wikidoc_rweave-file.png"
+            configurationClass="de.walware.statet.redocs.internal.wikitext.r.textile.ui.NewDocTemplateCategoryConfiguration">
+      </category>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            id="de.walware.statet.redocs.editors.TextileRweave"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.TextileRweaveEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            icon="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/obj_16/wikidoc_rweave-file.png"
+            name="%editors_TextileRweave_name"
+            default="true">
+         <contentTypeBinding contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"/>
+      </editor>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextType
+            id="Textile+Rweave_NewDoc"
+            registryId="de.walware.statet.redocs.templates.WikitextRweaveDoc"
+            class="de.walware.statet.redocs.wikitext.r.core.source.WikitextRweaveTemplatesContextType">
+      </contextType>
+      <contextType
+            id="Textile+Rweave_Weave:DocDefault"
+            registryId="de.walware.statet.redocs.templates.WikitextRweaveCodegen"
+            class="de.walware.statet.redocs.wikitext.r.core.source.WikitextRweaveTemplatesContextType">
+      </contextType>
+      <include
+            file="templates/default-doc-templates.xml"
+            translations="templates/default-templates.properties">
+      </include>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            id="de.walware.statet.redocs.newWizards.TextileRweaveDocCreation"
+            category="de.walware.statet.r.newWizards.RCategory"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.NewDocCreationWizard"
+            icon="platform:/plugin/de.walware.statet.redocs.wikitext.r/icons/tool_16/new-wikidoc_rweave-file.png"
+            name="%wizards_NewTextileRweaveDoc_name"
+            project="false">
+         <description>
+            %wizards_NewTextileRweaveDoc_description
+         </description>
+      </wizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="de.walware.statet.base.perspectives.StatetPerspective">
+         <newWizardShortcut id="de.walware.statet.redocs.newWizards.TextileRweaveDocCreation"/>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="de.walware.statet"
+            type="new"
+            wizardId="de.walware.statet.redocs.newWizards.TextileRweaveDocCreation">
+         <enablement>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IContainer">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="de.walware.statet.r.RNature">
+                  </test>
+               </adapt>
+            </or></enablement>
+      </commonWizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.compare.contentViewers">
+      <viewer
+            id="de.walware.statet.redocs.compare.TextileRweaveContentViewer"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.TextileRweaveContentViewerCreator">
+      </viewer>
+      <contentTypeBinding
+            contentViewerId="de.walware.statet.redocs.compare.TextileRweaveContentViewer"
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"/>
+   </extension>
+   <extension
+         point="org.eclipse.compare.contentMergeViewers">
+      <viewer
+            id="de.walware.statet.redocs.compare.TextileRweaveMergeViewer"
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.TextileRweaveMergeViewerCreator">
+      </viewer>
+      <contentTypeBinding
+            contentMergeViewerId="de.walware.statet.redocs.compare.TextileRweaveMergeViewer"
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"/>
+   </extension>
+   
+<!-- R Code Launch -->
+   <extension
+         point="de.walware.statet.r.ui.rCodeLaunchContentHandler">
+      <contentHandler
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"
+            handler="de.walware.statet.redocs.internal.wikitext.r.textile.ui.TextileRweaveSubmitContentHandler">
+      </contentHandler>
+   </extension>
+   
+<!-- Document Processing -->
+   <extension
+         point="de.walware.docmlet.base.docProcessing">
+      <processingType
+            contentTypeId="de.walware.statet.redocs.contentTypes.TextileRweave"
+            configTypeId="de.walware.statet.redocs.launchConfigurations.WikitextRweaveDocProcessing"
+            managerClass="de.walware.statet.redocs.r.ui.processing.RweaveDocProcessingManager">
+      </processingType>
+   </extension>
+   
+</plugin>

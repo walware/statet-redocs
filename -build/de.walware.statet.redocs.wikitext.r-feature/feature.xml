@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="de.walware.statet.redocs.wikitext.r"
+      label="StatET for R - Wikitext Add-on (R Markdown, R Textile, Reproducible Documents)"
+      version="3.5.0.qualifier"
+      provider-name="WalWare.de"
+      license-feature="de.walware.opensource.license"
+      license-feature-version="1.0.0">
+
+   <description url="http://www.walware.de/goto/statet">
+      StatET Add-on with tools for reproducible documents using Wikitext (Markdown, Textile) with R.
+   </description>
+
+   <copyright>
+      Copyright (c) 2003-2015 Stephan Wahlbrink and others. All rights reserved.
+   </copyright>
+
+   <license url="%license_url">
+      %license_text
+   </license>
+
+   <requires>
+      <import feature="de.walware.statet.r" version="3.5.0" match="equivalent"/>
+      <import plugin="de.walware.docmlet.base.ui" version="2.0.0" match="equivalent"/>"
+      <import plugin="de.walware.statet.redocs.r" version="3.5.0" match="equivalent"/>"
+      <import feature="de.walware.eutils.yaml" version="1.0" match="equivalent"/>
+      <import feature="org.eclipse.mylyn.wikitext_feature" version="2.4.0" match="equivalent"/>
+   </requires>
+
+   <plugin
+         id="de.walware.docmlet.wikitext.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.walware.docmlet.wikitext.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.walware.statet.redocs.wikitext.r"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.walware.statet.redocs.wikitext.r.markdown"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   
+   <plugin
+         id="de.walware.statet.redocs.wikitext.r.textile"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="de.walware.statet.redocs.wikitext.r.debug"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>

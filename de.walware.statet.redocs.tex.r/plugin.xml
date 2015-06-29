@@ -1,0 +1,531 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+ #=============================================================================#
+ # Copyright (c) 2007-2015 Stephan Wahlbrink (WalWare.de) and others.
+ # All rights reserved. This program and the accompanying materials
+ # are made available under the terms of the Eclipse Public License v1.0
+ # which accompanies this distribution, and is available at
+ # http://www.eclipse.org/legal/epl-v10.html
+ # 
+ # Contributors:
+ #     Stephan Wahlbrink - initial API and implementation
+ #=============================================================================#
+-->
+
+<plugin>
+
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer class="de.walware.statet.redocs.internal.tex.r.ui.config.TexRweaveUIPreferenceInitializer"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.contenttype.contentTypes">
+      <content-type
+            id="de.walware.statet.redocs.contentTypes.LtxRweave"
+            base-type="net.sourceforge.texlipse.contentTypes.Latex"
+            name="%contentTypes_LtxRweave_name"
+            file-extensions="Rnw,rnw,Snw,snw"
+            priority="normal">
+         <property
+               name="bom">
+         </property>
+      </content-type>
+   </extension>
+   <extension
+         point="de.walware.eutils.autonature.autoConfigurations">
+      <onFileContent
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"
+            enable="true">
+         <ensureProjectNature
+               natureId="de.walware.statet.r.RNature"/>
+         <ensureProjectNature
+               natureId="de.walware.docmlet.tex.natures.Tex"/>
+      </onFileContent>
+   </extension>
+   <extension
+         point="de.walware.ecommons.ltk.contentTypeActivation">
+      <contentType
+            id="de.walware.statet.redocs.contentTypes.LtxRweave"
+            secondaryId="de.walware.statet.r.contentTypes.R">
+      </contentType>
+   </extension>
+   
+   <extension
+         point="de.walware.ecommons.ltk.modelTypes">
+      <modelType
+            id="LtxRweave">
+         <baseType modelTypeId="Ltx"/>
+         <secondaryType modelTypeId="R"/>
+      </modelType>
+      <contentType
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"
+            modelTypeId="LtxRweave">
+      </contentType>
+      <unitType modelTypeId="LtxRweave"
+            contextKey="persistence.default"
+            unitFactory="de.walware.statet.redocs.internal.tex.r.core.LtxRweavePersistenceUnitFactory">
+      </unitType>
+      <unitType modelTypeId="LtxRweave"
+            contextKey="editor.default"
+            unitFactory="de.walware.statet.redocs.internal.tex.r.ui.LtxRweaveEditorUnitFactory">
+      </unitType>
+   </extension>
+   <extension
+         point="de.walware.ecommons.ltk.modelAdapters">
+      <adapterFactory
+            modelTypeId="LtxRweave"
+            class="de.walware.statet.redocs.internal.tex.r.core.LtxRweaveAdapterFactory">
+         <adapter
+               type="de.walware.docmlet.tex.core.TexBuildParticipant"/>
+      </adapterFactory>
+   </extension>
+   
+   <extension
+         point="org.eclipse.team.core.fileTypes">
+      <fileTypes
+            extension="Rnw"
+            type="text"/>
+      <fileTypes
+            extension="rnw"
+            type="text"/>
+      <fileTypes
+            extension="Snw"
+            type="text"/>
+      <fileTypes
+            extension="snw"
+            type="text"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.core.filebuffers.documentSetup">
+      <participant
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"
+            class="de.walware.statet.redocs.tex.r.core.source.LtxRweaveDocumentSetupParticipant">
+      </participant>
+   </extension>
+   
+   <extension
+         point="de.walware.docmlet.tex.docTemplates">
+      <category
+            id="LtxRweave.NewDoc"
+            image="platform:/plugin/de.walware.statet.redocs.tex.r/icons/tool_16/new-ltx_rweave-file.png"
+            label="%docTemplates_NewTextileRweave_name"
+            itemImage="platform:/plugin/de.walware.statet.redocs.tex.r/icons/obj_16/ltx_rweave-file.png"
+            configurationClass="de.walware.statet.redocs.internal.tex.r.ui.NewDocTemplateCategoryConfiguration">
+      </category>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors">
+      <editor
+            id="de.walware.statet.redocs.editors.LtxRweave"
+            class="de.walware.statet.redocs.internal.tex.r.ui.editors.LtxRweaveEditor"
+            contributorClass="org.eclipse.ui.editors.text.TextEditorActionContributor"
+            default="true"
+            icon="icons/obj_16/ltx_rweave-file.png"
+            name="%editors_LtxRweave_name">
+         <contentTypeBinding contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"/>
+      </editor>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.editors.templates">
+      <contextTypeRegistry
+            id="de.walware.statet.redocs.templates.TexRweaveDoc">
+      </contextTypeRegistry>
+      <contextType
+            id="Ltx+Rweave_NewDoc"
+            registryId="de.walware.statet.redocs.templates.TexRweaveDoc"
+            class="de.walware.statet.redocs.internal.tex.r.core.LtxRweaveTemplatesContextType">
+      </contextType>
+      <contextTypeRegistry
+            id="de.walware.statet.redocs.templates.TexRweaveCodegen">
+      </contextTypeRegistry>
+      <contextType
+            id="Ltx+Rweave_Weave:DocDefault"
+            registryId="de.walware.statet.redocs.templates.TexRweaveCodegen"
+            class="de.walware.statet.redocs.internal.tex.r.core.LtxRweaveTemplatesContextType">
+      </contextType>
+      <include
+            file="templates/default-doc-templates.xml"
+            translations="templates/default-templates.properties">
+      </include>
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.walware.statet.redocs.expressions.isEditorActive.LtxRweaveEditor">
+         <with
+               variable="activeEditor">
+            <instanceof
+                  value="de.walware.statet.redocs.tex.r.ui.editors.ILtxRweaveEditor">
+            </instanceof>
+         </with>
+      </definition>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.definitions">
+      <definition
+            id="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor">
+         <with
+               variable="activePart">
+            <instanceof
+                  value="de.walware.statet.redocs.tex.r.ui.editors.ILtxRweaveEditor">
+            </instanceof>
+         </with>
+      </definition>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="org.eclipse.jdt.ui.edit.text.java.toggleMarkOccurrences"
+            class="de.walware.docmlet.tex.ui.actions.TexToggleMarkOccurrencesHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="org.eclipse.ui.edit.text.folding.toggle"
+            class="de.walware.docmlet.tex.ui.actions.TexToggleFoldingHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      
+      <!-- navigate -->
+      <handler
+            commandId="org.eclipse.jdt.ui.edit.text.java.open.editor"
+            class="de.walware.statet.redocs.internal.tex.r.ui.editors.OpenDeclarationHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      
+      <!-- search -->
+      <handler
+            commandId="de.walware.ecommons.ltk.commands.SearchAllElementAccess"
+            class="de.walware.statet.redocs.internal.tex.r.ui.editors.ElementSearchHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="de.walware.ecommons.ltk.commands.SearchWriteElementAccess"
+            class="de.walware.statet.redocs.internal.tex.r.ui.editors.ElementSearchHandler">
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.menus">
+      <!-- search -->
+      <menuContribution
+            locationURI="menu:org.eclipse.search.menu?endof=contextMenuActionsGroup">
+         <menu
+               id="de.walware.statet.r.menus.SweaveSearchAllAccess"
+               label="%menus_Search_AllAccess_name"
+               mnemonic="%menus_Search_AllAccess_mnemonic">
+            <dynamic
+                  id="de.walware.ecommons.ltk.commands.SearchAllElementAccess"
+                  class="de.walware.statet.redocs.internal.tex.r.ui.editors.ElementSearchContributionItem">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+            </visibleWhen>
+         </menu>
+         <menu
+               id="de.walware.statet.r.menus.SweaveSearchWriteAccess"
+               label="%menus_Search_WriteAccess_name"
+               mnemonic="%menus_Search_WriteAccess_mnemonic">
+            <dynamic
+                  id="de.walware.ecommons.ltk.commands.SearchWriteElementAccess"
+                  class="de.walware.statet.redocs.internal.tex.r.ui.editors.ElementSearchContributionItem">
+            </dynamic>
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isPartActive.LtxRweaveEditor"/>
+            </visibleWhen>
+         </menu>
+      </menuContribution>
+      
+      <!-- context -->
+      <menuContribution
+            locationURI="popup:de.walware.statet.redocs.menus.LtxRweaveEditorContextMenu?after=group.edit">
+         <command
+               commandId="de.walware.ecommons.ltk.commands.ToggleComment"
+               id="de.walware.ecommons.ltk.commands.ToggleComment"
+               mnemonic="%menus_SweaveEditorContext_ToggleComment_mnemonic"
+               style="push">
+         </command>
+         <!--command
+               commandId="de.walware.ecommons.ltk.commands.CorrectIndent"
+               id="de.walware.ecommons.ltk.commands.CorrectIndent"
+               mnemonic="%menus_REditorContext_CorrectIndent_mnemonic"
+               style="push">
+         </command-->
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.popupMenus">
+      <viewerContribution
+            id="de.walware.statet.redocs.legacy.LtxRweaveEditorRulerMenuCommonContribution"
+            targetID="de.walware.statet.redocs.menus.LtxRweaveEditorRulerMenu">
+         <action
+               id=".AddTask"
+               class="org.eclipse.ui.texteditor.TaskRulerAction"
+               label="AddTask"
+               menubarPath="add"
+               helpContextId="org.eclipse.ui.AddTask_action_context">
+         </action>
+         <action
+               id=".AddBookmark"
+               class="org.eclipse.ui.texteditor.BookmarkRulerAction"
+               label="AddBookmark"
+               menubarPath="add"
+               helpContextId="org.eclipse.ui.bookmark_action_context">
+         </action>
+      </viewerContribution>
+   </extension>
+   
+   <extension
+         point="de.walware.statet.base.ui.codeGenerationTemplatesCategory">
+      <category
+            id="de.walware.statet.redocs.codegenerationCategory.TexRweaveCodeTemplates"
+            name="%templatesCategory_LtxRweaveCodeTemplates_name"
+            providerClass="de.walware.statet.redocs.internal.tex.r.ui.LtxRweaveTemplatesProvider"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.newWizards">
+      <wizard
+            id="de.walware.statet.redocs.newWizards.LtxRweaveDocCreation"
+            category="de.walware.statet.r.newWizards.RCategory"
+            class="de.walware.statet.redocs.internal.tex.r.ui.NewLtxRweaveDocCreationWizard"
+            icon="icons/tool_16/new-ltx_rweave-file.png"
+            name="%wizards_NewLtxRweaveDoc_name"
+            project="false">
+         <description>
+            %wizards_NewLtxRweaveDoc_description
+         </description>
+      </wizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension targetID="de.walware.statet.base.perspectives.StatetPerspective">
+         <newWizardShortcut id="de.walware.statet.redocs.newWizards.LtxRweaveDocCreation"/>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.ui.navigator.navigatorContent">
+      <commonWizard
+            menuGroupId="de.walware.statet"
+            type="new"
+            wizardId="de.walware.statet.redocs.newWizards.LtxRweaveDocCreation">
+         <enablement>
+            <or>
+               <adapt
+                     type="org.eclipse.core.resources.IContainer">
+                  <test
+                        property="org.eclipse.core.resources.projectNature"
+                        value="de.walware.statet.r.RNature">
+                  </test>
+               </adapt>
+            </or></enablement>
+      </commonWizard>
+   </extension>
+   
+   <extension
+         point="org.eclipse.compare.contentViewers">
+      <viewer
+            id="de.walware.statet.r.compare.RweaveTexContentViewer"
+            class="de.walware.statet.redocs.internal.tex.r.ui.editors.LtxRweaveContentViewerCreator">
+      </viewer>
+      <contentTypeBinding
+            contentViewerId="de.walware.statet.r.compare.RweaveTexContentViewer"
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"/>
+   </extension>
+   <extension
+         point="org.eclipse.compare.contentMergeViewers">
+      <viewer
+            id="de.walware.statet.r.compare.LtxRweaveMergeViewer"
+            class="de.walware.statet.redocs.internal.tex.r.ui.editors.LtxRweaveMergeViewerCreator">
+      </viewer>
+      <contentTypeBinding
+            contentMergeViewerId="de.walware.statet.r.compare.LtxRweaveMergeViewer"
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"/>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            id="de.walware.statet.r.preferencePages.LtxRweaveEditor"
+            category="de.walware.statet.base.preferencePages.Editors"
+            name="%preferencePages_SweaveEditorOptions"
+            class="de.walware.statet.redocs.internal.tex.r.ui.config.EditorPreferencePage">
+         <keywordReference id="de.walware.ecommons.ltk.keywords.SourceEditor"/>
+         <keywordReference id="de.walware.ecommons.ltk.keywords.SourceAppearance"/>
+         <keywordReference id="de.walware.ecommons.ltk.keywords.SpellChecking"/>
+      </page>
+   </extension>
+   
+   <extension
+         point="de.walware.statet.r.ui.rCodeLaunchContentHandler">
+      <contentHandler
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"
+            handler="de.walware.statet.redocs.internal.tex.r.ui.debug.LtxRweaveSubmitContentHandler">
+         <fileCommand
+               defaultCommand="Sweave(&quot;${resource_loc}&quot;)"
+               id="de.walware.statet.r.rFileCommand.SweaveRweaveTexDoc"
+               name="%rCodeLaunchHandler_SweaveRweaveTexDoc_label">
+         </fileCommand>
+      </contentHandler>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchShortcuts">
+      <shortcut
+            id="de.walware.statet.r.launchShortcuts.SweaveRweaveTexDoc"
+            category="de.walware.statet.r.basic"
+            modes="run"
+            class="de.walware.statet.redocs.internal.tex.r.ui.debug.TexRweaveViaSweaveLaunchShortcut"
+            label="%launchShortcuts_RunRweaveTexDocViaSweave"
+            icon="platform:/plugin/de.walware.statet.redocs.r/icons/tool_16/run-sweave.png"
+            path="statet/r/5">
+         <enablement>
+            <with
+                  variable="selection">
+               <count
+                     value="1">
+               </count>
+               <iterate>
+                  <or>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.walware.ecommons.ltk.matchesActivatedContentType"
+                           value="de.walware.statet.redocs.contentTypes.LtxRweave">
+                     </test>
+                  </or>
+               </iterate>
+            </with>
+         </enablement>
+         <contextualLaunch>
+            <enablement>
+               <with
+                     variable="selection">
+                  <count
+                        value="1">
+                  </count>
+                  <iterate>
+                     <test
+                           forcePluginActivation="true"
+                           property="de.walware.ecommons.ltk.matchesActivatedContentType"
+                           value="de.walware.statet.redocs.contentTypes.LtxRweave">
+                     </test>
+                  </iterate>
+               </with>
+            </enablement>
+            <contextLabel
+                  label="%launchShortcuts_RunRweaveTexDocViaSweave"
+                  mode="run">
+            </contextLabel>
+         </contextualLaunch>
+      </shortcut>
+   </extension>
+   
+<!-- Document Processing -->
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            id="de.walware.statet.r.launchConfigurationTypes.RweaveTexCreation"
+            category="org.eclipse.ui.externaltools"
+            modes="run"
+            delegate="de.walware.statet.redocs.internal.tex.r.ui.processing.TexRweaveLaunchDelegate"
+            name="%launchConfigurations_TexRweaveProcessing_name"
+            public="true">
+      </launchConfigurationType>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            id="de.walware.statet.redocs.images.TexRweaveDocProcessing"
+            configTypeID="de.walware.statet.r.launchConfigurationTypes.RweaveTexCreation"
+            icon="icons/obj_16/ltx_rweave-file.png">
+      </launchConfigurationTypeImage>
+   </extension>
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            id="de.walware.statet.redocs.launchConfigurationTabGroups.TexRweaveDocProcessing"
+            type="de.walware.statet.r.launchConfigurationTypes.RweaveTexCreation"
+            class="de.walware.statet.redocs.internal.tex.r.ui.processing.TexRweaveConfigTabGroup"
+            description="%launchConfigurations_TexRweaveProcessing_description">
+      </launchConfigurationTabGroup>
+   </extension>
+   
+   <extension
+         point="de.walware.docmlet.base.docProcessing">
+      <processingType
+            contentTypeId="de.walware.statet.redocs.contentTypes.LtxRweave"
+            configTypeId="de.walware.statet.r.launchConfigurationTypes.RweaveTexCreation"
+            managerClass="de.walware.statet.redocs.r.ui.processing.RweaveDocProcessingManager">
+      </processingType>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            commandId="de.walware.statet.redocs.commands.ProcessWeaveDefault">
+         <class class="de.walware.docmlet.base.ui.processing.RunActiveConfigWorkbenchHandler">
+            <parameter
+                  name="launchFlags"
+                  value="weave"/>
+         </class>
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isEditorActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+      <handler
+            commandId="de.walware.docmlet.tex.commands.ProcessTexDefault">
+         <class class="de.walware.docmlet.base.ui.processing.RunActiveConfigWorkbenchHandler">
+            <parameter
+                  name="launchFlags"
+                  value="produce_output"/>
+         </class>
+         <activeWhen>
+            <reference
+                  definitionId="de.walware.statet.redocs.expressions.isEditorActive.LtxRweaveEditor"/>
+         </activeWhen>
+      </handler>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:de.walware.docmlet.base.menus.MainDoc?after=processing">
+         <dynamic
+               id="de.walware.docmlet.base.menus.DocProcessingConfigItems"
+               class="de.walware.statet.redocs.internal.tex.r.ui.processing.TexRweaveConfigsMenuContribution:activeEditor">
+            <visibleWhen>
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isEditorActive.LtxRweaveEditor"/>
+            </visibleWhen>
+         </dynamic>
+      </menuContribution>
+   </extension>
+
+</plugin>
