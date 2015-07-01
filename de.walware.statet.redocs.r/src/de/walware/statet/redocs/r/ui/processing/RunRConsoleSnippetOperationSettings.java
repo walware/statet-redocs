@@ -14,6 +14,7 @@ package de.walware.statet.redocs.r.ui.processing;
 import java.util.Map;
 
 import org.eclipse.core.databinding.DataBindingContext;
+import org.eclipse.core.databinding.UpdateValueStrategy;
 import org.eclipse.core.databinding.observable.Realm;
 import org.eclipse.core.databinding.observable.value.WritableValue;
 import org.eclipse.jface.databinding.swt.WidgetProperties;
@@ -27,6 +28,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 
+import de.walware.ecommons.databinding.core.util.UpdateableErrorValidator;
 import de.walware.ecommons.debug.core.variables.ResourceVariables;
 import de.walware.ecommons.ltk.ui.sourceediting.SnippetEditor;
 import de.walware.ecommons.templates.TemplateVariableProcessor;
@@ -34,6 +36,8 @@ import de.walware.ecommons.ui.SharedMessages;
 import de.walware.ecommons.ui.components.CustomizableVariableSelectionDialog;
 import de.walware.ecommons.ui.util.DialogUtil;
 import de.walware.ecommons.ui.util.LayoutUtil;
+import de.walware.ecommons.variables.core.VariableText2;
+import de.walware.ecommons.variables.core.VariableTextValidator;
 
 import de.walware.docmlet.base.ui.processing.DocProcessingConfig;
 import de.walware.docmlet.base.ui.processing.DocProcessingConfigStepTab;
@@ -51,6 +55,7 @@ public class RunRConsoleSnippetOperationSettings extends DocProcessingOperationS
 	private WritableValue snippetValue;
 	
 	private SnippetEditor snippetEditor;
+	private VariableText2 snippetVariableResolver;
 	
 	
 	public RunRConsoleSnippetOperationSettings() {
@@ -88,6 +93,8 @@ public class RunRConsoleSnippetOperationSettings extends DocProcessingOperationS
 		final Composite composite= super.createControl(parent);
 		composite.setLayout(LayoutUtil.createCompositeGrid(1));
 		
+		this.snippetVariableResolver= new VariableText2(getTab().getStepVariables());
+		
 		{	final Label label= new Label(composite, SWT.NONE);
 			label.setText(Messages.ProcessingOperation_RunRConsoleSnippetSettings_RCode_label);
 			label.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -105,7 +112,8 @@ public class RunRConsoleSnippetOperationSettings extends DocProcessingOperationS
 							public void widgetSelected(final SelectionEvent e) {
 								final CustomizableVariableSelectionDialog dialog= new CustomizableVariableSelectionDialog(getTextControl().getShell());
 								dialog.addVariableFilter(DialogUtil.EXCLUDE_JAVA_FILTER);
-								dialog.setAdditionals(getTab().getStepVariables().values());
+								dialog.setAdditionals(RunRConsoleSnippetOperationSettings
+										.this.snippetVariableResolver.getExtraVariables().values() );
 								if (dialog.open() != Dialog.OK) {
 									return;
 								}
@@ -157,8 +165,14 @@ public class RunRConsoleSnippetOperationSettings extends DocProcessingOperationS
 	
 	@Override
 	protected void addBindings(final DataBindingContext dbc) {
-		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(this.snippetEditor.getTextControl()),
-				this.snippetValue );
+		dbc.bindValue(WidgetProperties.text(SWT.Modify).observe(
+						this.snippetEditor.getTextControl() ),
+				this.snippetValue,
+				new UpdateValueStrategy().setAfterGetValidator(
+						new UpdateableErrorValidator(new VariableTextValidator(
+								this.snippetVariableResolver,
+								Messages.ProcessingOperation_RunRConsoleSnippet_RCode_error_SpecInvalid_message ))),
+				null );
 	}
 	
 	
