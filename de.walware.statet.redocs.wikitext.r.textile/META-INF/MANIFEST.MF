@@ -3,18 +3,18 @@ Bundle-ManifestVersion: 2
 Bundle-Vendor: WalWare.de
 Bundle-Name: StatET ReDocs - Wikitext+R - Textile
 Bundle-SymbolicName: de.walware.statet.redocs.wikitext.r.textile;singleton:=true
-Bundle-Version: 3.5.0.qualifier
+Bundle-Version: 3.5.1.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.wikitext.r.textile.TextileRweavePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.0,3.6.0)",
+Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.1,3.6.0)",
  de.walware.ecommons.ltk.ui,
- de.walware.docmlet.wikitext.ui;bundle-version="[2.0.0,2.1.0)",
+ de.walware.docmlet.wikitext.ui;bundle-version="[2.1.0,2.2.0)",
  org.eclipse.mylyn.wikitext.ui,
  org.eclipse.mylyn.wikitext.textile.core,
  org.eclipse.mylyn.wikitext.textile.ui,
- de.walware.statet.redocs.wikitext.r;bundle-version="3.5.0",
+ de.walware.statet.redocs.wikitext.r;bundle-version="3.5.1",
  de.walware.statet.r.ui,
  org.eclipse.compare;resolution:=optional
 Import-Package: com.ibm.icu.text;version="4.4.2.2",

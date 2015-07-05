@@ -2,7 +2,7 @@
 <feature
       id="de.walware.statet.redocs.wikitext.r"
       label="StatET for R - Wikitext Add-on (R Markdown, R Textile, Reproducible Documents)"
-      version="3.5.0.qualifier"
+      version="3.5.1.qualifier"
       provider-name="WalWare.de"
       license-feature="de.walware.opensource.license"
       license-feature-version="1.0.0">
@@ -20,11 +20,11 @@
    </license>
 
    <requires>
-      <import feature="de.walware.statet.r" version="3.5.0" match="equivalent"/>
-      <import plugin="de.walware.docmlet.base.ui" version="2.0.0" match="equivalent"/>"
-      <import plugin="de.walware.statet.redocs.r" version="3.5.0" match="equivalent"/>"
-      <import feature="de.walware.eutils.yaml" version="1.0" match="equivalent"/>
-      <import feature="org.eclipse.mylyn.wikitext_feature" version="2.4.0" match="equivalent"/>
+      <import feature="de.walware.statet.r" version="3.5.1" match="equivalent"/>
+      <import plugin="de.walware.docmlet.base.ui" version="2.1.0" match="equivalent"/>"
+      <import plugin="de.walware.statet.redocs.r" version="3.5.1" match="equivalent"/>"
+      <import feature="de.walware.eutils.yaml" version="1.1" match="equivalent"/>
+      <import feature="org.eclipse.mylyn.wikitext_feature" version="2.4.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin

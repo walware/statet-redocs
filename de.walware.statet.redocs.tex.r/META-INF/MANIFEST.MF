@@ -3,12 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Vendor: WalWare.de
 Bundle-Name: StatET ReDocs - Sweave (LaTeX+R)
 Bundle-SymbolicName: de.walware.statet.redocs.tex.r;singleton:=true
-Bundle-Version: 3.5.0.qualifier
+Bundle-Version: 3.5.1.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.tex.r.RedocsTexRPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.0,3.6.0)",
+Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.1,3.6.0)",
  org.eclipse.jface.databinding,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ui.editors,
@@ -16,10 +16,10 @@ Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.0,3.6.0)",
  org.eclipse.ui.views,
  org.eclipse.ui.ide,
  org.eclipse.compare,
- de.walware.statet.redocs.r;bundle-version="[3.5.0,3.6.0)";visibility:=reexport,
- de.walware.docmlet.base.ui;bundle-version="[2.0.0,2.1.0)",
- de.walware.docmlet.tex.core;bundle-version="[2.0.0,2.1.0)";visibility:=reexport,
- de.walware.docmlet.tex.ui;bundle-version="[2.0.0,2.1.0)",
+ de.walware.statet.redocs.r;bundle-version="[3.5.1,3.6.0)";visibility:=reexport,
+ de.walware.docmlet.base.ui;bundle-version="[2.1.0,2.2.0)",
+ de.walware.docmlet.tex.core;bundle-version="[2.1.0,2.2.0)";visibility:=reexport,
+ de.walware.docmlet.tex.ui;bundle-version="[2.1.0,2.2.0)",
  de.walware.statet.r.ui,
  de.walware.statet.nico.ui,
  de.walware.statet.r.console.ui

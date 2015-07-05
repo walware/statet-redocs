@@ -3,12 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Vendor: WalWare.de
 Bundle-Name: StatET ReDocs - Shared Bundle for R
 Bundle-SymbolicName: de.walware.statet.redocs.r;singleton:=true
-Bundle-Version: 3.5.0.qualifier
+Bundle-Version: 3.5.1.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.r.Plugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.0,3.6.0)",
+Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.1,3.6.0)",
  de.walware.ecommons.text.core;visibility:=reexport,
  de.walware.ecommons.ltk.core;visibility:=reexport,
  de.walware.statet.r.core;visibility:=reexport,
