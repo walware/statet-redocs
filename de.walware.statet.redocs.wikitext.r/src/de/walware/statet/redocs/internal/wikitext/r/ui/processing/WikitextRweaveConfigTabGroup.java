@@ -60,7 +60,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 							"knitr::pandoc(" +
 									"input= \"${resource_loc}\", " +
 									"format= \"${out_file_ext}\", " +
-									"encoding= \"${resource_enc:${source_file_path}\")" ));
+									"encoding= \"${resource_enc:${source_file_path}}\")" ));
 		}
 		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using RMarkdown, two-step", 1, 2);
 			config.setAttribute(WikitextRweaveConfig.WEAVE_ENABLED_ATTR_NAME, true);
