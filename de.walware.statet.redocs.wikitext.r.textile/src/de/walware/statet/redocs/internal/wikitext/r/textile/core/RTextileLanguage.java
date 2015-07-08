@@ -13,6 +13,7 @@ package de.walware.statet.redocs.internal.wikitext.r.textile.core;
 
 import java.io.StringWriter;
 import java.util.List;
+import java.util.Objects;
 import java.util.regex.Pattern;
 
 import org.eclipse.core.runtime.Platform;
@@ -28,6 +29,7 @@ import de.walware.ecommons.ltk.core.SourceContent;
 import de.walware.docmlet.wikitext.core.WikitextProblemReporter;
 import de.walware.docmlet.wikitext.core.markup.IMarkupConfig;
 import de.walware.docmlet.wikitext.core.markup.IMarkupLanguageExtension2;
+import de.walware.docmlet.wikitext.core.markup.MarkupParser2;
 import de.walware.docmlet.wikitext.core.source.MarkupEventPrinter;
 import de.walware.docmlet.wikitext.core.source.RegexBlockWeaveParticipant;
 import de.walware.docmlet.wikitext.core.source.RegexInlineWeaveParticipant;
@@ -63,27 +65,23 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 	
 	private static final Pattern INLINE_PATTERN= Pattern.compile("@r ([^@]+)@"); //$NON-NLS-1$
 	
-	private static final int MODE_TEMPLATE=                 0b0_00000000_00000000_00000000_00000001;
-	
 	
 	private /*final*/ String scope;
 	
-	private IRTextileConfig config;
+	private /*final*/ int mode;
 	
-	private int mode;
+	private IRTextileConfig config;
 	
 	private IRTextileConfig configuredConfig;
 	
 	private WeaveLanguageProcessor weaveProcessor;
 	
-	private boolean enableInlineWeaves;
-	
 	
 	public RTextileLanguage() {
-		this(null, null);
+		this(null, 0, null);
 	}
 	
-	public RTextileLanguage(final String scope, final IRTextileConfig config) {
+	public RTextileLanguage(final String scope, final int mode, final IRTextileConfig config) {
 		super();
 		
 		assert (BASE_MARKUP_LANGUAGE_NAME.equals(getName()));
@@ -91,21 +89,24 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 		setExtendsLanguage(BASE_MARKUP_LANGUAGE_NAME);
 		
 		this.scope= scope;
+		this.mode= mode;
 		setMarkupConfig(config);
 	}
 	
 	@Override
 	public RTextileLanguage clone() {
 		final RTextileLanguage clone= (RTextileLanguage) super.clone();
-		clone.config= this.config;
 		clone.mode= this.mode;
+		clone.config= this.config;
 		return clone;
 	}
 	
 	@Override
-	public RTextileLanguage clone(final String scope) {
-		final RTextileLanguage clone= clone();
+	public RTextileLanguage clone(final String scope, final int mode) {
+		final RTextileLanguage clone= (RTextileLanguage) super.clone();
 		clone.scope= scope;
+		clone.mode= mode;
+		clone.config= this.config;
 		return clone;
 	}
 	
@@ -113,6 +114,17 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 	@Override
 	public String getScope() {
 		return this.scope;
+	}
+	
+	
+	@Override
+	public int getMode() {
+		return this.mode;
+	}
+	
+	@Override
+	public boolean isModeEnabled(int modeMask) {
+		return ((this.mode & modeMask) != 0);
 	}
 	
 	
@@ -127,33 +139,6 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 	@Override
 	public IRTextileConfig getMarkupConfig() {
 		return this.config;
-	}
-	
-	
-	private void setMode(final int newMode) {
-		if (this.mode != newMode) {
-			this.mode= newMode;
-			if (this.weaveProcessor != null) {
-				this.configuredConfig= null;
-			}
-		}
-	}
-	
-	@Override
-	public void setTemplateMode(final boolean enable) {
-		setMode((enable) ? (this.mode | MODE_TEMPLATE) : (this.mode & ~MODE_TEMPLATE));
-	}
-	
-	@Override
-	public boolean getTemplateMode() {
-		return ((this.mode & MODE_TEMPLATE) != 0);
-	}
-	
-	
-	@Override
-	public void setBlocksOnly(final boolean blocksOnly, final boolean enableInlineWeaves) {
-		setBlocksOnly(blocksOnly);
-		this.enableInlineWeaves= enableInlineWeaves;
 	}
 	
 	
@@ -183,9 +168,9 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 			}
 			if (config.isTexMathDollarsEnabled()) {
 				weaveProcessor.addInlineParticipants(new TexMathDollarsDisplayWeaveParticipant(
-						getTemplateMode() ));
+						isModeEnabled(TEMPLATE_MODE) ));
 				weaveProcessor.addInlineParticipants(new TexMathDollarsInlineWeaveParticipant(
-						getTemplateMode() ));
+						isModeEnabled(TEMPLATE_MODE) ));
 			}
 			if (config.isTexMathSBackslashEnabled()) {
 				weaveProcessor.addInlineParticipants(new TexMathSBackslashDisplayWeaveParticipant());
@@ -195,7 +180,17 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 	}
 	
 	@Override
-	public void processContent(final MarkupParser parser, final SourceContent content, final boolean asDocument) {
+	public void processContent(final MarkupParser2 parser, final SourceContent content, final boolean asDocument) {
+		if (parser == null) {
+			throw new NullPointerException("parser"); //$NON-NLS-1$
+		}
+		if (content == null) {
+			throw new NullPointerException("content"); //$NON-NLS-1$
+		}
+		if (parser.getBuilder() == null) {
+			throw new NullPointerException("parser.builder"); //$NON-NLS-1$
+		}
+		
 		if (this.weaveProcessor == null) {
 			this.weaveProcessor= new WeaveLanguageProcessor();
 		}
@@ -207,29 +202,19 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 			this.configuredConfig= config;
 		}
 		
-		final byte mode;
-		if (isBlocksOnly()) {
-			if (this.enableInlineWeaves) {
-				mode= WeaveLanguageProcessor.MODE_BLOCKS_AND_INLINE;
-			}
-			else {
-				mode= WeaveLanguageProcessor.MODE_BLOCKS_ONLY;
-			}
-		}
-		else {
-			mode= WeaveLanguageProcessor.MODE_ORG;
-		}
+		setFilterGenerativeContents(parser.isDisabled(MarkupParser2.GENERATIVE_CONTENT));
+		setBlocksOnly(parser.isDisabled(MarkupParser2.INLINE_MARKUP));
 		
 		final String markupContent= this.weaveProcessor.preprocess(content, parser.getBuilder(),
-				mode );
+				parser.getFlags() );
 		
 		if (DEBUG_LOG_BASE_EVENTS) {
 			final StringWriter out= new StringWriter();
 			try {
 				final MarkupEventPrinter printer= new MarkupEventPrinter(markupContent, this, out);
-				final MarkupParser markupParser= new MarkupParser(this,
+				final MarkupParser baseParser= new MarkupParser(this,
 						new MultiplexingDocumentBuilder(printer, this.weaveProcessor) );
-				super.processContent(markupParser, markupContent, asDocument);
+				super.processContent(baseParser, markupContent, asDocument);
 				this.weaveProcessor.finish();
 				System.out.println(out.toString());
 			}
@@ -239,15 +224,15 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 			}
 		}
 		else {
-			final MarkupParser markupParser= new MarkupParser(this, this.weaveProcessor);
-			super.processContent(markupParser, markupContent, asDocument);
+			final MarkupParser baseParser= new MarkupParser(this, this.weaveProcessor);
+			super.processContent(baseParser, markupContent, asDocument);
 			this.weaveProcessor.finish();
 		}
 	}
 	
 	@Override
 	public void processContent(final MarkupParser parser, final String markupContent, final boolean asDocument) {
-		processContent(parser, new SourceContent(0, markupContent), asDocument);
+		processContent(new MarkupParser2(parser), new SourceContent(0, markupContent), asDocument);
 	}
 	
 	
@@ -288,7 +273,7 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 		final RTextileLanguage other= (RTextileLanguage) obj;
 		return (getName().equals(other.getName())
 				&& this.mode == other.mode
-				&& ((this.config != null) ? this.config.equals(other.getMarkupConfig()) : null == other.getMarkupConfig()) );
+				&& Objects.equals(this.config, other.getMarkupConfig()) );
 	}
 	
 	

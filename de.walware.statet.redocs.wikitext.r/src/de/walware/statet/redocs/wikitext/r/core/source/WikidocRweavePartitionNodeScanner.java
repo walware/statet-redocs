@@ -41,13 +41,24 @@ public class WikidocRweavePartitionNodeScanner extends WikidocPartitionNodeScann
 	}
 	
 	public WikidocRweavePartitionNodeScanner(final IMarkupLanguage markupLanguage,
-			final boolean templateMode) {
-		super(markupLanguage, templateMode);
+			final int markupLanguageMode) {
+		super(markupLanguage, markupLanguageMode);
 	}
 	
 	
 	@Override
 	protected void init() {
+		{	final IMarkupLanguage markupLanguage= getMarkupLanguage();
+			if (markupLanguage instanceof IRweaveMarkupLanguage) {
+				final IRweaveMarkupLanguage rweaveLanguage= (IRweaveMarkupLanguage) markupLanguage;
+				
+				this.rScanner= rweaveLanguage.getRChunkPartitionScanner();
+			}
+			else {
+				throw new IllegalArgumentException("markupLanguage"); //$NON-NLS-1$
+			}
+		}
+		
 		final ITreePartitionNode beginNode= getScan().getBeginNode();
 		if (beginNode.getType() instanceof RPartitionNodeType) {
 			assert (false);
@@ -66,19 +77,6 @@ public class WikidocRweavePartitionNodeScanner extends WikidocPartitionNodeScann
 //			return;
 		}
 		super.init();
-	}
-	
-	@Override
-	protected void configure(final IMarkupLanguage markupLanguage) {
-		super.configure(markupLanguage);
-		if (markupLanguage instanceof IRweaveMarkupLanguage) {
-			final IRweaveMarkupLanguage rweaveLanguage= (IRweaveMarkupLanguage) markupLanguage;
-			
-			this.rScanner= rweaveLanguage.getRChunkPartitionScanner();
-		}
-		else {
-			throw new IllegalArgumentException("markupLanguage"); //$NON-NLS-1$
-		}
 	}
 	
 	

@@ -28,18 +28,13 @@ public class WikidocRweaveDocumentSetupParticipant extends MarkupLanguageDocumen
 			new String[IWikitextRweaveDocumentConstants.WIKIDOC_R_CONTENT_TYPES.size()]);
 	
 	
-	private final boolean templateMode;
-	
-	
 	public WikidocRweaveDocumentSetupParticipant(final IExtdocMarkupLanguage markupLanguage) {
 		this(markupLanguage, false);
 	}
 	
 	public WikidocRweaveDocumentSetupParticipant(final IExtdocMarkupLanguage markupLanguage,
 			final boolean templateMode) {
-		super(markupLanguage);
-		
-		this.templateMode= templateMode;
+		super(markupLanguage, (templateMode) ? IMarkupLanguage.TEMPLATE_MODE : 0);
 	}
 	
 	
@@ -51,7 +46,7 @@ public class WikidocRweaveDocumentSetupParticipant extends MarkupLanguageDocumen
 	@Override
 	protected IMarkupLanguagePartitioner createDocumentPartitioner(final IMarkupLanguage markupLanguage) {
 		return new WikitextPartitioner(
-				new WikidocRweavePartitionNodeScanner(markupLanguage, this.templateMode),
+				new WikidocRweavePartitionNodeScanner(markupLanguage, getMarkupLanguageMode()),
 				CONTENT_TYPES );
 	}
 	

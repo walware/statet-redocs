@@ -37,6 +37,7 @@
          point="de.walware.docmlet.wikitext.markupLanguages">
       <markupLanguage
             name="Markdown+R"
+            label="RMarkdown (Markdown+R)"
             class="de.walware.statet.redocs.internal.wikitext.r.markdown.core.RMarkdownLanguage"
             configClass="de.walware.statet.redocs.internal.wikitext.r.markdown.core.RMarkdownConfig"
             contentTypeId="de.walware.statet.redocs.contentTypes.MarkdownRweave">
