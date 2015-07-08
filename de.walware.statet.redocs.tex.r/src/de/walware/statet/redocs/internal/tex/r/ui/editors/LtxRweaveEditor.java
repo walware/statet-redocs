@@ -21,9 +21,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.text.AbstractDocument;
 import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.BadPartitioningException;
-import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
-import org.eclipse.jface.text.ITextOperationTarget;
 import org.eclipse.jface.text.ITextSelection;
 import org.eclipse.ui.IEditorInput;
 import org.eclipse.ui.IPageLayout;
@@ -38,7 +36,6 @@ import de.walware.ecommons.collections.ImCollections;
 import de.walware.ecommons.collections.ImList;
 import de.walware.ecommons.ltk.ast.AstSelection;
 import de.walware.ecommons.ltk.core.model.ISourceUnitModelInfo;
-import de.walware.ecommons.ltk.ui.EditorUtil;
 import de.walware.ecommons.ltk.ui.LTKUI;
 import de.walware.ecommons.ltk.ui.sourceediting.AbstractMarkOccurrencesProvider;
 import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditorAddon;
@@ -48,7 +45,6 @@ import de.walware.ecommons.ltk.ui.sourceediting.SourceEditor1OutlinePage;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewerConfigurator;
 import de.walware.ecommons.ltk.ui.sourceediting.actions.MultiContentSectionHandler;
 import de.walware.ecommons.ltk.ui.sourceediting.actions.SpecificContentAssistHandler;
-import de.walware.ecommons.ltk.ui.sourceediting.actions.ToggleCommentHandler;
 import de.walware.ecommons.ltk.ui.sourceediting.folding.FoldingEditorAddon;
 import de.walware.ecommons.ui.SharedUIResources;
 
@@ -77,6 +73,7 @@ import de.walware.statet.r.ui.sourceediting.InsertAssignmentHandler;
 import de.walware.statet.redocs.internal.tex.r.RedocsTexRPlugin;
 import de.walware.statet.redocs.r.core.source.IDocContentSectionsRweaveExtension;
 import de.walware.statet.redocs.r.ui.RedocsRUI;
+import de.walware.statet.redocs.r.ui.sourceediting.actions.RweaveToggleCommentHandler;
 import de.walware.statet.redocs.tex.r.core.TexRweaveCore;
 import de.walware.statet.redocs.tex.r.core.model.ILtxRweaveSourceUnit;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveDocumentContentInfo;
@@ -122,42 +119,6 @@ public class LtxRweaveEditor extends SourceEditor1 implements ILtxRweaveEditor, 
 			else if (astSelection.getCovering() instanceof RAstNode) {
 				this.rLocator.run(run, info, astSelection, orgSelection);
 			}
-		}
-		
-	}
-	
-	
-	private static class ThisToggleCommentHandler extends ToggleCommentHandler {
-		
-		ThisToggleCommentHandler(final LtxRweaveEditor editor) {
-			super(editor);
-		}
-		
-		
-		@Override
-		protected void run(final IDocument document, final ITextSelection selection,
-				final int operationCode) {
-			try {
-				if (operationCode == ITextOperationTarget.PREFIX && isMixed(document, selection)) {
-					final IRegion block= EditorUtil.getTextBlockFromSelection(document,
-							selection.getOffset(), selection.getLength() );
-					addPrefix(document, block, "%"); //$NON-NLS-1$
-					return;
-				}
-			}
-			catch (final BadLocationException e) {
-				log(e);
-			}
-			super.run(document, selection, operationCode);
-		}
-		
-		protected boolean isMixed(final IDocument document, final ITextSelection selection) throws BadLocationException {
-			final IRegion block= EditorUtil.getTextBlockFromSelection(document,
-					selection.getOffset(), selection.getLength() );
-			final IRegion rContent= LtxRweaveDocumentContentInfo.INSTANCE.getRChunkContentRegion(
-					document, block.getOffset() );
-			return (rContent == null || block.getOffset() < rContent.getOffset()
-					|| block.getOffset() + block.getLength() > rContent.getOffset() + rContent.getLength() );
 		}
 		
 	}
@@ -300,7 +261,13 @@ public class LtxRweaveEditor extends SourceEditor1 implements ILtxRweaveEditor, 
 	
 	@Override
 	protected IHandler2 createToggleCommentHandler() {
-		final IHandler2 handler= new ThisToggleCommentHandler(this);
+		final IHandler2 handler= new RweaveToggleCommentHandler(this) {
+			@Override
+			protected void doPrefixPrimary(final AbstractDocument document, final IRegion block)
+					throws BadLocationException, BadPartitioningException {
+				doPrefix(document, block, "%"); //$NON-NLS-1$
+			}
+		};
 		markAsStateDependentHandler(handler, true);
 		return handler;
 	}

@@ -13,6 +13,7 @@ package de.walware.statet.redocs.wikitext.r.ui.editors;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import org.eclipse.core.commands.IHandler2;
 import org.eclipse.core.runtime.content.IContentType;
@@ -76,6 +77,7 @@ import de.walware.statet.redocs.internal.wikitext.r.ui.editors.WikidocRweaveEdit
 import de.walware.statet.redocs.internal.wikitext.r.ui.editors.WikidocRweaveOutlinePage;
 import de.walware.statet.redocs.r.core.source.IDocContentSectionsRweaveExtension;
 import de.walware.statet.redocs.r.ui.RedocsRUI;
+import de.walware.statet.redocs.r.ui.sourceediting.actions.RweaveToggleCommentHandler;
 import de.walware.statet.redocs.wikitext.r.core.model.IWikidocRweaveSourceUnit;
 import de.walware.statet.redocs.wikitext.r.core.source.IRweaveMarkupLanguage;
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveDocumentContentInfo;
@@ -139,6 +141,7 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 			return WikidocRweaveDocumentContentInfo.INSTANCE.getRChunkCodeRegions(document,
 					selection.getOffset(), selection.getLength() );
 		}
+		
 	}
 	
 	
@@ -284,12 +287,32 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 		}
 	}
 	
-//	@Override
-//	protected IHandler2 createToggleCommentHandler() {
-//		final IHandler2 handler= new DocContentSectionCommentHandler(this);
-//		markAsStateDependentHandler(handler, true);
-//		return handler;
-//	}
+	@Override
+	protected IHandler2 createToggleCommentHandler() {
+		final IHandler2 handler= new RweaveToggleCommentHandler(this) {
+			@Override
+			protected Pattern getPrefixPattern(final String contentType, final String prefix) {
+				if (prefix.equals("<!--")) { //$NON-NLS-1$
+					return HTML_SPACE_PREFIX_PATTERN;
+				}
+				return super.getPrefixPattern(contentType, prefix);
+			}
+			@Override
+			protected Pattern getPostfixPattern(final String contentType, final String prefix) {
+				if (prefix.equals("<!--")) { //$NON-NLS-1$
+					return HTML_SPACE_POSTFIX_PATTERN;
+				}
+				return super.getPostfixPattern(contentType, prefix);
+			}
+			@Override
+			protected void doPrefixPrimary(final AbstractDocument document, final IRegion block)
+					throws BadLocationException, BadPartitioningException {
+				doPrefix(document, block, "<!-- ", " -->"); //$NON-NLS-1$ //$NON-NLS-2$
+			}
+		};
+		markAsStateDependentHandler(handler, true);
+		return handler;
+	}
 	
 	@Override
 	protected IHandler2 createCorrectIndentHandler() {

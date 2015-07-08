@@ -34,4 +34,5 @@ Export-Package: de.walware.statet.redocs.r,
  de.walware.statet.redocs.r.ui,
  de.walware.statet.redocs.r.ui.debug,
  de.walware.statet.redocs.r.ui.processing,
- de.walware.statet.redocs.r.ui.sourceediting
+ de.walware.statet.redocs.r.ui.sourceediting,
+ de.walware.statet.redocs.r.ui.sourceediting.actions
