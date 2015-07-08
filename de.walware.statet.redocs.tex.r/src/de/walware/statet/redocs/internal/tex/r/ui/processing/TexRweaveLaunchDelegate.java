@@ -186,109 +186,113 @@ public class TexRweaveLaunchDelegate extends DocProcessingToolLaunchDelegate {
 		
 		final SubMonitor m= SubMonitor.convert(monitor, "Configuring Document Processing...", 20 +
 				((config.preview.getRun() == StepConfig.RUN_EXPLICITE) ? 30 : 0) );
-		
-		{	final SubMonitor mInit= m.newChild(10);
-			config.initSourceFile(configuration, mInit);
-		}
-		
-		final TexRweaveProcessToolProcess toolProcess= new TexRweaveProcessToolProcess(launch, config);
-		
-		// Tex config (for output format, before sweave)
-		{	toolProcess.fTexOpenEditor= configuration.getAttribute(TexTab.ATTR_OPENTEX_ENABLED, TexTab.OPEN_OFF);
-			
-			final VariableText outputDir= new VariableText(
-					replaceOldVariables(configuration.getAttribute(TexTab.ATTR_BUILDTEX_OUTPUTDIR, "")), //$NON-NLS-1$
-					TexRweaveProcessToolProcess.OUTPUT_DIR_VARNAMES);
-			final String outputFormat;
-			
-			int texType= configuration.getAttribute(TexTab.ATTR_BUILDTEX_TYPE, -2);
-			if (texType == -2) {
-				texType= configuration.getAttribute(TexTab.ATTR_BUILDTEX_ENABLED, false) ? BUILDTEX_TYPE_ECLIPSE : BUILDTEX_TYPE_DISABLED;
-			}
-			switch (texType) {
-			case BUILDTEX_TYPE_ECLIPSE:
-				final Builder builder= BuilderRegistry.get(configuration.getAttribute(TexTab.ATTR_BUILDTEX_ECLIPSE_BUILDERID, -1));
-				toolProcess.setBuildTex(builder);
-				outputFormat= (builder != null) ? builder.getOutputFormat() : null;
-				break;
-			case BUILDTEX_TYPE_RCONSOLE:
-				toolProcess.setBuildTex(new VariableText(
-						configuration.getAttribute(TexTab.ATTR_BUILDTEX_R_COMMANDS, ""), //$NON-NLS-1$
-						TexRweaveProcessToolProcess.TEX_COMMAND_VARNAMES) );
-				//$FALL-THROUGH$
-			default:
-				outputFormat= configuration.getAttribute(TexTab.ATTR_BUILDTEX_FORMAT, ""); //$NON-NLS-1$
-			}
-			toolProcess.setOutput(outputDir, outputFormat);
-		}
-		m.newChild(10);
-		// Sweave config
-		{	final String sweaveFolderRaw= configuration.getAttribute(RweaveTab.ATTR_SWEAVE_FOLDER, ""); //$NON-NLS-1$
-			if (!sweaveFolderRaw.isEmpty()) {
-				toolProcess.setWorkingDir(new VariableText(sweaveFolderRaw,
-						TexRweaveProcessToolProcess.SWEAVE_FOLDER_VARNAMES ));
+		try {
+			{	final SubMonitor mInit= m.newChild(10);
+				config.initSourceFile(configuration, mInit);
 			}
 			
-			final String sweaveProcessing= configuration.getAttribute(RweaveTab.ATTR_SWEAVE_ID, ""); //$NON-NLS-1$
-			if (sweaveProcessing.startsWith(TexRweaveLaunchDelegate.SWEAVE_LAUNCH)) {
-				final String[] split= sweaveProcessing.split(":", 2); //$NON-NLS-1$
-				final String sweaveConfigName= (split.length == 2) ? split[1] : ""; //$NON-NLS-1$
+			final TexRweaveProcessToolProcess toolProcess= new TexRweaveProcessToolProcess(launch, config);
+			
+			// Tex config (for output format, before sweave)
+			{	toolProcess.fTexOpenEditor= configuration.getAttribute(TexTab.ATTR_OPENTEX_ENABLED, TexTab.OPEN_OFF);
 				
-				final Map<String, Object> attributes= new HashMap<>();
-				attributes.put(RCmdLaunching.R_CMD_RESOURCE_ATTR_NAME, config.getSourceFile().getLocation().toOSString());
-				attributes.put(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
+				final VariableText outputDir= new VariableText(
+						replaceOldVariables(configuration.getAttribute(TexTab.ATTR_BUILDTEX_OUTPUTDIR, "")), //$NON-NLS-1$
+						TexRweaveProcessToolProcess.OUTPUT_DIR_VARNAMES);
+				final String outputFormat;
 				
-				final ILaunchConfiguration sweaveConfig= getRCmdSweaveConfig(sweaveConfigName, attributes);
-				if (sweaveConfig == null && config.weave.isRun()) {
-					throw new CoreException(new Status(IStatus.ERROR, TexRweaveUI.PLUGIN_ID, ICommonStatusConstants.LAUNCHCONFIG_ERROR,
-							NLS.bind(Messages.ProcessingConfig_error_MissingRCmdConfig_message, sweaveConfigName), null));
+				int texType= configuration.getAttribute(TexTab.ATTR_BUILDTEX_TYPE, -2);
+				if (texType == -2) {
+					texType= configuration.getAttribute(TexTab.ATTR_BUILDTEX_ENABLED, false) ? BUILDTEX_TYPE_ECLIPSE : BUILDTEX_TYPE_DISABLED;
 				}
-				toolProcess.setSweave(sweaveConfig);
-				
-				IFileStore wd= toolProcess.getWorkingDirectory();
-				if (wd == null) {
-					final FileValidator workingDirectory= REnvTab.getWorkingDirectoryValidator(sweaveConfig, true);
-					final IStatus status= toolProcess.setWorkingDir(workingDirectory.getFileStore(), (IContainer) workingDirectory.getWorkspaceResource(), false);
-					if (status.getSeverity() >= IStatus.ERROR && config.weave.isRun()) {
-						throw new CoreException(status);
-					}
-					wd= workingDirectory.getFileStore();
+				switch (texType) {
+				case BUILDTEX_TYPE_ECLIPSE:
+					final Builder builder= BuilderRegistry.get(configuration.getAttribute(TexTab.ATTR_BUILDTEX_ECLIPSE_BUILDERID, -1));
+					toolProcess.setBuildTex(builder);
+					outputFormat= (builder != null) ? builder.getOutputFormat() : null;
+					break;
+				case BUILDTEX_TYPE_RCONSOLE:
+					toolProcess.setBuildTex(new VariableText(
+							configuration.getAttribute(TexTab.ATTR_BUILDTEX_R_COMMANDS, ""), //$NON-NLS-1$
+							TexRweaveProcessToolProcess.TEX_COMMAND_VARNAMES) );
+					//$FALL-THROUGH$
+				default:
+					outputFormat= configuration.getAttribute(TexTab.ATTR_BUILDTEX_FORMAT, ""); //$NON-NLS-1$
 				}
-				attributes.put(RLaunching.ATTR_WORKING_DIRECTORY, wd.toURI().toString());
+				toolProcess.setOutput(outputDir, outputFormat);
 			}
-			else if (sweaveProcessing.startsWith(TexRweaveLaunchDelegate.SWEAVE_CONSOLE)) {
-				final String[] split= sweaveProcessing.split(":", 2); //$NON-NLS-1$
-				toolProcess.setSweave(new VariableText(
-						(split.length == 2 && split[1].length() > 0) ? replaceOldVariables(split[1]) : DEFAULT_SWEAVE_R_COMMANDS,
-						TexRweaveProcessToolProcess.SWEAVE_COMMAND_VARNAMES) );
-			}
-			else if (toolProcess.getWorkingDirectory() == null) {
-				toolProcess.setWorkingDir(null, config.getSourceFile().getParent(), true);
-			}
-		}
-		
-		// Preview config
-		{	final String preview= configuration.getAttribute(PreviewTab.ATTR_VIEWER_CODE, ""); //$NON-NLS-1$
-			if (config.weave.isRun()) {
-				if (preview.startsWith(PREVIEW_SPECIAL)) {
-					final String previewConfigName= preview.split(":", -1)[1]; //$NON-NLS-1$
-					toolProcess.fPreviewConfig= Texlipse.getViewerManager().getConfiguration(previewConfigName);
-					if (toolProcess.fPreviewConfig == null) {
+			m.newChild(10);
+			// Sweave config
+			{	final String sweaveFolderRaw= configuration.getAttribute(RweaveTab.ATTR_SWEAVE_FOLDER, ""); //$NON-NLS-1$
+				if (!sweaveFolderRaw.isEmpty()) {
+					toolProcess.setWorkingDir(new VariableText(sweaveFolderRaw,
+							TexRweaveProcessToolProcess.SWEAVE_FOLDER_VARNAMES ));
+				}
+				
+				final String sweaveProcessing= configuration.getAttribute(RweaveTab.ATTR_SWEAVE_ID, ""); //$NON-NLS-1$
+				if (sweaveProcessing.startsWith(TexRweaveLaunchDelegate.SWEAVE_LAUNCH)) {
+					final String[] split= sweaveProcessing.split(":", 2); //$NON-NLS-1$
+					final String sweaveConfigName= (split.length == 2) ? split[1] : ""; //$NON-NLS-1$
+					
+					final Map<String, Object> attributes= new HashMap<>();
+					attributes.put(RCmdLaunching.R_CMD_RESOURCE_ATTR_NAME, config.getSourceFile().getLocation().toOSString());
+					attributes.put(IDebugUIConstants.ATTR_LAUNCH_IN_BACKGROUND, false);
+					
+					final ILaunchConfiguration sweaveConfig= getRCmdSweaveConfig(sweaveConfigName, attributes);
+					if (sweaveConfig == null && config.weave.isRun()) {
 						throw new CoreException(new Status(IStatus.ERROR, TexRweaveUI.PLUGIN_ID, ICommonStatusConstants.LAUNCHCONFIG_ERROR,
-								NLS.bind(Messages.ProcessingConfig_error_MissingViewerConfig_message, previewConfigName), null));
+								NLS.bind(Messages.ProcessingConfig_error_MissingRCmdConfig_message, sweaveConfigName), null));
+					}
+					toolProcess.setSweave(sweaveConfig);
+					
+					IFileStore wd= toolProcess.getWorkingDirectory();
+					if (wd == null) {
+						final FileValidator workingDirectory= REnvTab.getWorkingDirectoryValidator(sweaveConfig, true);
+						final IStatus status= toolProcess.setWorkingDir(workingDirectory.getFileStore(), (IContainer) workingDirectory.getWorkspaceResource(), false);
+						if (status.getSeverity() >= IStatus.ERROR && config.weave.isRun()) {
+							throw new CoreException(status);
+						}
+						wd= workingDirectory.getFileStore();
+					}
+					attributes.put(RLaunching.ATTR_WORKING_DIRECTORY, wd.toURI().toString());
+				}
+				else if (sweaveProcessing.startsWith(TexRweaveLaunchDelegate.SWEAVE_CONSOLE)) {
+					final String[] split= sweaveProcessing.split(":", 2); //$NON-NLS-1$
+					toolProcess.setSweave(new VariableText(
+							(split.length == 2 && split[1].length() > 0) ? replaceOldVariables(split[1]) : DEFAULT_SWEAVE_R_COMMANDS,
+							TexRweaveProcessToolProcess.SWEAVE_COMMAND_VARNAMES) );
+				}
+				else if (toolProcess.getWorkingDirectory() == null) {
+					toolProcess.setWorkingDir(null, config.getSourceFile().getParent(), true);
+				}
+			}
+			
+			// Preview config
+			{	final String preview= configuration.getAttribute(PreviewTab.ATTR_VIEWER_CODE, ""); //$NON-NLS-1$
+				if (config.weave.isRun()) {
+					if (preview.startsWith(PREVIEW_SPECIAL)) {
+						final String previewConfigName= preview.split(":", -1)[1]; //$NON-NLS-1$
+						toolProcess.fPreviewConfig= Texlipse.getViewerManager().getConfiguration(previewConfigName);
+						if (toolProcess.fPreviewConfig == null) {
+							throw new CoreException(new Status(IStatus.ERROR, TexRweaveUI.PLUGIN_ID, ICommonStatusConstants.LAUNCHCONFIG_ERROR,
+									NLS.bind(Messages.ProcessingConfig_error_MissingViewerConfig_message, previewConfigName), null));
+						}
 					}
 				}
 			}
-		}
-		
-		if (config.preview.getRun() == StepConfig.RUN_EXPLICITE) {
-			final IStatus status= toolProcess.run(m.newChild(30, SubMonitor.SUPPRESS_NONE));
-			if (status.getSeverity() == IStatus.ERROR) {
-				throw new CoreException(status);
+			
+			if (config.preview.getRun() == StepConfig.RUN_EXPLICITE) {
+				final IStatus status= toolProcess.run(m.newChild(30, SubMonitor.SUPPRESS_NONE));
+				if (status.getSeverity() == IStatus.ERROR) {
+					throw new CoreException(status);
+				}
+			}
+			else {
+				new DocProcessingToolJob(toolProcess).schedule();
 			}
 		}
-		else {
-			new DocProcessingToolJob(toolProcess).schedule();
+		finally {
+			m.done();
 		}
 	}
 	

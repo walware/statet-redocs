@@ -31,6 +31,8 @@ import de.walware.docmlet.base.ui.processing.DocProcessingToolJob;
 import de.walware.docmlet.base.ui.processing.DocProcessingToolLaunchDelegate;
 import de.walware.docmlet.base.ui.processing.DocProcessingToolProcess;
 import de.walware.docmlet.base.ui.processing.DocProcessingUI;
+import de.walware.docmlet.base.ui.processing.operations.CloseInDocViewerOperation;
+import de.walware.docmlet.base.ui.processing.operations.OpenUsingDocViewerOperation;
 import de.walware.docmlet.base.ui.processing.operations.OpenUsingEclipseOperation;
 import de.walware.docmlet.base.ui.processing.operations.RunExternalProgramOperation;
 
@@ -49,7 +51,16 @@ public class WikitextRweaveLaunchDelegate extends DocProcessingToolLaunchDelegat
 		public final StepConfig weave= new ProcessingStepConfig(this,
 				WikitextRweaveConfig.WEAVE_ATTR_QUALIFIER, Messages.Weave_label );
 		public final StepConfig produce= new ProcessingStepConfig(this,
-				WikitextRweaveConfig.PRODUCE_ATTR_QUALIFIER, Messages.Produce_label );
+				WikitextRweaveConfig.PRODUCE_ATTR_QUALIFIER, Messages.Produce_label ) {
+			@Override
+			public void initPre(final ILaunchConfiguration configuration,
+					final SubMonitor m) throws CoreException {
+				{	final CloseInDocViewerOperation operation= new CloseInDocViewerOperation();
+					operation.init(this, Collections.EMPTY_MAP, m);
+					addPre(operation);
+				}
+			}
+		};
 		public final StepConfig preview= new PreviewStepConfig(this);
 		
 		
@@ -131,6 +142,9 @@ public class WikitextRweaveLaunchDelegate extends DocProcessingToolLaunchDelegat
 			if (id.equals(RunExternalProgramOperation.ID)) {
 				return new RunExternalProgramOperation();
 			}
+			if (id.equals(OpenUsingDocViewerOperation.ID)) {
+				return new OpenUsingDocViewerOperation();
+			}
 			if (id.equals(OpenUsingEclipseOperation.ID)) {
 				return new OpenUsingEclipseOperation();
 			}
@@ -155,63 +169,76 @@ public class WikitextRweaveLaunchDelegate extends DocProcessingToolLaunchDelegat
 		
 		final SubMonitor m= SubMonitor.convert(monitor, "Configuring Document Processing...", 20 +
 				((config.preview.getRun() == StepConfig.RUN_EXPLICITE) ? 30 : 0) );
-		
-		{	final SubMonitor mInit= m.newChild(10);
-			final boolean weaveRequired= (config.weave.isRun() || config.weave.isEnabled());
-			final boolean produceRequired= (config.produce.isRun() || config.preview.isRun());
-			final boolean previewRequired= (config.preview.isRun());
-			mInit.setWorkRemaining(2 + 1 +
-					((weaveRequired) ? 2 : 0) +
-					((produceRequired) ? 2 : 0) +
-					((previewRequired) ? 1 : 0) );
-			
-			config.initSourceFile(configuration, mInit.newChild(2));
-			config.initWorkingDirectory(configuration, mInit.newChild(1));
-			
-			if (weaveRequired) {
-				final IFile inputFile= config.getSourceFile();
-				config.weave.initIOFiles(inputFile, configuration, mInit.newChild(2));
+		try {
+			{	final SubMonitor mInit= m.newChild(10);
+				final boolean weaveRequired= (config.weave.isRun() || config.weave.isEnabled());
+				final boolean produceRequired= (config.produce.isRun() || config.preview.isRun());
+				final boolean previewRequired= (config.produce.isRun() || config.preview.isRun()); // also used by pre produce operation
+				mInit.setWorkRemaining(2 + 1 +
+						((weaveRequired) ? 2 : 0) +
+						((produceRequired) ? 2 : 0) +
+						((previewRequired) ? 1 : 0) );
+				
+				config.initSourceFile(configuration, mInit.newChild(2));
+				config.initWorkingDirectory(configuration, mInit.newChild(1));
+				
+				if (weaveRequired) {
+					final IFile inputFile= config.getSourceFile();
+					config.weave.initIOFiles(inputFile, configuration, mInit.newChild(2));
+				}
+				if (produceRequired) {
+					final IFile inputFile= (config.weave.isEnabled()) ?
+							config.weave.getOutputFile() : config.getSourceFile();
+					config.produce.initIOFiles(inputFile, configuration, mInit.newChild(2));
+				}
+				if (previewRequired) {
+					final IFile inputFile= config.produce.getOutputFile();
+					config.preview.initIOFiles(inputFile, configuration, mInit.newChild(1));
+				}
 			}
-			if (produceRequired) {
-				final IFile inputFile= (config.weave.isEnabled()) ?
-						config.weave.getOutputFile() : config.getSourceFile();
-				config.produce.initIOFiles(inputFile, configuration, mInit.newChild(2));
+			
+			if (m.isCanceled()) {
+				return;
 			}
-			if (previewRequired) {
-				final IFile inputFile= config.produce.getOutputFile();
-				config.preview.initIOFiles(inputFile, configuration, mInit.newChild(1));
+			
+			{	final SubMonitor mOps= m.newChild(10);
+				mOps.setWorkRemaining(
+						((config.weave.isRun()) ? 3 : 0) +
+						((config.produce.isRun()) ? 4 : 0) +
+						((config.preview.isRun()) ? 2 : 0) );
+				
+				if (config.weave.isRun()) {
+					config.weave.initOperation(configuration, mOps.newChild(2));
+					config.weave.initPost(configuration, mOps.newChild(1));
+				}
+				if (config.produce.isRun()) {
+					config.produce.initPre(configuration, mOps.newChild(1));
+					config.produce.initOperation(configuration, mOps.newChild(2));
+					config.produce.initPost(configuration, mOps.newChild(1));
+				}
+				if (config.preview.isRun()) {
+					config.preview.initOperation(configuration, mOps.newChild(2));
+				}
+			}
+			
+			if (m.isCanceled()) {
+				return;
+			}
+			
+			final DocProcessingToolProcess toolProcess= new DocProcessingToolProcess(launch, config);
+			
+			if (config.preview.getRun() == StepConfig.RUN_EXPLICITE) {
+				final IStatus status= toolProcess.run(m.newChild(30, SubMonitor.SUPPRESS_NONE));
+				if (status.getSeverity() == IStatus.ERROR) {
+					throw new CoreException(status);
+				}
+			}
+			else {
+				new DocProcessingToolJob(toolProcess).schedule();
 			}
 		}
-		
-		{	final SubMonitor mOps= m.newChild(10);
-			mOps.setWorkRemaining(
-					((config.weave.isRun()) ? 3 : 0) +
-					((config.produce.isRun()) ? 3 : 0) +
-					((config.preview.isRun()) ? 2 : 0) );
-			
-			if (config.weave.isRun()) {
-				config.weave.initOperation(configuration, mOps.newChild(2));
-				config.weave.initPost(configuration, mOps.newChild(1));
-			}
-			if (config.produce.isRun()) {
-				config.produce.initOperation(configuration, mOps.newChild(2));
-				config.produce.initPost(configuration, mOps.newChild(1));
-			}
-			if (config.preview.isRun()) {
-				config.preview.initOperation(configuration, mOps.newChild(2));
-			}
-		}
-		
-		final DocProcessingToolProcess toolProcess= new DocProcessingToolProcess(launch, config);
-		
-		if (config.preview.getRun() == StepConfig.RUN_EXPLICITE) {
-			final IStatus status= toolProcess.run(m.newChild(30, SubMonitor.SUPPRESS_NONE));
-			if (status.getSeverity() == IStatus.ERROR) {
-				throw new CoreException(status);
-			}
-		}
-		else {
-			new DocProcessingToolJob(toolProcess).schedule();
+		finally {
+			m.done();
 		}
 	}
 	

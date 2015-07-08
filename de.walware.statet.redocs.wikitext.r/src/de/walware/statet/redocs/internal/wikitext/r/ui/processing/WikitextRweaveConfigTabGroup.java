@@ -12,16 +12,19 @@
 package de.walware.statet.redocs.internal.wikitext.r.ui.processing;
 
 import java.util.Collections;
+import java.util.List;
 
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
+import de.walware.ecommons.collections.ImCollections;
 import de.walware.ecommons.debug.ui.CheckedCommonTab;
+import de.walware.ecommons.debug.ui.config.LaunchConfigPresets;
 
 import de.walware.docmlet.base.ui.processing.DocProcessingConfigMainTab;
-import de.walware.docmlet.base.ui.processing.DocProcessingConfigPresets;
 import de.walware.docmlet.base.ui.processing.PreviewTab;
 
 import de.walware.statet.redocs.r.ui.processing.RunRConsoleSnippetOperation;
@@ -33,12 +36,12 @@ import de.walware.statet.redocs.r.ui.processing.RunRConsoleSnippetOperation;
 public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTabGroup {
 	
 	
-	private static final DocProcessingConfigPresets PRESETS;
+	private static final LaunchConfigPresets PRESETS;
 	static {
-		final DocProcessingConfigPresets presets= new DocProcessingConfigPresets(
+		final LaunchConfigPresets presets= new LaunchConfigPresets(
 				WikitextRweaveConfig.TYPE_ID );
 		
-		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using knitr + pandoc", 1, 2);
+		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using knitr + pandoc");
 			config.setAttribute(WikitextRweaveConfig.WEAVE_ENABLED_ATTR_NAME, true);
 			config.setAttribute(WikitextRweaveConfig.WEAVE_OUTPUT_FORMAT_ATTR_NAME,
 					WikitextRweaveConfig.AUTO_WIKITEXT_FORMAT_KEY );
@@ -62,7 +65,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 									"format= \"${out_file_ext}\", " +
 									"encoding= \"${resource_enc:${source_file_path}}\")" ));
 		}
-		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using RMarkdown, two-step", 1, 2);
+		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using RMarkdown, two-step");
 			config.setAttribute(WikitextRweaveConfig.WEAVE_ENABLED_ATTR_NAME, true);
 			config.setAttribute(WikitextRweaveConfig.WEAVE_OUTPUT_FORMAT_ATTR_NAME,
 					WikitextRweaveConfig.AUTO_WIKITEXT_FORMAT_KEY );
@@ -88,7 +91,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 									"output_file= \"${resource_loc:${out_file_path}}\", " +
 									"encoding= \"${resource_enc:${source_file_path}}\")" ));
 		}
-		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using RMarkdown, single-step", 1, 2);
+		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using RMarkdown, single-step");
 			config.setAttribute(WikitextRweaveConfig.WEAVE_ENABLED_ATTR_NAME, false);
 			config.setAttribute(WikitextRweaveConfig.WEAVE_OUTPUT_FORMAT_ATTR_NAME,
 					WikitextRweaveConfig.AUTO_WIKITEXT_FORMAT_KEY );
@@ -114,7 +117,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 									"output_file= \"${resource_loc:${out_file_path}}\", " +
 									"encoding= \"${resource_enc}\")" ));
 		}
-		{	final ILaunchConfigurationWorkingCopy config= presets.add("Auto (YAML) using RMarkdown, two-step", 1, 2);
+		{	final ILaunchConfigurationWorkingCopy config= presets.add("Auto (YAML) using RMarkdown, two-step");
 			config.setAttribute(WikitextRweaveConfig.WEAVE_ENABLED_ATTR_NAME, true);
 			config.setAttribute(WikitextRweaveConfig.WEAVE_OUTPUT_FORMAT_ATTR_NAME,
 					WikitextRweaveConfig.AUTO_WIKITEXT_FORMAT_KEY );
@@ -139,7 +142,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 									"output_dir= \"${container_loc:${out_file_path}}\", " +
 									"encoding= \"${resource_enc:${source_file_path}}\")" ));
 		}
-		{	final ILaunchConfigurationWorkingCopy config= presets.add("Auto (YAML) using RMarkdown, single-step", 1, 2);
+		{	final ILaunchConfigurationWorkingCopy config= presets.add("Auto (YAML) using RMarkdown, single-step");
 			config.setAttribute(WikitextRweaveConfig.WEAVE_ENABLED_ATTR_NAME, false);
 			config.setAttribute(WikitextRweaveConfig.WEAVE_OUTPUT_FORMAT_ATTR_NAME,
 					WikitextRweaveConfig.AUTO_WIKITEXT_FORMAT_KEY );
@@ -174,7 +177,12 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 	
 	@Override
 	public void createTabs(final ILaunchConfigurationDialog dialog, final String mode) {
-		final DocProcessingConfigMainTab mainTab= new DocProcessingConfigMainTab(PRESETS);
+		final DocProcessingConfigMainTab mainTab= new DocProcessingConfigMainTab(PRESETS) {
+			@Override
+			protected List<ILaunchConfigurationTab> getPresetTabs(final ILaunchConfiguration config) {
+				return ImCollections.<ILaunchConfigurationTab>newList(getStepTab(1), getStepTab(2) );
+			}
+		};
 		final WeaveTab weaveTab= new WeaveTab(mainTab);
 		final ProduceTab produceTab= new ProduceTab(mainTab, weaveTab);
 		final PreviewTab previewTab= new PreviewTab(mainTab, produceTab);
