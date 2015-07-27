@@ -277,6 +277,7 @@ public class YamlFormatDetector {
 		case "opendocument":
 		case "odt":
 			return "odt";
+		case "word":
 		case "docx":
 			return "docx";
 		case "rtf":
