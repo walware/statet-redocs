@@ -58,6 +58,7 @@
 			
 			<modules>
 				<module>../de.walware.statet.redocs.wikitext.r</module>
+				<module>../de.walware.statet.redocs.wikitext.r.commonmark</module>
 				<module>../de.walware.statet.redocs.wikitext.r.markdown</module>
 				<module>../de.walware.statet.redocs.wikitext.r.textile</module>
 				<module>../de.walware.statet.redocs.wikitext.r.debug</module>

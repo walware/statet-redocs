@@ -33,7 +33,6 @@
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-
    <plugin
          id="de.walware.docmlet.wikitext.ui"
          download-size="0"
@@ -48,6 +47,26 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.walware.docmlet.wikitext.commonmark.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   <plugin
+         id="de.walware.docmlet.wikitext.commonmark.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   
+   <plugin
+         id="de.walware.statet.redocs.wikitext.r.commonmark"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+   
    <plugin
          id="de.walware.statet.redocs.wikitext.r.markdown"
          download-size="0"
