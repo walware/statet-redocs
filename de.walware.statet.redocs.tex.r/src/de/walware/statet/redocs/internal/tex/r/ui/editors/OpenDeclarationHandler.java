@@ -15,7 +15,7 @@ import org.eclipse.core.commands.IHandler2;
 
 import de.walware.ecommons.ltk.ui.sourceediting.actions.MultiContentSectionHandler;
 
-import de.walware.docmlet.tex.ui.sourceediting.LtxOpenDeclarationHandler;
+import de.walware.docmlet.tex.ui.actions.LtxOpenDeclarationHandler;
 
 import de.walware.statet.r.ui.sourceediting.ROpenDeclarationHandler;
 

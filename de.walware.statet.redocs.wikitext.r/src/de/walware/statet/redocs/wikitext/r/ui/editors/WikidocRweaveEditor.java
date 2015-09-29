@@ -55,9 +55,11 @@ import de.walware.docmlet.base.ui.DocBaseUI;
 import de.walware.docmlet.base.ui.markuphelp.IMarkupHelpContextProvider;
 import de.walware.docmlet.base.ui.processing.actions.RunDocProcessingOnSaveExtension;
 import de.walware.docmlet.base.ui.sourceediting.IDocEditor;
+import de.walware.docmlet.wikitext.core.ast.WikitextAstNode;
 import de.walware.docmlet.wikitext.core.model.WikitextModel;
 import de.walware.docmlet.wikitext.ui.WikitextUI;
 import de.walware.docmlet.wikitext.ui.editors.WikidocDefaultFoldingProvider;
+import de.walware.docmlet.wikitext.ui.editors.WikitextMarkOccurrencesLocator;
 import de.walware.docmlet.wikitext.ui.sourceediting.WikitextEditingSettings;
 
 import de.walware.statet.base.ui.IStatetUIMenuIds;
@@ -106,7 +108,7 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 	private static class ThisMarkOccurrencesProvider extends AbstractMarkOccurrencesProvider {
 		
 		
-//		private final WikitextMarkOccurrencesLocator docLocator= new WikitextMarkOccurrencesLocator();
+		private final WikitextMarkOccurrencesLocator docLocator= new WikitextMarkOccurrencesLocator();
 		private final RMarkOccurrencesLocator rLocator= new RMarkOccurrencesLocator();
 		
 		
@@ -118,11 +120,10 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 		protected void doUpdate(final RunData run, final ISourceUnitModelInfo info,
 				final AstSelection astSelection, final ITextSelection orgSelection)
 				throws BadLocationException, BadPartitioningException, UnsupportedOperationException {
-//			if (astSelection.getCovering() instanceof WikitextAstNode) {
-//				this.docLocator.run(run, info, astSelection, orgSelection);
-//			}
-//			else 
-			if (astSelection.getCovering() instanceof RAstNode) {
+			if (astSelection.getCovering() instanceof WikitextAstNode) {
+				this.docLocator.run(run, info, astSelection, orgSelection);
+			}
+			else if (astSelection.getCovering() instanceof RAstNode) {
 				this.rLocator.run(run, info, astSelection, orgSelection);
 			}
 		}

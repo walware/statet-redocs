@@ -15,6 +15,8 @@ import org.eclipse.core.commands.IHandler2;
 
 import de.walware.ecommons.ltk.ui.sourceediting.actions.MultiContentSectionHandler;
 
+import de.walware.docmlet.wikitext.ui.actions.WikidocOpenDeclarationHandler;
+
 import de.walware.statet.r.ui.sourceediting.ROpenDeclarationHandler;
 
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveDocumentContentInfo;
@@ -31,8 +33,8 @@ public class OpenDeclarationHandler extends MultiContentSectionHandler {
 	@Override
 	protected IHandler2 createHandler(final String sectionType) {
 		switch (sectionType) {
-//		case WikidocRweaveDocumentContentInfo.WIKITEXT:
-//			return new LtxOpenDeclarationHandler();
+		case WikidocRweaveDocumentContentInfo.WIKITEXT:
+			return new WikidocOpenDeclarationHandler();
 		case WikidocRweaveDocumentContentInfo.R:
 			return new ROpenDeclarationHandler();
 		default:
