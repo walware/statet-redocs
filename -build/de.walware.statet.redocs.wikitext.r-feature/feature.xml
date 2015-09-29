@@ -68,13 +68,6 @@
          unpack="false"/>
    
    <plugin
-         id="de.walware.statet.redocs.wikitext.r.markdown"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-   
-   <plugin
          id="de.walware.statet.redocs.wikitext.r.textile"
          download-size="0"
          install-size="0"
