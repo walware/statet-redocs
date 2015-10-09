@@ -13,10 +13,10 @@ package de.walware.statet.redocs.internal.wikitext.r.textile.ui;
 
 import org.eclipse.core.runtime.IAdapterFactory;
 
-import de.walware.docmlet.wikitext.ui.sourceediting.IMarkupConfigUIAdapter;
+import de.walware.docmlet.wikitext.ui.config.IMarkupConfigUIAdapter;
 
 
-public class UIAdapterFactory implements IAdapterFactory {
+public class ConfigUIAdapterFactory implements IAdapterFactory {
 	
 	
 	private static final Class<?>[] ADAPTERS= new Class[] {
@@ -27,7 +27,7 @@ public class UIAdapterFactory implements IAdapterFactory {
 	private IMarkupConfigUIAdapter markupConfigUI;
 	
 	
-	public UIAdapterFactory() {
+	public ConfigUIAdapterFactory() {
 	}
 	
 	@Override

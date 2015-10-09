@@ -27,7 +27,7 @@ import org.eclipse.osgi.util.NLS;
 import de.walware.ecommons.ltk.LTK;
 import de.walware.ecommons.ltk.core.SourceContent;
 import de.walware.ecommons.ltk.core.model.ISourceUnit;
-import de.walware.ecommons.text.ILineInformation;
+import de.walware.ecommons.text.core.ILineInformation;
 
 import de.walware.docmlet.base.ui.DocBaseUI;
 import de.walware.docmlet.base.ui.processing.DocProcessingConfig;

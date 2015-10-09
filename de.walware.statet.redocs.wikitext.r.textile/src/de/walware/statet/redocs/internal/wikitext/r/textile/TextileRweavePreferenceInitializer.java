@@ -31,7 +31,7 @@ public class TextileRweavePreferenceInitializer extends AbstractPreferenceInitia
 	public void initializeDefaultPreferences() {
 		final IScopeContext scope= DefaultScope.INSTANCE;
 		
-		{	final IEclipsePreferences node= scope.getNode(TextileRweavePlugin.PLUGIN_ID + "/markup/" + RTextileLanguage.WEAVE_MARKUP_LANGUAGE_NAME); //$NON-NLS-1$
+		{	final IEclipsePreferences node= scope.getNode(TextileRweavePlugin.PLUGIN_ID + "/markup/" + RTextileLanguage.TEXTILE_RWEAVE_LANGUAGE_NAME); //$NON-NLS-1$
 			node.put("MarkupConfig.Workbench.config", "Textile:"); //$NON-NLS-1$ //$NON-NLS-2$
 		}
 		{	final IEclipsePreferences node= scope.getNode(TextileRweavePlugin.TEMPLATES_QUALIFIER);

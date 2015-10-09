@@ -28,8 +28,8 @@ import de.walware.ecommons.ltk.core.SourceContent;
 
 import de.walware.docmlet.wikitext.core.WikitextProblemReporter;
 import de.walware.docmlet.wikitext.core.markup.IMarkupConfig;
-import de.walware.docmlet.wikitext.core.markup.IMarkupLanguageExtension2;
 import de.walware.docmlet.wikitext.core.markup.MarkupParser2;
+import de.walware.docmlet.wikitext.core.source.IMarkupSourceFormatAdapter;
 import de.walware.docmlet.wikitext.core.source.MarkupEventPrinter;
 import de.walware.docmlet.wikitext.core.source.RegexBlockWeaveParticipant;
 import de.walware.docmlet.wikitext.core.source.RegexInlineWeaveParticipant;
@@ -46,13 +46,13 @@ import de.walware.statet.redocs.wikitext.r.core.source.IRweaveMarkupLanguage;
 import de.walware.statet.redocs.wikitext.r.textile.core.IRTextileConfig;
 
 
-public class RTextileLanguage extends TextileLanguage implements IMarkupLanguageExtension2,
-		IExtdocMarkupLanguage, IRweaveMarkupLanguage {
+public class RTextileLanguage extends TextileLanguage
+		implements IExtdocMarkupLanguage, IRweaveMarkupLanguage {
 	
 	
-	public static final String BASE_MARKUP_LANGUAGE_NAME= "Textile"; //$NON-NLS-1$
+	public static final String TEXTILE_LANGUAGE_NAME= "Textile"; //$NON-NLS-1$
+	public static final String TEXTILE_RWEAVE_LANGUAGE_NAME= "Textile+R"; //$NON-NLS-1$
 	
-	public static final String WEAVE_MARKUP_LANGUAGE_NAME= "Textile+R"; //$NON-NLS-1$
 	
 	private static final boolean DEBUG_LOG_BASE_EVENTS= "true".equalsIgnoreCase( //$NON-NLS-1$
 			Platform.getDebugOption("de.walware.statet.redocs.wikitext.r.textile/debug/Parser/logBaseEvents")); //$NON-NLS-1$
@@ -84,9 +84,9 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 	public RTextileLanguage(final String scope, final int mode, final IRTextileConfig config) {
 		super();
 		
-		assert (BASE_MARKUP_LANGUAGE_NAME.equals(getName()));
-		setName(WEAVE_MARKUP_LANGUAGE_NAME);
-		setExtendsLanguage(BASE_MARKUP_LANGUAGE_NAME);
+		assert (TEXTILE_LANGUAGE_NAME.equals(getName()));
+		setName(TEXTILE_RWEAVE_LANGUAGE_NAME);
+		setExtendsLanguage(TEXTILE_LANGUAGE_NAME);
 		
 		this.scope= scope;
 		this.mode= mode;
@@ -123,7 +123,7 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 	}
 	
 	@Override
-	public boolean isModeEnabled(int modeMask) {
+	public boolean isModeEnabled(final int modeMask) {
 		return ((this.mode & modeMask) != 0);
 	}
 	
@@ -285,6 +285,11 @@ public class RTextileLanguage extends TextileLanguage implements IMarkupLanguage
 			this.validator= new TextileValidator();
 		}
 		return this.validator;
+	}
+	
+	@Override
+	public IMarkupSourceFormatAdapter getSourceFormatAdapter() {
+		return null;
 	}
 	
 	

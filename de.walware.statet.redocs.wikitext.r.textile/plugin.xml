@@ -95,9 +95,9 @@
          point="org.eclipse.core.runtime.adapters">
       <factory
             adaptableType="de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileConfig"
-            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.UIAdapterFactory">
+            class="de.walware.statet.redocs.internal.wikitext.r.textile.ui.ConfigUIAdapterFactory">
          <adapter
-               type="de.walware.docmlet.wikitext.ui.sourceediting.IMarkupConfigUIAdapter">
+               type="de.walware.docmlet.wikitext.ui.config.IMarkupConfigUIAdapter">
          </adapter>
       </factory>
    </extension>

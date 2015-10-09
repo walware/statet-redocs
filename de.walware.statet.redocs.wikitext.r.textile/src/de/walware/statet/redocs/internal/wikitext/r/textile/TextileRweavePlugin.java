@@ -11,8 +11,8 @@
 
 package de.walware.statet.redocs.internal.wikitext.r.textile;
 
-import static de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage.BASE_MARKUP_LANGUAGE_NAME;
-import static de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage.WEAVE_MARKUP_LANGUAGE_NAME;
+import static de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage.TEXTILE_LANGUAGE_NAME;
+import static de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage.TEXTILE_RWEAVE_LANGUAGE_NAME;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
@@ -49,7 +49,7 @@ public class TextileRweavePlugin extends AbstractUIPlugin {
 	}
 	
 	
-	public static final String TEMPLATES_WEAVE_DOCDEFAULT_CONTEXTTYPE= WEAVE_MARKUP_LANGUAGE_NAME +
+	public static final String TEMPLATES_WEAVE_DOCDEFAULT_CONTEXTTYPE= TEXTILE_RWEAVE_LANGUAGE_NAME +
 			WikitextRweaveTemplatesContextType.WEAVE_DOCDEFAULT_CONTEXTTYPE_SUFFIX;
 	
 	public static final String TEMPLATES_QUALIFIER= PLUGIN_ID + "/codegen"; //$NON-NLS-1$
@@ -86,13 +86,13 @@ public class TextileRweavePlugin extends AbstractUIPlugin {
 		super.start(context);
 		instance= this;
 		
-		final MarkupLanguage baseLanguage= WikiText.getMarkupLanguage(BASE_MARKUP_LANGUAGE_NAME);
+		final MarkupLanguage baseLanguage= WikiText.getMarkupLanguage(TEXTILE_LANGUAGE_NAME);
 		if (baseLanguage == null) {
 			throw new CoreException(new Status(IStatus.ERROR, PLUGIN_ID,
-					NLS.bind("Failed to load markup language ''{0}''.", BASE_MARKUP_LANGUAGE_NAME) ));
+					NLS.bind("Failed to load markup language ''{0}''.", TEXTILE_LANGUAGE_NAME) ));
 		}
 		this.markupLanguage= (RTextileLanguage) WikitextCore.getMarkupLanguageManager()
-				.getLanguage(WEAVE_MARKUP_LANGUAGE_NAME);
+				.getLanguage(TEXTILE_RWEAVE_LANGUAGE_NAME);
 		
 		this.started= true;
 	}

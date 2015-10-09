@@ -32,7 +32,7 @@ import de.walware.ecommons.ltk.core.impl.SourceUnitModelContainer;
 import de.walware.ecommons.ltk.core.model.IEmbeddingReconcileItem;
 import de.walware.ecommons.ltk.core.model.ISourceUnitModelInfo;
 import de.walware.ecommons.string.InternStringCache;
-import de.walware.ecommons.text.ILineInformation;
+import de.walware.ecommons.text.core.ILineInformation;
 import de.walware.ecommons.text.core.input.StringParserInput;
 
 import de.walware.statet.r.core.model.IRCompositeSourceElement;
@@ -112,7 +112,7 @@ public class RChunkReconciler<U extends IRSourceUnit, M extends ISourceUnitModel
 				
 				final RChunkNode rChunk= new RChunkNode(embeddingNode);
 				rChunk.startOffset= embeddingNode.getOffset();
-				rChunk.stopOffset= embeddingNode.getStopOffset();
+				rChunk.stopOffset= embeddingNode.getEndOffset();
 				embeddingNode.setForeignNode(rChunk);
 				
 				final IRegion startRegion;
@@ -247,7 +247,7 @@ public class RChunkReconciler<U extends IRSourceUnit, M extends ISourceUnitModel
 						}
 						else {
 							label= new String(content.getText().substring(
-								labelNode.getOffset(), labelNode.getStopOffset() ));
+								labelNode.getOffset(), labelNode.getEndOffset() ));
 						}
 						name= RElementName.create(RElementName.MAIN_OTHER, label);
 						nameRegion= labelNode;

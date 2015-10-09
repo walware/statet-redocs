@@ -59,12 +59,6 @@ public class RChunkNode implements IAstNode {
 	}
 	
 	@Override
-	public IAstNode getRoot() {
-		return this.parent.getRoot();
-	}
-	
-	
-	@Override
 	public boolean hasChildren() {
 		return true;
 	}
@@ -146,7 +140,7 @@ public class RChunkNode implements IAstNode {
 	}
 	
 	@Override
-	public int getStopOffset() {
+	public int getEndOffset() {
 		return this.stopOffset;
 	}
 	

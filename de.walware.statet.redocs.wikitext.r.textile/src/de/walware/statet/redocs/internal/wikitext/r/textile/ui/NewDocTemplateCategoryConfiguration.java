@@ -11,7 +11,7 @@
 
 package de.walware.statet.redocs.internal.wikitext.r.textile.ui;
 
-import static de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage.WEAVE_MARKUP_LANGUAGE_NAME;
+import static de.walware.statet.redocs.internal.wikitext.r.textile.core.RTextileLanguage.TEXTILE_RWEAVE_LANGUAGE_NAME;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.text.templates.ContextTypeRegistry;
@@ -45,7 +45,7 @@ public class NewDocTemplateCategoryConfiguration
 	public static final Preference<String> NEWDOC_DEFAULT_NAME_PREF= new StringPref(
 			TextileRweavePlugin.TEMPLATES_QUALIFIER, NEWDOC_DEFAULT_NAME_KEY );
 	
-	public static final String TEMPLATES_NEWDOC_CONTEXTTYPE= WEAVE_MARKUP_LANGUAGE_NAME +
+	public static final String TEMPLATES_NEWDOC_CONTEXTTYPE= TEXTILE_RWEAVE_LANGUAGE_NAME +
 			WikitextRweaveTemplatesContextType.NEWDOC_CONTEXTTYPE_SUFFIX;
 	
 	

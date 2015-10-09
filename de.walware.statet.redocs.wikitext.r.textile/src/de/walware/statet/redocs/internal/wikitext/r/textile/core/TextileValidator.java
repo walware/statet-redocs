@@ -22,7 +22,7 @@ import de.walware.ecommons.ltk.IProblem;
 import de.walware.ecommons.ltk.IProblemRequestor;
 import de.walware.ecommons.ltk.core.SourceContent;
 import de.walware.ecommons.ltk.core.impl.Problem;
-import de.walware.ecommons.text.ILineInformation;
+import de.walware.ecommons.text.core.ILineInformation;
 
 import de.walware.docmlet.wikitext.core.WikitextProblemReporter;
 import de.walware.docmlet.wikitext.core.model.IWikidocModelInfo;
