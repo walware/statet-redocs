@@ -262,7 +262,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             commandId="de.walware.statet.redocs.commands.ProcessWeaveDefault">
-         <class class="de.walware.docmlet.base.ui.processing.RunActiveConfigWorkbenchHandler">
+         <class class="de.walware.docmlet.base.ui.processing.actions.RunActiveConfigWorkbenchHandler">
             <parameter
                   name="launchFlags"
                   value="weave"/>
@@ -274,7 +274,7 @@
       </handler>
       <handler
             commandId="de.walware.docmlet.tex.commands.ProcessTexDefault">
-         <class class="de.walware.docmlet.base.ui.processing.RunActiveConfigWorkbenchHandler">
+         <class class="de.walware.docmlet.base.ui.processing.actions.RunActiveConfigWorkbenchHandler">
             <parameter
                   name="launchFlags"
                   value="produce_output"/>
