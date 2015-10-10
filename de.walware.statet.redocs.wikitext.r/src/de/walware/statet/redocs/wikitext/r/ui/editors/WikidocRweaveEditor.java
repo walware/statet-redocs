@@ -263,7 +263,7 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 		pageIds.add(WikitextRweaveUI.EDITOR_PREF_PAGE_ID);
 		pageIds.add(WikitextUI.EDITOR_PREF_PAGE_ID);
 		pageIds.add("org.eclipse.mylyn.internal.wikitext.ui.editor.preferences.WikiTextTemplatePreferencePage"); //$NON-NLS-1$
-//		pageIds.add("de.walware.docmlet.wikitext.preferencePages.WikitextCodeStyle"); //$NON-NLS-1$
+		pageIds.add("de.walware.docmlet.wikitext.preferencePages.WikitextCodeStyle"); //$NON-NLS-1$
 		pageIds.add("de.walware.statet.r.preferencePages.REditorOptions"); //$NON-NLS-1$
 		pageIds.add("de.walware.statet.r.preferencePages.RTextStyles"); //$NON-NLS-1$
 		pageIds.add("de.walware.statet.r.preferencePages.REditorTemplates"); //$NON-NLS-1$

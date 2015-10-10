@@ -86,6 +86,33 @@
          </activeWhen>
       </handler>
       <handler
+            commandId="de.walware.ecommons.ltk.commands.CorrectLineWrap"
+            class="de.walware.docmlet.wikitext.ui.actions.WikidocCorrectLineWrapHandler">
+         <activeWhen>
+            <and>
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isEditorActive.WikidocRweaveEditor"/>
+               <or>
+                  <reference
+                        definitionId="de.walware.statet.redocs.expressions.isPartActive.WikidocRweaveEditor"/>
+                  <with
+                        variable="selection">
+                     <instanceof
+                           value="org.eclipse.jface.viewers.IStructuredSelection">
+                     </instanceof>
+                     <iterate
+                           ifEmpty="false"
+                           operator="and">
+                        <instanceof
+                              value="de.walware.docmlet.wikitext.core.model.IWikitextSourceElement">
+                        </instanceof>
+                     </iterate>
+                  </with>
+               </or>
+            </and>
+         </activeWhen>
+      </handler>
+      <handler
             commandId="org.eclipse.jdt.ui.edit.text.java.toggleMarkOccurrences"
             class="de.walware.docmlet.wikitext.ui.actions.WikitextToggleMarkOccurrencesHandler">
          <activeWhen>
@@ -288,6 +315,20 @@
    
    <extension
          point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:de.walware.statet.base.menus.MainStatSource?endof=format">
+         <command
+               commandId="de.walware.ecommons.ltk.commands.CorrectLineWrap"
+               style="push">
+            <visibleWhen
+                  checkEnabled="false">
+               <reference
+                     definitionId="de.walware.statet.redocs.expressions.isEditorActive.WikidocRweaveEditor">
+               </reference>
+            </visibleWhen>
+         </command>
+      </menuContribution>
+       
       <menuContribution
             locationURI="menu:de.walware.docmlet.base.menus.MainDoc?after=processing">
          <dynamic
