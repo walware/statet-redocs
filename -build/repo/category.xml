@@ -5,12 +5,6 @@
 	<category-def name="de.walware.utils" label="WalWare - Utilities"/>
 	
 	
-	<bundle id="de.walware.docmlet.base.ui" version="0.0.0">
-		<category name="de.walware.libraries"/>
-	</bundle>
-	<bundle id="de.walware.statet.redocs.r" version="0.0.0">
-		<category name="de.walware.libraries"/>
-	</bundle>
 	<feature id="de.walware.statet.r.sweave" version="0.0.0">
 		<category name="de.walware.statet"/>
 	</feature>

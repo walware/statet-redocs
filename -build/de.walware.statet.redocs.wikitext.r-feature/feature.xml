@@ -21,12 +21,16 @@
 
    <requires>
       <import feature="de.walware.statet.r" version="3.5.1" match="equivalent"/>
-      <import plugin="de.walware.docmlet.base.ui" version="2.1.0" match="equivalent"/>"
-      <import plugin="de.walware.statet.redocs.r" version="3.5.1" match="equivalent"/>"
       <import feature="de.walware.eutils.yaml" version="1.1" match="equivalent"/>
       <import feature="org.eclipse.mylyn.wikitext_feature" version="2.4.0" match="greaterOrEqual"/>
    </requires>
 
+   <plugin
+         id="de.walware.docmlet.base.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
    <plugin
          id="de.walware.docmlet.wikitext.core"
          download-size="0"
@@ -40,6 +44,12 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.walware.statet.redocs.r"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
    <plugin
          id="de.walware.statet.redocs.wikitext.r"
          download-size="0"

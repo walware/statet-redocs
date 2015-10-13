@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="de.walware.statet.r.sweave"
-      label="StatET for R - Sweave Add-on (R-LaTeX, Reproducible Documents)"
+      label="StatET for R - Sweave Add-on (LaTeX+R, Reproducible Documents)"
       version="3.5.1.qualifier"
       provider-name="WalWare.de"
       license-feature="de.walware.opensource.license"
@@ -20,11 +20,15 @@
    </license>
 
    <requires>
-      <import feature="de.walware.statet.r" version="3.5.1" match="equivalent" />
-      <import plugin="de.walware.docmlet.base.ui" version="2.1.0" match="equivalent" />"
-      <import plugin="de.walware.statet.redocs.r" version="3.5.1" match="equivalent" />"
+      <import feature="de.walware.statet.r" version="3.5.1" match="equivalent"/>
    </requires>
 
+   <plugin
+         id="de.walware.docmlet.base.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
    <plugin
          id="de.walware.docmlet.tex.core"
          download-size="0"
@@ -46,6 +50,12 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="de.walware.statet.redocs.r"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
    <plugin
          id="de.walware.statet.redocs.tex.r"
          download-size="0"
