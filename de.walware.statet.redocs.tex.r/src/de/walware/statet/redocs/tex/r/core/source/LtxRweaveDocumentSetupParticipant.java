@@ -23,10 +23,6 @@ import de.walware.ecommons.text.core.treepartitioner.TreePartitioner;
 public class LtxRweaveDocumentSetupParticipant extends PartitionerDocumentSetupParticipant {
 	
 	
-	private static final String[] CONTENT_TYPES= ITexRweaveDocumentConstants.LTX_R_CONTENT_TYPES.toArray(
-			new String[ITexRweaveDocumentConstants.LTX_R_CONTENT_TYPES.size()]);
-	
-	
 	private final boolean templateMode;
 	
 	
@@ -46,9 +42,9 @@ public class LtxRweaveDocumentSetupParticipant extends PartitionerDocumentSetupP
 	
 	@Override
 	protected IDocumentPartitioner createDocumentPartitioner() {
-		return new TreePartitioner(
+		return new TreePartitioner(getPartitioningId(),
 				new LtxRweavePartitionNodeScanner(this.templateMode),
-				CONTENT_TYPES );
+				ITexRweaveDocumentConstants.LTX_R_CONTENT_TYPES );
 	}
 	
 }

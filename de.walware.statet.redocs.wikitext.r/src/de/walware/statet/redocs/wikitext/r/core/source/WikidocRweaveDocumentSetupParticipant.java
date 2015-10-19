@@ -24,10 +24,6 @@ import de.walware.docmlet.wikitext.core.source.extdoc.IExtdocMarkupLanguage;
 public class WikidocRweaveDocumentSetupParticipant extends MarkupLanguageDocumentSetupParticipant1 {
 	
 	
-	private static final String[] CONTENT_TYPES= IWikitextRweaveDocumentConstants.WIKIDOC_R_CONTENT_TYPES.toArray(
-			new String[IWikitextRweaveDocumentConstants.WIKIDOC_R_CONTENT_TYPES.size()]);
-	
-	
 	public WikidocRweaveDocumentSetupParticipant(final IExtdocMarkupLanguage markupLanguage) {
 		this(markupLanguage, false);
 	}
@@ -45,9 +41,9 @@ public class WikidocRweaveDocumentSetupParticipant extends MarkupLanguageDocumen
 	
 	@Override
 	protected IMarkupLanguagePartitioner createDocumentPartitioner(final IMarkupLanguage markupLanguage) {
-		return new WikitextPartitioner(
+		return new WikitextPartitioner(getPartitioningId(),
 				new WikidocRweavePartitionNodeScanner(markupLanguage, getMarkupLanguageMode()),
-				CONTENT_TYPES );
+				IWikitextRweaveDocumentConstants.WIKIDOC_R_CONTENT_TYPES );
 	}
 	
 }
