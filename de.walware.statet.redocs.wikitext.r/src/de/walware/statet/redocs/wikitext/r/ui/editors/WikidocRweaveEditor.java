@@ -45,6 +45,7 @@ import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditorAddon;
 import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditorCommandIds;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditor1;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditor1OutlinePage;
+import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewer;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewerConfigurator;
 import de.walware.ecommons.ltk.ui.sourceediting.actions.MultiContentSectionHandler;
 import de.walware.ecommons.ltk.ui.sourceediting.actions.SpecificContentAssistHandler;
@@ -193,6 +194,11 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 				this.documentSetup, null, null,
 				new WikidocRweaveSourceViewerConfiguration(this, null, null, 0) );
 		return this.combinedConfig;
+	}
+	
+	@Override
+	protected int getSourceViewerFlags() {
+		return SourceEditorViewer.VARIABLE_LINE_HEIGHT;
 	}
 	
 	@Override
