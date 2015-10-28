@@ -22,7 +22,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+
 import de.walware.ecommons.ui.util.LayoutUtil;
 
 import de.walware.docmlet.base.ui.processing.DocProcessingConfigIOStepTab;

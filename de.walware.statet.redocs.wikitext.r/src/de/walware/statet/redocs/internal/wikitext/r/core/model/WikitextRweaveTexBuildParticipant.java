@@ -17,8 +17,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import de.walware.ecommons.collections.ConstArrayList;
-import de.walware.ecommons.collections.ConstList;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
 
 import de.walware.docmlet.wikitext.core.WikitextBuildParticipant;
 import de.walware.docmlet.wikitext.core.model.IWikidocWorkspaceSourceUnit;
@@ -36,7 +36,7 @@ import de.walware.statet.redocs.wikitext.r.core.model.WikitextRweaveModel;
 public class WikitextRweaveTexBuildParticipant extends WikitextBuildParticipant {
 	
 	
-	private static final ConstList<String> WIKITEXT_R_MODEL_TYPES= new ConstArrayList<>(
+	private static final ImList<String> WIKITEXT_R_MODEL_TYPES= ImCollections.newList(
 			WikitextRweaveModel.WIKIDOC_R_MODEL_TYPE_ID );
 	
 	

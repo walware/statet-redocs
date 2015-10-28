@@ -11,7 +11,7 @@
 
 package de.walware.statet.redocs.internal.tex.r.core;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
 
 import de.walware.docmlet.tex.core.commands.Argument;
 import de.walware.docmlet.tex.core.commands.TexCommand;

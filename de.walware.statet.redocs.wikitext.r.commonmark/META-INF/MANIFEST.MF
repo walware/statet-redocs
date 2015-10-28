@@ -16,5 +16,5 @@ Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.statet.r.ui,
  org.eclipse.compare;resolution:=optional
 Import-Package: com.ibm.icu.text;version="4.4.2.2",
- de.walware.ecommons.collections;version="1.2.0",
- de.walware.ecommons.preferences
+ de.walware.ecommons.preferences,
+ de.walware.jcommons.collections;version="1.0"

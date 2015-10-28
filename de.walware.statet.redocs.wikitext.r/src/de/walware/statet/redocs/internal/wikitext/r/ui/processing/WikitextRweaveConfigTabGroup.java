@@ -12,7 +12,6 @@
 package de.walware.statet.redocs.internal.wikitext.r.ui.processing;
 
 import java.util.Collections;
-import java.util.List;
 
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -20,7 +19,9 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
+
 import de.walware.ecommons.debug.ui.CheckedCommonTab;
 import de.walware.ecommons.debug.ui.config.LaunchConfigPresets;
 
@@ -179,7 +180,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 	public void createTabs(final ILaunchConfigurationDialog dialog, final String mode) {
 		final DocProcessingConfigMainTab mainTab= new DocProcessingConfigMainTab(PRESETS) {
 			@Override
-			protected List<ILaunchConfigurationTab> getPresetTabs(final ILaunchConfiguration config) {
+			protected ImList<ILaunchConfigurationTab> getPresetTabs(final ILaunchConfiguration config) {
 				return ImCollections.<ILaunchConfigurationTab>newList(getStepTab(1), getStepTab(2) );
 			}
 		};

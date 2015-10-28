@@ -21,8 +21,10 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IRegion;
 import org.eclipse.jface.text.Region;
 
-import de.walware.ecommons.collections.ImCollections;
-import de.walware.ecommons.collections.ImList;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
+import de.walware.jcommons.string.InternStringCache;
+
 import de.walware.ecommons.ltk.AstInfo;
 import de.walware.ecommons.ltk.IProblemRequestor;
 import de.walware.ecommons.ltk.ast.IAstNode;
@@ -31,7 +33,6 @@ import de.walware.ecommons.ltk.core.SourceContent;
 import de.walware.ecommons.ltk.core.impl.SourceUnitModelContainer;
 import de.walware.ecommons.ltk.core.model.IEmbeddingReconcileItem;
 import de.walware.ecommons.ltk.core.model.ISourceUnitModelInfo;
-import de.walware.ecommons.string.InternStringCache;
 import de.walware.ecommons.text.core.ILineInformation;
 import de.walware.ecommons.text.core.input.StringParserInput;
 

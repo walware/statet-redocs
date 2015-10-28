@@ -25,7 +25,8 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
 import org.eclipse.ui.texteditor.spelling.SpellingService;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+
 import de.walware.ecommons.ltk.ui.LTKUIPreferences;
 import de.walware.ecommons.ltk.ui.sourceediting.EcoReconciler2;
 import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditor;
@@ -290,13 +291,13 @@ public class WikidocRweaveSourceViewerConfiguration extends MultiContentSectionS
 	protected void initContentAssist(final ContentAssist assistant) {
 		super.initContentAssist(assistant);
 		
-		final RChunkTemplatesCompletionComputer chunkComputer= new RChunkTemplatesCompletionComputer();
+		final IContentAssistComputer chunkComputer= new RChunkTemplatesCompletionComputer();
 		
 		final ContentAssistProcessor wikitextProcessor= (ContentAssistProcessor) assistant.getContentAssistProcessor(
 				IWikitextDocumentConstants.WIKIDOC_DEFAULT_CONTENT_TYPE );
 		wikitextProcessor.addCategory(new ContentAssistCategory(
 				IWikitextDocumentConstants.WIKIDOC_DEFAULT_CONTENT_TYPE,
-				ImCollections.<IContentAssistComputer>newList(chunkComputer) ));
+				ImCollections.newList(chunkComputer) ));
 //		wikitextProcessor.setCompletionProposalAutoActivationCharacters(new char[] { '\\', '<' });
 		
 		final ContentAssistProcessor controlProcessor= new ContentAssistProcessor(assistant,
@@ -304,7 +305,7 @@ public class WikidocRweaveSourceViewerConfiguration extends MultiContentSectionS
 				RedocsWikitextRPlugin.getInstance().getWikidocRweaveEditorContentAssistRegistry(),
 				getSourceEditor() );
 		controlProcessor.addCategory(new ContentAssistCategory(IWikitextRweaveDocumentConstants.RCHUNK_BASE_CONTENT_TYPE,
-				ImCollections.<IContentAssistComputer>newList(chunkComputer) ));
+				ImCollections.newList(chunkComputer) ));
 		assistant.setContentAssistProcessor(controlProcessor, IWikitextRweaveDocumentConstants.RCHUNK_BASE_CONTENT_TYPE);
 		assistant.setContentAssistProcessor(controlProcessor, IWikitextRweaveDocumentConstants.RCHUNK_CONTROL_CONTENT_TYPE);
 	}

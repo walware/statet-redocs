@@ -11,9 +11,8 @@
 
 package de.walware.statet.redocs.wikitext.r.core.source;
 
-import java.util.List;
-
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
 
 import de.walware.docmlet.wikitext.core.source.IWikitextDocumentConstants;
 
@@ -34,7 +33,7 @@ public interface IWikitextRweaveDocumentConstants extends IRweaveDocumentConstan
 	/**
 	 * List with all partition content types of Wikitext+R documents.
 	 */
-	List<String> WIKIDOC_R_CONTENT_TYPES= ImCollections.concatList(
+	ImList<String> WIKIDOC_R_CONTENT_TYPES= ImCollections.concatList(
 			IWikitextDocumentConstants.WIKIDOC_EXT_CONTENT_TYPES,
 			RCHUNK_CONTENT_TYPES,
 			IRDocumentConstants.R_CONTENT_TYPES );

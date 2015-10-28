@@ -17,7 +17,8 @@ import org.eclipse.jface.text.BadLocationException;
 import org.eclipse.jface.text.IDocument;
 import org.eclipse.jface.text.IRegion;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+
 import de.walware.ecommons.text.core.sections.AbstractDocContentSections;
 import de.walware.ecommons.text.core.treepartitioner.ITreePartitionNode;
 

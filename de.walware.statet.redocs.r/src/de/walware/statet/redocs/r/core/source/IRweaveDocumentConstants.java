@@ -11,9 +11,9 @@
 
 package de.walware.statet.redocs.r.core.source;
 
-import java.util.List;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
 
-import de.walware.ecommons.collections.ImCollections;
 import de.walware.ecommons.text.core.IPartitionConstraint;
 
 
@@ -25,7 +25,7 @@ public interface IRweaveDocumentConstants {
 	String RCHUNK_COMMENT_CONTENT_TYPE= "RweaveChunk.Comment"; //$NON-NLS-1$
 	
 	
-	List<String> RCHUNK_CONTENT_TYPES= ImCollections.newList(
+	ImList<String> RCHUNK_CONTENT_TYPES= ImCollections.newList(
 			RCHUNK_BASE_CONTENT_TYPE,
 			RCHUNK_CONTROL_CONTENT_TYPE,
 			RCHUNK_COMMENT_CONTENT_TYPE );

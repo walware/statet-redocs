@@ -19,7 +19,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.swt.graphics.Image;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
 
 import de.walware.docmlet.base.ui.processing.DocProcessingConfig.Format;
 import de.walware.docmlet.base.ui.processing.DocProcessingConfigIOStepTab;

@@ -13,7 +13,8 @@ package de.walware.statet.redocs.internal.wikitext.r.core.model;
 
 import org.eclipse.jface.text.IRegion;
 
-import de.walware.ecommons.collections.ImList;
+import de.walware.jcommons.collections.ImList;
+
 import de.walware.ecommons.ltk.core.model.ISourceStructElement;
 
 import de.walware.statet.r.core.model.RChunkElement;

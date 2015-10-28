@@ -22,8 +22,9 @@ import org.eclipse.mylyn.wikitext.core.parser.builder.MultiplexingDocumentBuilde
 import org.eclipse.mylyn.wikitext.core.parser.markup.Block;
 import org.eclipse.mylyn.wikitext.textile.core.TextileLanguage;
 
-import de.walware.ecommons.collections.ImCollections;
-import de.walware.ecommons.collections.ImList;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
+
 import de.walware.ecommons.ltk.core.SourceContent;
 
 import de.walware.docmlet.wikitext.core.WikitextProblemReporter;

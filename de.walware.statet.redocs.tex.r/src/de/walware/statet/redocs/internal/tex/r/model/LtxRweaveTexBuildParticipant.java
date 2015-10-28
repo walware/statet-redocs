@@ -17,8 +17,8 @@ import org.eclipse.core.resources.IncrementalProjectBuilder;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-import de.walware.ecommons.collections.ConstArrayList;
-import de.walware.ecommons.collections.ConstList;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
 
 import de.walware.docmlet.tex.core.TexBuildParticipant;
 import de.walware.docmlet.tex.core.model.ITexWorkspaceSourceUnit;
@@ -36,7 +36,7 @@ import de.walware.statet.redocs.tex.r.core.model.TexRweaveModel;
 public class LtxRweaveTexBuildParticipant extends TexBuildParticipant {
 	
 	
-	private static final ConstList<String> TEX_R_MODEL_TYPES= new ConstArrayList<>(
+	private static final ImList<String> TEX_R_MODEL_TYPES= ImCollections.newList(
 			TexRweaveModel.LTX_R_MODEL_TYPE_ID );
 	
 	

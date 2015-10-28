@@ -25,7 +25,8 @@ import org.eclipse.ui.editors.text.EditorsUI;
 import org.eclipse.ui.texteditor.spelling.SpellingReconcileStrategy;
 import org.eclipse.ui.texteditor.spelling.SpellingService;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+
 import de.walware.ecommons.ltk.ui.LTKUIPreferences;
 import de.walware.ecommons.ltk.ui.sourceediting.EcoReconciler2;
 import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditor;
@@ -279,20 +280,20 @@ public class LtxRweaveSourceViewerConfiguration extends MultiContentSectionSourc
 	protected void initContentAssist(final ContentAssist assistant) {
 		super.initContentAssist(assistant);
 		
-		final RChunkTemplatesCompletionComputer chunkComputer= new RChunkTemplatesCompletionComputer();
+		final IContentAssistComputer chunkComputer= new RChunkTemplatesCompletionComputer();
 		
 		final ContentAssistProcessor texProcessor= (ContentAssistProcessor) assistant.getContentAssistProcessor(
 				ITexDocumentConstants.LTX_DEFAULT_CONTENT_TYPE );
 		texProcessor.addCategory(new ContentAssistCategory(
 				ITexDocumentConstants.LTX_DEFAULT_CONTENT_TYPE,
-				ImCollections.<IContentAssistComputer>newList(chunkComputer) ));
+				ImCollections.newList(chunkComputer) ));
 		texProcessor.setCompletionProposalAutoActivationCharacters(new char[] { '\\', '<' });
 		
 		final ContentAssistProcessor mathProcessor= (ContentAssistProcessor) assistant.getContentAssistProcessor(
 				ITexDocumentConstants.LTX_MATH_CONTENT_TYPE );
 		mathProcessor.addCategory(new ContentAssistCategory(
 				ITexDocumentConstants.LTX_MATH_CONTENT_TYPE,
-				ImCollections.<IContentAssistComputer>newList(chunkComputer) ));
+				ImCollections.newList(chunkComputer) ));
 		mathProcessor.setCompletionProposalAutoActivationCharacters(new char[] { '\\', '<' });
 		
 		final ContentAssistProcessor controlProcessor= new ContentAssistProcessor(assistant,
@@ -301,7 +302,7 @@ public class LtxRweaveSourceViewerConfiguration extends MultiContentSectionSourc
 				getSourceEditor() );
 		controlProcessor.addCategory(new ContentAssistCategory(
 				ITexRweaveDocumentConstants.RCHUNK_BASE_CONTENT_TYPE,
-				ImCollections.<IContentAssistComputer>newList(chunkComputer) ));
+				ImCollections.newList(chunkComputer) ));
 		assistant.setContentAssistProcessor(controlProcessor, ITexRweaveDocumentConstants.RCHUNK_BASE_CONTENT_TYPE);
 		assistant.setContentAssistProcessor(controlProcessor, ITexRweaveDocumentConstants.RCHUNK_CONTROL_CONTENT_TYPE);
 	}

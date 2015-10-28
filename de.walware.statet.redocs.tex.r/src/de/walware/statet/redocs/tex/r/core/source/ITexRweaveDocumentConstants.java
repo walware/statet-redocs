@@ -11,9 +11,8 @@
 
 package de.walware.statet.redocs.tex.r.core.source;
 
-import java.util.List;
-
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
 
 import de.walware.docmlet.tex.core.source.ITexDocumentConstants;
 
@@ -34,7 +33,7 @@ public interface ITexRweaveDocumentConstants extends IRweaveDocumentConstants {
 	/**
 	 * List with all partition content types of Sweave (LaTeX+R) documents.
 	 */
-	List<String> LTX_R_CONTENT_TYPES= ImCollections.concatList(
+	ImList<String> LTX_R_CONTENT_TYPES= ImCollections.concatList(
 			ITexDocumentConstants.LTX_CONTENT_TYPES,
 			RCHUNK_CONTENT_TYPES,
 			IRDocumentConstants.R_CONTENT_TYPES );

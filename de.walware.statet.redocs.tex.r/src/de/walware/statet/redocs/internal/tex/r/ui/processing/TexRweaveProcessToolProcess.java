@@ -22,7 +22,6 @@ import static de.walware.statet.redocs.internal.tex.r.ui.processing.TexRweaveLau
 import static de.walware.statet.redocs.internal.tex.r.ui.processing.TexRweaveLaunchDelegate.VARNAME_SWEAVE_FILE;
 
 import java.util.Collections;
-import java.util.List;
 import java.util.concurrent.Callable;
 
 import org.eclipse.core.filesystem.EFS;
@@ -53,7 +52,9 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.ui.statushandlers.StatusManager;
 
-import de.walware.ecommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImCollections;
+import de.walware.jcommons.collections.ImList;
+
 import de.walware.ecommons.debug.core.util.LaunchUtils;
 import de.walware.ecommons.io.FileUtil;
 import de.walware.ecommons.io.FileValidator;
@@ -98,13 +99,13 @@ class TexRweaveProcessToolProcess extends DocProcessingToolProcess {
 	private static final int TICKS_REST= 10;
 	
 	
-	public static final List<String> SWEAVE_FOLDER_VARNAMES= ImCollections.newList(
+	public static final ImList<String> SWEAVE_FOLDER_VARNAMES= ImCollections.newList(
 			VARNAME_SWEAVE_FILE );
-	public static final List<String> SWEAVE_COMMAND_VARNAMES= ImCollections.newList(
+	public static final ImList<String> SWEAVE_COMMAND_VARNAMES= ImCollections.newList(
 			VARNAME_SWEAVE_FILE, VARNAME_LATEX_FILE, VARNAME_OUTPUT_FILE );
-	public static final List<String> OUTPUT_DIR_VARNAMES= ImCollections.newList(
+	public static final ImList<String> OUTPUT_DIR_VARNAMES= ImCollections.newList(
 			VARNAME_SWEAVE_FILE, VARNAME_LATEX_FILE );
-	public static final List<String> TEX_COMMAND_VARNAMES= ImCollections.newList(
+	public static final ImList<String> TEX_COMMAND_VARNAMES= ImCollections.newList(
 			VARNAME_SWEAVE_FILE, VARNAME_LATEX_FILE, VARNAME_OUTPUT_FILE );
 	
 	
