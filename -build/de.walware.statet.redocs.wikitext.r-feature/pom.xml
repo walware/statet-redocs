@@ -12,7 +12,7 @@
 	
 	<groupId>de.walware.statet-packaging</groupId>
 	<artifactId>de.walware.statet.redocs.wikitext.r</artifactId>
-	<version>3.5.1-SNAPSHOT</version>
+	<version>3.5.2-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 	<name>Eclipse Feature: StatET ReDocs - R-Wikitext</name>
 	

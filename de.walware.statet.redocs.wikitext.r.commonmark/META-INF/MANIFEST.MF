@@ -3,16 +3,16 @@ Bundle-ManifestVersion: 2
 Bundle-Vendor: WalWare.de
 Bundle-Name: StatET ReDocs - Wikitext+R - CommonMark
 Bundle-SymbolicName: de.walware.statet.redocs.wikitext.r.commonmark;singleton:=true
-Bundle-Version: 3.5.1.qualifier
+Bundle-Version: 3.5.2.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.wikitext.r.commonmark.CommonmarkRweavePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.1,3.6.0)",
+Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.ecommons.ltk.ui,
  de.walware.docmlet.wikitext.commonmark.core;bundle-version="[2.1.0,2.2.0)",
  de.walware.docmlet.wikitext.commonmark.ui;bundle-version="[2.1.0,2.2.0)",
- de.walware.statet.redocs.wikitext.r;bundle-version="3.5.1",
+ de.walware.statet.redocs.wikitext.r;bundle-version="3.5.2",
  de.walware.statet.r.ui,
  org.eclipse.compare;resolution:=optional
 Import-Package: com.ibm.icu.text;version="4.4.2.2",

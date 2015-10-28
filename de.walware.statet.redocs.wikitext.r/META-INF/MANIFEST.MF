@@ -3,12 +3,12 @@ Bundle-ManifestVersion: 2
 Bundle-Vendor: WalWare.de
 Bundle-Name: StatET Redocs - Wikitext+R
 Bundle-SymbolicName: de.walware.statet.redocs.wikitext.r;singleton:=true
-Bundle-Version: 3.5.1.qualifier
+Bundle-Version: 3.5.2.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.wikitext.r.RedocsWikitextRPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.1,3.6.0)",
+Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  org.eclipse.jface.databinding,
  org.eclipse.ltk.core.refactoring,
  org.eclipse.ui.editors,
@@ -16,7 +16,7 @@ Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.5.1,3.6.0)",
  org.eclipse.ui.views,
  org.eclipse.ui.ide,
  org.eclipse.compare,
- de.walware.statet.redocs.r;bundle-version="[3.5.1,3.6.0)";visibility:=reexport,
+ de.walware.statet.redocs.r;bundle-version="[3.5.2,3.6.0)";visibility:=reexport,
  de.walware.docmlet.base.ui;bundle-version="[2.1.0,2.2.0)",
  de.walware.docmlet.wikitext.core;bundle-version="[2.1.0,2.2.0)",
  de.walware.docmlet.wikitext.ui;bundle-version="[2.1.0,2.2.0)",

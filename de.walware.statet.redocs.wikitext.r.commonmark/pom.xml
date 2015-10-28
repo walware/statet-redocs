@@ -13,7 +13,7 @@
 	
 	<groupId>de.walware.statet</groupId>
 	<artifactId>de.walware.statet.redocs.wikitext.r.commonmark</artifactId>
-	<version>3.5.1-SNAPSHOT</version>
+	<version>3.5.2-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 	
 </project>
