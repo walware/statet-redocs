@@ -21,10 +21,8 @@ import de.walware.docmlet.tex.core.ITexCoreAccess;
 import de.walware.docmlet.tex.core.model.ITexWorkspaceSourceUnit;
 
 import de.walware.statet.r.core.IRCoreAccess;
-import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.model.IRWorkspaceSourceUnit;
 import de.walware.statet.r.core.model.RModel;
-import de.walware.statet.r.core.renv.IREnv;
 
 import de.walware.statet.redocs.tex.r.core.model.ILtxRweaveSourceUnit;
 
@@ -52,11 +50,6 @@ public class LtxRweaveEditorWorkingCopy
 	@Override
 	public IRCoreAccess getRCoreAccess() {
 		return ((ILtxRweaveSourceUnit) getUnderlyingUnit()).getRCoreAccess();
-	}
-	
-	@Override
-	public IREnv getREnv() {
-		return RCore.getREnvManager().getDefault();
 	}
 	
 	

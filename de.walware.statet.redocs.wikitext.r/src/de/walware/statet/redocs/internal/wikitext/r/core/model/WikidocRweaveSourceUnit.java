@@ -29,7 +29,6 @@ import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.RProjects;
 import de.walware.statet.r.core.model.IRWorkspaceSourceUnit;
 import de.walware.statet.r.core.model.RModel;
-import de.walware.statet.r.core.renv.IREnv;
 
 import de.walware.statet.redocs.wikitext.r.core.model.IWikidocRweaveSourceUnit;
 import de.walware.statet.redocs.wikitext.r.core.model.WikitextRweaveModel;
@@ -60,7 +59,6 @@ public class WikidocRweaveSourceUnit extends GenericResourceSourceUnit2<WikidocR
 		return WikidocRweaveDocumentContentInfo.INSTANCE;
 	}
 	
-	
 	@Override
 	public IWikitextCoreAccess getWikitextCoreAccess() {
 		return WikitextCore.WORKBENCH_ACCESS;
@@ -70,11 +68,6 @@ public class WikidocRweaveSourceUnit extends GenericResourceSourceUnit2<WikidocR
 	public IRCoreAccess getRCoreAccess() {
 		final IRProject rProject= RProjects.getRProject(getResource().getProject());
 		return (rProject != null) ? rProject : RCore.WORKBENCH_ACCESS;
-	}
-	
-	@Override
-	public IREnv getREnv() {
-		return RCore.getREnvManager().getDefault();
 	}
 	
 	

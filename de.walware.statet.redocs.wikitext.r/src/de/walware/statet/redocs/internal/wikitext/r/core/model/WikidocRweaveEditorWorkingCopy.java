@@ -22,10 +22,8 @@ import de.walware.docmlet.wikitext.core.model.IWikidocWorkspaceSourceUnit;
 import de.walware.docmlet.wikitext.core.model.IWikitextSourceUnit;
 
 import de.walware.statet.r.core.IRCoreAccess;
-import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.model.IRWorkspaceSourceUnit;
 import de.walware.statet.r.core.model.RModel;
-import de.walware.statet.r.core.renv.IREnv;
 
 import de.walware.statet.redocs.wikitext.r.core.model.IWikidocRweaveSourceUnit;
 
@@ -53,11 +51,6 @@ public class WikidocRweaveEditorWorkingCopy
 	@Override
 	public IRCoreAccess getRCoreAccess() {
 		return ((IWikidocRweaveSourceUnit) getUnderlyingUnit()).getRCoreAccess();
-	}
-	
-	@Override
-	public IREnv getREnv() {
-		return RCore.getREnvManager().getDefault();
 	}
 	
 	

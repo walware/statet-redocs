@@ -29,7 +29,6 @@ import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.RProjects;
 import de.walware.statet.r.core.model.IRWorkspaceSourceUnit;
 import de.walware.statet.r.core.model.RModel;
-import de.walware.statet.r.core.renv.IREnv;
 
 import de.walware.statet.redocs.tex.r.core.model.ILtxRweaveSourceUnit;
 import de.walware.statet.redocs.tex.r.core.model.TexRweaveModel;
@@ -60,7 +59,6 @@ public class LtxRweaveSourceUnit extends GenericResourceSourceUnit2<LtxRweaveSuM
 		return LtxRweaveDocumentContentInfo.INSTANCE;
 	}
 	
-	
 	@Override
 	public ITexCoreAccess getTexCoreAccess() {
 		return TexCore.WORKBENCH_ACCESS;
@@ -70,11 +68,6 @@ public class LtxRweaveSourceUnit extends GenericResourceSourceUnit2<LtxRweaveSuM
 	public IRCoreAccess getRCoreAccess() {
 		final IRProject rProject= RProjects.getRProject(getResource().getProject());
 		return (rProject != null) ? rProject : RCore.WORKBENCH_ACCESS;
-	}
-	
-	@Override
-	public IREnv getREnv() {
-		return RCore.getREnvManager().getDefault();
 	}
 	
 	
