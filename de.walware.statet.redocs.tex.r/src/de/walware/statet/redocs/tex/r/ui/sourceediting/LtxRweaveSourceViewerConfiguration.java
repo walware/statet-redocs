@@ -45,13 +45,11 @@ import de.walware.ecommons.text.ui.presentation.SingleTokenScanner;
 import de.walware.ecommons.text.ui.settings.TextStyleManager;
 
 import de.walware.docmlet.tex.core.ITexCoreAccess;
-import de.walware.docmlet.tex.core.TexCore;
 import de.walware.docmlet.tex.core.source.ITexDocumentConstants;
 import de.walware.docmlet.tex.ui.sourceediting.LtxSourceViewerConfiguration;
 
 import de.walware.statet.base.ui.IStatetUIPreferenceConstants;
 import de.walware.statet.r.core.IRCoreAccess;
-import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.source.IRDocumentConstants;
 import de.walware.statet.r.core.source.RHeuristicTokenScanner;
 import de.walware.statet.r.core.source.RPartitionNodeType;
@@ -63,11 +61,9 @@ import de.walware.statet.r.ui.text.r.RDoubleClickStrategy;
 import de.walware.statet.redocs.internal.tex.r.RedocsTexRPlugin;
 import de.walware.statet.redocs.internal.tex.r.ui.sourceediting.DocRQuickOutlineInformationProvider;
 import de.walware.statet.redocs.internal.tex.r.ui.sourceediting.RChunkTemplatesCompletionComputer;
-import de.walware.statet.redocs.tex.r.core.ITexRweaveCoreAccess;
 import de.walware.statet.redocs.tex.r.core.source.ITexRweaveDocumentConstants;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveBracketPairMatcher;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveDocumentContentInfo;
-import de.walware.statet.redocs.tex.r.core.util.TexRweaveCoreAccess;
 
 
 /**
@@ -163,25 +159,22 @@ public class LtxRweaveSourceViewerConfiguration extends MultiContentSectionSourc
 	private final LtxConfiguration docConfig;
 	private final RChunkConfiguration rConfig;
 	
-	private ITexRweaveCoreAccess coreAccess;
-	
 	private ITextDoubleClickStrategy rDoubleClickStrategy;
 	
 	
 	public LtxRweaveSourceViewerConfiguration() {
-		this(null, null, null);
+		this(null, null, null, null);
 	}
 	
 	public LtxRweaveSourceViewerConfiguration(final ISourceEditor sourceEditor,
-			final ITexRweaveCoreAccess coreAccess,
+			final ITexCoreAccess texCoreAccess, final IRCoreAccess rCoreAccess,
 			final IPreferenceStore preferenceStore) {
 		super(LtxRweaveDocumentContentInfo.INSTANCE, sourceEditor);
-		this.coreAccess= (coreAccess != null) ? coreAccess : new TexRweaveCoreAccess(
-				TexCore.getWorkbenchAccess(), RCore.getWorkbenchAccess() );
+		
 		this.docConfig= new LtxConfiguration(LtxRweaveDocumentContentInfo.INSTANCE, sourceEditor,
-				this.coreAccess, preferenceStore );
+				texCoreAccess, preferenceStore );
 		this.rConfig= new RChunkConfiguration(LtxRweaveDocumentContentInfo.INSTANCE, sourceEditor,
-				this.coreAccess, preferenceStore );
+				rCoreAccess, preferenceStore );
 		
 		registerConfig(LtxRweaveDocumentContentInfo.LTX, this.docConfig);
 		registerConfig(LtxRweaveDocumentContentInfo.R, this.rConfig);
@@ -211,11 +204,9 @@ public class LtxRweaveSourceViewerConfiguration extends MultiContentSectionSourc
 		return super.getScanner(contentType);
 	}
 	
-	protected void setCoreAccess(final ITexRweaveCoreAccess coreAccess) {
-		this.coreAccess= (coreAccess != null) ? coreAccess : new TexRweaveCoreAccess(
-				TexCore.getWorkbenchAccess(), RCore.getWorkbenchAccess() );
-		this.rConfig.setCoreAccess(this.coreAccess);
-		this.docConfig.setCoreAccess(this.coreAccess);
+	protected void setCoreAccess(final ITexCoreAccess texCoreAccess, final IRCoreAccess rCoreAccess) {
+		this.docConfig.setCoreAccess(texCoreAccess);
+		this.rConfig.setCoreAccess(rCoreAccess);
 	}
 	
 	

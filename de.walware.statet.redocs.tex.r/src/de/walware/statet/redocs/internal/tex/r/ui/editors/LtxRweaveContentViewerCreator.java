@@ -18,6 +18,10 @@ import org.eclipse.swt.widgets.Composite;
 
 import de.walware.ecommons.ltk.ui.compare.CompareTextViewer;
 
+import de.walware.docmlet.tex.core.TexCore;
+
+import de.walware.statet.r.core.RCore;
+
 import de.walware.statet.redocs.tex.r.ui.sourceediting.LtxRweaveSourceViewerConfiguration;
 import de.walware.statet.redocs.tex.r.ui.sourceediting.LtxRweaveSourceViewerConfigurator;
 
@@ -32,7 +36,8 @@ public class LtxRweaveContentViewerCreator implements IViewerCreator {
 	@Override
 	public Viewer createViewer(final Composite parent, final CompareConfiguration config) {
 		final LtxRweaveSourceViewerConfigurator viewerConfigurator=
-				new LtxRweaveSourceViewerConfigurator(null, null,
+				new LtxRweaveSourceViewerConfigurator(
+						TexCore.WORKBENCH_ACCESS, RCore.WORKBENCH_ACCESS,
 						new LtxRweaveSourceViewerConfiguration() );
 		return new CompareTextViewer(parent, config, viewerConfigurator);
 	}

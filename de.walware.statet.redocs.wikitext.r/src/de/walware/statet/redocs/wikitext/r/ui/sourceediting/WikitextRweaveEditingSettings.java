@@ -11,7 +11,7 @@
 
 package de.walware.statet.redocs.wikitext.r.ui.sourceediting;
 
-import de.walware.ecommons.preferences.Preference.BooleanPref;
+import de.walware.ecommons.preferences.core.Preference.BooleanPref;
 
 import de.walware.statet.redocs.wikitext.r.ui.WikitextRweaveUI;
 

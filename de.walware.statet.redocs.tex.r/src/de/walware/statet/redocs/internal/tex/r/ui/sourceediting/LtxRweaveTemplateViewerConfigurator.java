@@ -38,7 +38,7 @@ public class LtxRweaveTemplateViewerConfigurator extends LtxRweaveSourceViewerCo
 		
 		
 		public LtxRweaveTemplatesSourceViewerConfiguration(final TemplateVariableProcessor processor) {
-			super(null, null, null);
+			super(null, null, null, null);
 			this.fProcessor= processor;
 		}
 		

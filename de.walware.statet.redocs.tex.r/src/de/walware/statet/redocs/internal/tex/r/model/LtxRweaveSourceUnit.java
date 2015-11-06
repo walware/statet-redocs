@@ -19,6 +19,7 @@ import de.walware.ecommons.ltk.core.impl.GenericResourceSourceUnit2;
 import de.walware.ecommons.ltk.core.model.ISourceUnitModelInfo;
 import de.walware.ecommons.text.core.sections.IDocContentSections;
 
+import de.walware.docmlet.tex.core.ITexCoreAccess;
 import de.walware.docmlet.tex.core.TexCore;
 import de.walware.docmlet.tex.core.model.ITexWorkspaceSourceUnit;
 
@@ -30,18 +31,13 @@ import de.walware.statet.r.core.model.IRWorkspaceSourceUnit;
 import de.walware.statet.r.core.model.RModel;
 import de.walware.statet.r.core.renv.IREnv;
 
-import de.walware.statet.redocs.tex.r.core.ITexRweaveCoreAccess;
 import de.walware.statet.redocs.tex.r.core.model.ILtxRweaveSourceUnit;
 import de.walware.statet.redocs.tex.r.core.model.TexRweaveModel;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveDocumentContentInfo;
-import de.walware.statet.redocs.tex.r.core.util.TexRweaveCoreAccess;
 
 
 public class LtxRweaveSourceUnit extends GenericResourceSourceUnit2<LtxRweaveSuModelContainer> 
 		implements ILtxRweaveSourceUnit, ITexWorkspaceSourceUnit, IRWorkspaceSourceUnit {
-	
-	
-	private ITexRweaveCoreAccess coreAccess;
 	
 	
 	public LtxRweaveSourceUnit(final String id, final IFile file) {
@@ -66,24 +62,14 @@ public class LtxRweaveSourceUnit extends GenericResourceSourceUnit2<LtxRweaveSuM
 	
 	
 	@Override
-	public ITexRweaveCoreAccess getTexCoreAccess() {
-		ITexRweaveCoreAccess coreAccess= this.coreAccess;
-		if (coreAccess == null) {
-			final IRProject rProject= RProjects.getRProject(getResource().getProject());
-			coreAccess= new TexRweaveCoreAccess(TexCore.getWorkbenchAccess(),
-					(rProject != null) ? rProject : RCore.getWorkbenchAccess() );
-			synchronized (this) {
-				if (isConnected()) {
-					this.coreAccess= coreAccess;
-				}
-			}
-		}
-		return coreAccess;
+	public ITexCoreAccess getTexCoreAccess() {
+		return TexCore.WORKBENCH_ACCESS;
 	}
 	
 	@Override
 	public IRCoreAccess getRCoreAccess() {
-		return getTexCoreAccess();
+		final IRProject rProject= RProjects.getRProject(getResource().getProject());
+		return (rProject != null) ? rProject : RCore.WORKBENCH_ACCESS;
 	}
 	
 	@Override
@@ -110,8 +96,6 @@ public class LtxRweaveSourceUnit extends GenericResourceSourceUnit2<LtxRweaveSuM
 		}
 		
 		super.unregister();
-		
-		this.coreAccess= null;
 	}
 	
 	

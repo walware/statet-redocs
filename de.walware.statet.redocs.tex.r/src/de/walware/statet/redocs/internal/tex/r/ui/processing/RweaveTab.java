@@ -66,6 +66,7 @@ import de.walware.ecommons.ui.util.UIAccess;
 import de.walware.ecommons.ui.workbench.ResourceInputComposite;
 
 import de.walware.statet.r.cmd.ui.launching.RCmdLaunching;
+import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.ui.sourceediting.RSourceViewerConfigurator;
 import de.walware.statet.r.ui.sourceediting.RTemplateSourceViewerConfigurator;
 
@@ -322,7 +323,8 @@ public class RweaveTab extends LaunchConfigTabWithDbc {
 		
 		final TemplateVariableProcessor templateVariableProcessor= new TemplateVariableProcessor();
 		final RSourceViewerConfigurator configurator= new RTemplateSourceViewerConfigurator(
-				null, templateVariableProcessor );
+				RCore.WORKBENCH_ACCESS,
+				templateVariableProcessor );
 		this.fConsoleCommandEditor= new SnippetEditor(configurator);
 		this.fConsoleCommandEditor.create(group, SnippetEditor.DEFAULT_MULTI_LINE_STYLE);
 		gd= new GridData(SWT.FILL, SWT.FILL, true, true, 1, 1);

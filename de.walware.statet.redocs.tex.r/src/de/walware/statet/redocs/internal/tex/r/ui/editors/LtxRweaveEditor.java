@@ -51,6 +51,7 @@ import de.walware.ecommons.ui.SharedUIResources;
 
 import de.walware.docmlet.base.ui.DocBaseUI;
 import de.walware.docmlet.base.ui.sourceediting.IDocEditor;
+import de.walware.docmlet.tex.core.TexCore;
 import de.walware.docmlet.tex.core.ast.TexAstNode;
 import de.walware.docmlet.tex.core.model.TexModel;
 import de.walware.docmlet.tex.ui.TexUI;
@@ -59,6 +60,7 @@ import de.walware.docmlet.tex.ui.editors.TexMarkOccurrencesLocator;
 import de.walware.docmlet.tex.ui.sourceediting.TexEditingSettings;
 
 import de.walware.statet.base.ui.IStatetUIMenuIds;
+import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.model.RModel;
 import de.walware.statet.r.core.rsource.ast.RAstNode;
 import de.walware.statet.r.core.source.IRDocumentConstants;
@@ -163,8 +165,9 @@ public class LtxRweaveEditor extends SourceEditor1 implements ILtxRweaveEditor, 
 				TexEditingSettings.FOLDING_ENABLED_PREF,
 				TexEditingSettings.MARKOCCURRENCES_ENABLED_PREF );
 		
-		this.combinedConfig= new LtxRweaveSourceViewerConfigurator(null, null,
-				new LtxRweaveSourceViewerConfiguration(this, null, null) );
+		this.combinedConfig= new LtxRweaveSourceViewerConfigurator(
+				TexCore.WORKBENCH_ACCESS, RCore.WORKBENCH_ACCESS,
+				new LtxRweaveSourceViewerConfiguration(this, null, null,null) );
 		return this.combinedConfig;
 	}
 	
@@ -201,8 +204,8 @@ public class LtxRweaveEditor extends SourceEditor1 implements ILtxRweaveEditor, 
 		
 		final ILtxRweaveSourceUnit su= getSourceUnit();
 		this.combinedConfig.setSource(
-				(su != null) ? su.getTexCoreAccess() : null,
-				(su != null) ? su.getRCoreAccess() : null );
+				(su != null) ? su.getTexCoreAccess() : TexCore.WORKBENCH_ACCESS,
+				(su != null) ? su.getRCoreAccess() : RCore.WORKBENCH_ACCESS );
 	}
 	
 	

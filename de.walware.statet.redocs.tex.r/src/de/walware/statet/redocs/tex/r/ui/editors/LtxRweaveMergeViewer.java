@@ -43,7 +43,7 @@ public class LtxRweaveMergeViewer extends CompareMergeTextViewer {
 	@Override
 	protected SourceEditorViewerConfigurator createConfigurator(final SourceViewer sourceViewer) {
 		return new LtxRweaveSourceViewerConfigurator(
-				TexCore.getWorkbenchAccess(), RCore.getWorkbenchAccess(),
+				TexCore.WORKBENCH_ACCESS, RCore.WORKBENCH_ACCESS,
 				new LtxRweaveSourceViewerConfiguration() );
 	}
 	

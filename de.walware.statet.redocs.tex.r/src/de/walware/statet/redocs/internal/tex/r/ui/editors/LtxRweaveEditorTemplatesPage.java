@@ -98,14 +98,18 @@ public class LtxRweaveEditorTemplatesPage extends ExtEditorTemplatesPage {
 	@Override
 	protected SourceEditorViewerConfigurator getTemplatePreviewConfig(final Template template, final TemplateVariableProcessor templateProcessor) {
 		if (this.rPreviewConfigurator == null) {
-			this.rPreviewConfigurator= new RTemplateSourceViewerConfigurator(RCore.getWorkbenchAccess(), templateProcessor);
+			this.rPreviewConfigurator= new RTemplateSourceViewerConfigurator(
+					RCore.WORKBENCH_ACCESS,
+					templateProcessor );
 		}
 		return this.rPreviewConfigurator;
 	}
 	
 	@Override
 	protected SourceEditorViewerConfigurator getTemplateEditConfig(final Template template, final TemplateVariableProcessor templateProcessor) {
-		return new RTemplateSourceViewerConfigurator(RCore.getWorkbenchAccess(), templateProcessor);
+		return new RTemplateSourceViewerConfigurator(
+				RCore.WORKBENCH_ACCESS,
+				templateProcessor );
 	}
 	
 }

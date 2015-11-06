@@ -21,37 +21,18 @@ import java.util.WeakHashMap;
 import de.walware.jcommons.collections.ImCollections;
 import de.walware.jcommons.collections.ImList;
 
-import de.walware.ecommons.preferences.IPreferenceAccess;
-
 import de.walware.docmlet.tex.core.ITexCoreAccess;
-import de.walware.docmlet.tex.core.TexCodeStyleSettings;
-import de.walware.docmlet.tex.core.TexCore;
 import de.walware.docmlet.tex.core.commands.TexCommand;
 import de.walware.docmlet.tex.core.commands.TexCommandSet;
-
-import de.walware.statet.r.core.IRCoreAccess;
-import de.walware.statet.r.core.RCodeStyleSettings;
-import de.walware.statet.r.core.RCore;
+import de.walware.docmlet.tex.core.util.TexCoreAccessWrapper;
 
 import de.walware.statet.redocs.internal.tex.r.core.ISweaveLtxCommands;
-import de.walware.statet.redocs.tex.r.core.ITexRweaveCoreAccess;
 
 
-public class TexRweaveCoreAccess implements ITexRweaveCoreAccess {
-	
-	
-	private static ITexRweaveCoreAccess WORKSPACE_ACCESS= new TexRweaveCoreAccess(
-			TexCore.getWorkbenchAccess(), RCore.getWorkbenchAccess() );
-	
-	public static ITexRweaveCoreAccess combine(final ITexCoreAccess tex, final IRCoreAccess r) {
-		if (tex == null) {
-			return WORKSPACE_ACCESS;
-		}
-		if (tex instanceof ITexRweaveCoreAccess) {
-			return (ITexRweaveCoreAccess) tex;
-		}
-		return new TexRweaveCoreAccess(tex, (r != null) ? r : RCore.getWorkbenchAccess());
-	}
+/**
+ * Enriched TexCoreAccess for TexRweave
+ */
+public class TexRweaveCoreAccessWrapper extends TexCoreAccessWrapper {
 	
 	
 	private static final ImList<TexCommand> LTX_SWEAVE_COMMAND_LIST= ImCollections.newList( // ASorted
@@ -61,33 +42,18 @@ public class TexRweaveCoreAccess implements ITexRweaveCoreAccess {
 	private static final WeakHashMap<TexCommandSet, TexCommandSet> COMMAND_CACHE= new WeakHashMap<>();
 	
 	
-	private final ITexCoreAccess texAccess;
-	private final IRCoreAccess rAccess;
-	
 	private TexCommandSet texCommandSetOrg;
 	private volatile TexCommandSet texCommandSet;
 	
 	
-	public TexRweaveCoreAccess(final ITexCoreAccess tex, final IRCoreAccess r) {
-		if (tex == null) {
-			throw new NullPointerException("tex"); //$NON-NLS-1$
-		}
-		if (r == null) {
-			throw new NullPointerException("r"); //$NON-NLS-1$
-		}
-		this.texAccess= tex;
-		this.rAccess= r;
+	public TexRweaveCoreAccessWrapper(final ITexCoreAccess texCoreAccess) {
+		super(texCoreAccess);
 	}
 	
-	
-	@Override
-	public IPreferenceAccess getPrefs() {
-		return this.rAccess.getPrefs(); // TODO
-	}
 	
 	@Override
 	public TexCommandSet getTexCommandSet() {
-		if (this.texCommandSetOrg != this.texAccess.getTexCommandSet()) {
+		if (this.texCommandSetOrg != super.getTexCommandSet()) {
 			updateTexCommandSet();
 		}
 		return this.texCommandSet;
@@ -95,7 +61,7 @@ public class TexRweaveCoreAccess implements ITexRweaveCoreAccess {
 	
 	private void updateTexCommandSet() {
 		synchronized (COMMAND_CACHE) { 
-			final TexCommandSet org= this.texAccess.getTexCommandSet();
+			final TexCommandSet org= super.getTexCommandSet();
 			if (this.texCommandSetOrg == org) {
 				return;
 			}
@@ -134,17 +100,6 @@ public class TexRweaveCoreAccess implements ITexRweaveCoreAccess {
 		final ImList<TexCommand> list= ImCollections.concatList(org, LTX_SWEAVE_COMMAND_LIST,
 				(Comparator<TexCommand>) null );
 		return list;
-	}
-	
-	
-	@Override
-	public TexCodeStyleSettings getTexCodeStyle() {
-		return this.texAccess.getTexCodeStyle();
-	}
-	
-	@Override
-	public RCodeStyleSettings getRCodeStyle() {
-		return this.rAccess.getRCodeStyle();
 	}
 	
 }

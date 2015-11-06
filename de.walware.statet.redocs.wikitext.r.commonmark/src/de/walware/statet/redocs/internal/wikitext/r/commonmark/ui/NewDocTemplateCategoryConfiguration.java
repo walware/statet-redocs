@@ -21,8 +21,8 @@ import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewerConfigurator;
 import de.walware.ecommons.ltk.ui.templates.config.ITemplateCategoryConfiguration;
 import de.walware.ecommons.ltk.ui.templates.config.ITemplateContribution;
 import de.walware.ecommons.ltk.ui.templates.config.TemplateStoreContribution;
-import de.walware.ecommons.preferences.Preference;
-import de.walware.ecommons.preferences.Preference.StringPref;
+import de.walware.ecommons.preferences.core.Preference;
+import de.walware.ecommons.preferences.core.Preference.StringPref;
 import de.walware.ecommons.templates.TemplateVariableProcessor;
 
 import de.walware.docmlet.wikitext.core.WikitextCore;

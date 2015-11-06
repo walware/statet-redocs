@@ -35,7 +35,7 @@ public class WikidocRweaveTemplateViewerConfigurator extends WikidocRweaveSource
 		
 		
 		public WikidocRweaveTemplatesSourceViewerConfiguration(final TemplateVariableProcessor processor) {
-			super(null, null, null, 0);
+			super(null, null, null, null, 0);
 			this.fProcessor= processor;
 		}
 		
@@ -59,9 +59,9 @@ public class WikidocRweaveTemplateViewerConfigurator extends WikidocRweaveSource
 	
 	public WikidocRweaveTemplateViewerConfigurator(
 			final WikidocRweaveDocumentSetupParticipant documentSetup,
-			final IWikitextCoreAccess wikitextCore, final IRCoreAccess rCore,
+			final IWikitextCoreAccess wikitextCoreAccess, final IRCoreAccess rCoreAccess,
 			final TemplateVariableProcessor processor) {
-		super(documentSetup, wikitextCore, rCore,
+		super(documentSetup, wikitextCoreAccess, rCoreAccess,
 				new WikidocRweaveTemplatesSourceViewerConfiguration(processor) );
 	}
 	

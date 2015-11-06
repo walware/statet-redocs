@@ -19,6 +19,7 @@ import de.walware.ecommons.ltk.core.impl.GenericResourceSourceUnit2;
 import de.walware.ecommons.ltk.core.model.ISourceUnitModelInfo;
 import de.walware.ecommons.text.core.sections.IDocContentSections;
 
+import de.walware.docmlet.wikitext.core.IWikitextCoreAccess;
 import de.walware.docmlet.wikitext.core.WikitextCore;
 import de.walware.docmlet.wikitext.core.model.IWikidocWorkspaceSourceUnit;
 
@@ -30,18 +31,13 @@ import de.walware.statet.r.core.model.IRWorkspaceSourceUnit;
 import de.walware.statet.r.core.model.RModel;
 import de.walware.statet.r.core.renv.IREnv;
 
-import de.walware.statet.redocs.wikitext.r.core.IWikitextRweaveCoreAccess;
 import de.walware.statet.redocs.wikitext.r.core.model.IWikidocRweaveSourceUnit;
 import de.walware.statet.redocs.wikitext.r.core.model.WikitextRweaveModel;
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveDocumentContentInfo;
-import de.walware.statet.redocs.wikitext.r.core.util.WikitextRweaveCoreAccess;
 
 
 public class WikidocRweaveSourceUnit extends GenericResourceSourceUnit2<WikidocRweaveSuModelContainer> 
 		implements IWikidocRweaveSourceUnit, IWikidocWorkspaceSourceUnit, IRWorkspaceSourceUnit {
-	
-	
-	private IWikitextRweaveCoreAccess coreAccess;
 	
 	
 	public WikidocRweaveSourceUnit(final String id, final IFile file) {
@@ -66,24 +62,14 @@ public class WikidocRweaveSourceUnit extends GenericResourceSourceUnit2<WikidocR
 	
 	
 	@Override
-	public IWikitextRweaveCoreAccess getWikitextCoreAccess() {
-		IWikitextRweaveCoreAccess coreAccess= this.coreAccess;
-		if (coreAccess == null) {
-			final IRProject rProject= RProjects.getRProject(getResource().getProject());
-			coreAccess= new WikitextRweaveCoreAccess(WikitextCore.getWorkbenchAccess(),
-					(rProject != null) ? rProject : RCore.getWorkbenchAccess() );
-			synchronized (this) {
-				if (isConnected()) {
-					this.coreAccess= coreAccess;
-				}
-			}
-		}
-		return coreAccess;
+	public IWikitextCoreAccess getWikitextCoreAccess() {
+		return WikitextCore.WORKBENCH_ACCESS;
 	}
 	
 	@Override
 	public IRCoreAccess getRCoreAccess() {
-		return getWikitextCoreAccess();
+		final IRProject rProject= RProjects.getRProject(getResource().getProject());
+		return (rProject != null) ? rProject : RCore.WORKBENCH_ACCESS;
 	}
 	
 	@Override
@@ -110,8 +96,6 @@ public class WikidocRweaveSourceUnit extends GenericResourceSourceUnit2<WikidocR
 		}
 		
 		super.unregister();
-		
-		this.coreAccess= null;
 	}
 	
 	

@@ -19,7 +19,7 @@ import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewerConfigurator;
 import de.walware.ecommons.ltk.ui.templates.config.ITemplateCategoryConfiguration;
 import de.walware.ecommons.ltk.ui.templates.config.ITemplateContribution;
 import de.walware.ecommons.ltk.ui.templates.config.TemplateStoreContribution;
-import de.walware.ecommons.preferences.Preference;
+import de.walware.ecommons.preferences.core.Preference;
 import de.walware.ecommons.templates.TemplateVariableProcessor;
 
 import de.walware.docmlet.tex.core.TexCore;
@@ -78,8 +78,8 @@ public class NewDocTemplateCategoryConfiguration implements ITemplateCategoryCon
 			final TemplatePersistenceData data,
 			final TemplateVariableProcessor templateProcessor, final IProject project) {
 		final IRProject rProject= RProjects.getRProject(project);
-		return new LtxRweaveTemplateViewerConfigurator(TexCore.getWorkbenchAccess(),
-				(rProject != null) ? rProject : RCore.getWorkbenchAccess(),
+		return new LtxRweaveTemplateViewerConfigurator(
+				TexCore.WORKBENCH_ACCESS, (rProject != null) ? rProject : RCore.WORKBENCH_ACCESS,
 				templateProcessor );
 	}
 	

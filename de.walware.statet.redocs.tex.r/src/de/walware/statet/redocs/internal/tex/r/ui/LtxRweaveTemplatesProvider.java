@@ -58,8 +58,8 @@ public class LtxRweaveTemplatesProvider implements ICodeGenerationTemplatesCateg
 	@Override
 	public SourceEditorViewerConfigurator getEditTemplateDialogConfiguator(final TemplateVariableProcessor processor, final IProject project) {
 		final IRProject rProject= RProjects.getRProject(project);
-		return new LtxRweaveTemplateViewerConfigurator(TexCore.getWorkbenchAccess(),
-				(rProject != null) ? rProject : RCore.getWorkbenchAccess(),
+		return new LtxRweaveTemplateViewerConfigurator(
+				TexCore.WORKBENCH_ACCESS, (rProject != null) ? rProject : RCore.WORKBENCH_ACCESS,
 				processor );
 	}
 	

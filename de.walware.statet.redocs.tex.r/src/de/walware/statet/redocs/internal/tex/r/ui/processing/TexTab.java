@@ -65,6 +65,7 @@ import net.sourceforge.texlipse.builder.Builder;
 import net.sourceforge.texlipse.builder.BuilderChooser;
 import net.sourceforge.texlipse.builder.BuilderRegistry;
 
+import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.ui.sourceediting.RSourceViewerConfigurator;
 import de.walware.statet.r.ui.sourceediting.RTemplateSourceViewerConfigurator;
 
@@ -289,7 +290,8 @@ public class TexTab extends LaunchConfigTabWithDbc {
 		}
 		{	final TemplateVariableProcessor templateVariableProcessor= new TemplateVariableProcessor();
 			final RSourceViewerConfigurator configurator= new RTemplateSourceViewerConfigurator(
-					null, templateVariableProcessor );
+					RCore.WORKBENCH_ACCESS,
+					templateVariableProcessor );
 			this.fConsoleCommandEditor= new SnippetEditor(configurator, null, null, true) {
 				@Override
 				protected void fillToolMenu(final Menu menu) {

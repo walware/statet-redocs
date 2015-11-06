@@ -43,6 +43,7 @@ import de.walware.docmlet.base.ui.processing.DocProcessingConfig;
 import de.walware.docmlet.base.ui.processing.DocProcessingConfigStepTab;
 import de.walware.docmlet.base.ui.processing.DocProcessingOperationSettings;
 
+import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.ui.sourceediting.RSourceViewerConfigurator;
 import de.walware.statet.r.ui.sourceediting.RTemplateSourceViewerConfigurator;
 
@@ -101,7 +102,8 @@ public class RunRConsoleSnippetOperationSettings extends DocProcessingOperationS
 		}
 		{	final TemplateVariableProcessor templateVariableProcessor= new TemplateVariableProcessor();
 			final RSourceViewerConfigurator configurator= new RTemplateSourceViewerConfigurator(
-					null, templateVariableProcessor );
+					RCore.WORKBENCH_ACCESS,
+					templateVariableProcessor );
 			final SnippetEditor editor= new SnippetEditor(configurator, null, null, true) {
 				@Override
 				protected void fillToolMenu(final Menu menu) {

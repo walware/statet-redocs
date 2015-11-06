@@ -19,27 +19,24 @@ import java.util.Set;
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewerConfigurator;
-import de.walware.ecommons.preferences.IPreferenceAccess;
 
 import de.walware.docmlet.tex.core.ITexCoreAccess;
 import de.walware.docmlet.tex.core.TexCodeStyleSettings;
-import de.walware.docmlet.tex.core.commands.TexCommandSet;
 
 import de.walware.statet.base.core.preferences.TaskTagsPreferences;
 import de.walware.statet.r.core.IRCoreAccess;
 import de.walware.statet.r.core.RCodeStyleSettings;
+import de.walware.statet.r.core.util.RCoreAccessWrapper;
 import de.walware.statet.r.internal.ui.RUIPreferenceInitializer;
 
-import de.walware.statet.redocs.tex.r.core.ITexRweaveCoreAccess;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveDocumentSetupParticipant;
-import de.walware.statet.redocs.tex.r.core.util.TexRweaveCoreAccess;
+import de.walware.statet.redocs.tex.r.core.util.TexRweaveCoreAccessWrapper;
 
 
 /**
  * Configurator for Sweave (LaTeX+R) code source viewers.
  */
-public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigurator
-		implements ITexRweaveCoreAccess {
+public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigurator {
 	
 	
 	private static final Set<String> RESET_GROUP_IDS= new HashSet<>(Arrays.asList(new String[] {
@@ -49,29 +46,50 @@ public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigu
 	}));
 	
 	
-	private ITexRweaveCoreAccess sourceCoreAccess;
-	
-	private final TexCodeStyleSettings docCodeStyleCopy;
-	private final RCodeStyleSettings rCodeStyleCopy;
+	private final TexRweaveCoreAccessWrapper docCoreAccess;
+	private final RCoreAccessWrapper rCoreAccess;
 	
 	
-	public LtxRweaveSourceViewerConfigurator(final ITexCoreAccess texCore, final IRCoreAccess rCore,
+	public LtxRweaveSourceViewerConfigurator(
+			final ITexCoreAccess texCoreAccess, final IRCoreAccess rCoreAccess,
 			final LtxRweaveSourceViewerConfiguration config) {
 		super(config);
-		this.docCodeStyleCopy= new TexCodeStyleSettings(1);
-		this.rCodeStyleCopy= new RCodeStyleSettings(1);
-		config.setCoreAccess(this);
-		setSource(texCore, rCore);
 		
-		this.docCodeStyleCopy.load(this.sourceCoreAccess.getTexCodeStyle());
-		this.docCodeStyleCopy.resetDirty();
-		this.docCodeStyleCopy.addPropertyChangeListener(this);
+		this.docCoreAccess= new TexRweaveCoreAccessWrapper(texCoreAccess) {
+			private final TexCodeStyleSettings codeStyle= new TexCodeStyleSettings(1);
+			@Override
+			public TexCodeStyleSettings getTexCodeStyle() {
+				return this.codeStyle;
+			}
+		};
+		this.rCoreAccess= new RCoreAccessWrapper(rCoreAccess) {
+			private final RCodeStyleSettings codeStyle= new RCodeStyleSettings(1);
+			@Override
+			public RCodeStyleSettings getRCodeStyle() {
+				return this.codeStyle;
+			}
+		};
+		config.setCoreAccess(this.docCoreAccess, this.rCoreAccess);
 		
-		this.rCodeStyleCopy.load(this.sourceCoreAccess.getRCodeStyle());
-		this.rCodeStyleCopy.resetDirty();
-		this.rCodeStyleCopy.addPropertyChangeListener(this);
+		this.docCoreAccess.getTexCodeStyle().load(
+				this.docCoreAccess.getParent().getTexCodeStyle() );
+		this.docCoreAccess.getTexCodeStyle().resetDirty();
+		this.docCoreAccess.getTexCodeStyle().addPropertyChangeListener(this);
+		
+		this.rCoreAccess.getRCodeStyle().load(
+				this.rCoreAccess.getParent().getRCodeStyle() );
+		this.rCoreAccess.getRCodeStyle().resetDirty();
+		this.rCoreAccess.getRCodeStyle().addPropertyChangeListener(this);
 	}
 	
+	
+	public final ITexCoreAccess getTexCoreAccess() {
+		return this.docCoreAccess;
+	}
+	
+	public final IRCoreAccess getRCoreAccess() {
+		return this.rCoreAccess;
+	}
 	
 	@Override
 	public IDocumentSetupParticipant getDocumentSetupParticipant() {
@@ -84,10 +102,15 @@ public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigu
 	}
 	
 	
-	public void setSource(final ITexCoreAccess texCore, final IRCoreAccess rCore) {
-		final ITexRweaveCoreAccess newAccess= TexRweaveCoreAccess.combine(texCore, rCore);
-		if (this.sourceCoreAccess != newAccess) {
-			this.sourceCoreAccess= newAccess;
+	public void setSource(final ITexCoreAccess texCoreAccess, final IRCoreAccess rCoreAccess) {
+		boolean changed= false;
+		if (texCoreAccess != null) {
+			changed|= this.docCoreAccess.setParent(texCoreAccess);
+		}
+		if (rCoreAccess != null) {
+			changed|= this.rCoreAccess.setParent(rCoreAccess);
+		}
+		if (changed) {
 			handleSettingsChanged(null, null);
 		}
 	}
@@ -97,8 +120,8 @@ public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigu
 	public void handleSettingsChanged(final Set<String> groupIds, final Map<String, Object> options) {
 		super.handleSettingsChanged(groupIds, options);
 		
-		this.docCodeStyleCopy.resetDirty();
-		this.rCodeStyleCopy.resetDirty();
+		this.docCoreAccess.getTexCodeStyle().resetDirty();
+		this.rCoreAccess.getRCodeStyle().resetDirty();
 	}
 	
 	@Override
@@ -106,11 +129,13 @@ public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigu
 		super.checkSettingsChanges(groupIds, options);
 		
 		if (groupIds.contains(TexCodeStyleSettings.INDENT_GROUP_ID)) {
-			this.docCodeStyleCopy.load(this.sourceCoreAccess.getTexCodeStyle());
+			this.docCoreAccess.getTexCodeStyle().load(
+					this.docCoreAccess.getParent().getTexCodeStyle() );
 		}
 		if (groupIds.contains(RCodeStyleSettings.INDENT_GROUP_ID)
 				|| groupIds.contains(RCodeStyleSettings.WS_GROUP_ID)) {
-			this.rCodeStyleCopy.load(this.sourceCoreAccess.getRCodeStyle());
+			this.rCoreAccess.getRCodeStyle().load(
+					this.rCoreAccess.getParent().getRCodeStyle() );
 		}
 		if (groupIds.contains(TexRweaveEditingOptions.LTX_EDITOR_NODE)) {
 			this.fUpdateCompleteConfig= true;
@@ -118,27 +143,6 @@ public class LtxRweaveSourceViewerConfigurator extends SourceEditorViewerConfigu
 		if (groupIds.contains(RUIPreferenceInitializer.REDITOR_HOVER_GROUP_ID)) {
 			this.fUpdateInfoHovers= true;
 		}
-	}
-	
-	
-	@Override
-	public IPreferenceAccess getPrefs() {
-		return this.sourceCoreAccess.getPrefs();
-	}
-	
-	@Override
-	public RCodeStyleSettings getRCodeStyle() {
-		return this.rCodeStyleCopy;
-	}
-	
-	@Override
-	public TexCommandSet getTexCommandSet() {
-		return this.sourceCoreAccess.getTexCommandSet();
-	}
-	
-	@Override
-	public TexCodeStyleSettings getTexCodeStyle() {
-		return this.docCodeStyleCopy;
 	}
 	
 }

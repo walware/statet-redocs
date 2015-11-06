@@ -57,6 +57,7 @@ import de.walware.docmlet.base.ui.DocBaseUI;
 import de.walware.docmlet.base.ui.markuphelp.IMarkupHelpContextProvider;
 import de.walware.docmlet.base.ui.processing.actions.RunDocProcessingOnSaveExtension;
 import de.walware.docmlet.base.ui.sourceediting.IDocEditor;
+import de.walware.docmlet.wikitext.core.WikitextCore;
 import de.walware.docmlet.wikitext.core.ast.WikitextAstNode;
 import de.walware.docmlet.wikitext.core.model.WikitextModel;
 import de.walware.docmlet.wikitext.ui.WikitextUI;
@@ -65,6 +66,7 @@ import de.walware.docmlet.wikitext.ui.editors.WikitextMarkOccurrencesLocator;
 import de.walware.docmlet.wikitext.ui.sourceediting.WikitextEditingSettings;
 
 import de.walware.statet.base.ui.IStatetUIMenuIds;
+import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.rsource.ast.RAstNode;
 import de.walware.statet.r.core.source.IRDocumentConstants;
 import de.walware.statet.r.internal.ui.RUIPlugin;
@@ -192,8 +194,9 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 				WikitextEditingSettings.MARKOCCURRENCES_ENABLED_PREF );
 		
 		this.combinedConfig= new WikidocRweaveSourceViewerConfigurator(
-				this.documentSetup, null, null,
-				new WikidocRweaveSourceViewerConfiguration(this, null, null, 0) );
+				this.documentSetup,
+				WikitextCore.WORKBENCH_ACCESS, RCore.WORKBENCH_ACCESS,
+				new WikidocRweaveSourceViewerConfiguration(this, null, null, null, 0) );
 		return this.combinedConfig;
 	}
 	
@@ -235,8 +238,8 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 		
 		final IWikidocRweaveSourceUnit su= getSourceUnit();
 		this.combinedConfig.setSource(
-				(su != null) ? su.getWikitextCoreAccess() : null,
-				(su != null) ? su.getRCoreAccess() : null );
+				(su != null) ? su.getWikitextCoreAccess() : WikitextCore.WORKBENCH_ACCESS,
+				(su != null) ? su.getRCoreAccess() : RCore.WORKBENCH_ACCESS );
 		
 		this.autoDocProcessing.setAutoRunEnabled(false);
 	}

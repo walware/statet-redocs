@@ -46,14 +46,12 @@ import de.walware.ecommons.text.ui.settings.TextStyleManager;
 
 import de.walware.docmlet.tex.ui.sourceediting.LtxSourceViewerConfiguration;
 import de.walware.docmlet.wikitext.core.IWikitextCoreAccess;
-import de.walware.docmlet.wikitext.core.WikitextCore;
 import de.walware.docmlet.wikitext.core.source.IWikitextDocumentConstants;
 import de.walware.docmlet.wikitext.ui.sourceediting.WikidocSourceViewerConfiguration;
 import de.walware.eutils.yaml.ui.sourceediting.YamlSourceViewerConfiguration;
 
 import de.walware.statet.base.ui.IStatetUIPreferenceConstants;
 import de.walware.statet.r.core.IRCoreAccess;
-import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.source.IRDocumentConstants;
 import de.walware.statet.r.core.source.RHeuristicTokenScanner;
 import de.walware.statet.r.core.source.RPartitionNodeType;
@@ -65,11 +63,9 @@ import de.walware.statet.r.ui.text.r.RDoubleClickStrategy;
 import de.walware.statet.redocs.internal.wikitext.r.RedocsWikitextRPlugin;
 import de.walware.statet.redocs.internal.wikitext.r.ui.sourceediting.DocRQuickOutlineInformationProvider;
 import de.walware.statet.redocs.internal.wikitext.r.ui.sourceediting.RChunkTemplatesCompletionComputer;
-import de.walware.statet.redocs.wikitext.r.core.IWikitextRweaveCoreAccess;
 import de.walware.statet.redocs.wikitext.r.core.source.IWikitextRweaveDocumentConstants;
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveBracketPairMatcher;
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveDocumentContentInfo;
-import de.walware.statet.redocs.wikitext.r.core.util.WikitextRweaveCoreAccess;
 
 
 /**
@@ -167,30 +163,27 @@ public class WikidocRweaveSourceViewerConfiguration extends MultiContentSectionS
 	private final LtxSourceViewerConfiguration ltxConfig;
 	private final RChunkConfiguration rConfig;
 	
-	private IWikitextRweaveCoreAccess coreAccess;
-	
 	private ITextDoubleClickStrategy rDoubleClickStrategy;
 	
 	
 	public WikidocRweaveSourceViewerConfiguration() {
-		this(null, null, null, WikidocSourceViewerConfiguration.FIXED_LINE_HEIGHT_STYLE);
+		this(null, null, null, null, WikidocSourceViewerConfiguration.FIXED_LINE_HEIGHT_STYLE);
 	}
 	
 	public WikidocRweaveSourceViewerConfiguration(final ISourceEditor sourceEditor,
-			final IWikitextRweaveCoreAccess coreAccess,
+			final IWikitextCoreAccess wikitextCoreAccess, final IRCoreAccess rCoreAccess,
 			final IPreferenceStore preferenceStore,
 			final int styleFlags) {
 		super(WikidocRweaveDocumentContentInfo.INSTANCE, sourceEditor);
-		this.coreAccess= (coreAccess != null) ? coreAccess : new WikitextRweaveCoreAccess(
-				WikitextCore.getWorkbenchAccess(), RCore.getWorkbenchAccess() );
+		
 		this.docConfig= new WikidocConfiguration(WikidocRweaveDocumentContentInfo.INSTANCE, sourceEditor,
-				this.coreAccess, preferenceStore, styleFlags );
+				wikitextCoreAccess, preferenceStore, styleFlags );
 		this.yamlConfig= new YamlSourceViewerConfiguration(WikidocRweaveDocumentContentInfo.INSTANCE, sourceEditor,
 				null, null, null );
 		this.ltxConfig= new LtxSourceViewerConfiguration(WikidocRweaveDocumentContentInfo.INSTANCE, sourceEditor,
 				null, null, null );
 		this.rConfig= new RChunkConfiguration(WikidocRweaveDocumentContentInfo.INSTANCE, sourceEditor,
-				this.coreAccess, preferenceStore );
+				rCoreAccess, preferenceStore );
 		
 		registerConfig(WikidocRweaveDocumentContentInfo.WIKITEXT, this.docConfig);
 		registerConfig(WikidocRweaveDocumentContentInfo.YAML, this.yamlConfig);
@@ -222,11 +215,9 @@ public class WikidocRweaveSourceViewerConfiguration extends MultiContentSectionS
 		return super.getScanner(contentType);
 	}
 	
-	protected void setCoreAccess(final IWikitextRweaveCoreAccess coreAccess) {
-		this.coreAccess= (coreAccess != null) ? coreAccess : new WikitextRweaveCoreAccess(
-				WikitextCore.getWorkbenchAccess(), RCore.getWorkbenchAccess() );
-		this.rConfig.setCoreAccess(this.coreAccess);
-		this.docConfig.setCoreAccess(this.coreAccess);
+	protected void setCoreAccess(final IWikitextCoreAccess wikitextCoreAccess, final IRCoreAccess rCoreAccess) {
+		this.docConfig.setCoreAccess(wikitextCoreAccess);
+		this.rConfig.setCoreAccess(rCoreAccess);
 	}
 	
 	
