@@ -23,8 +23,6 @@ import org.eclipse.swt.graphics.Image;
 
 import de.walware.ecommons.ltk.ui.sourceediting.assist.AssistInvocationContext;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.AssistProposalCollector;
-import de.walware.ecommons.ltk.ui.sourceediting.assist.IAssistCompletionProposal;
-import de.walware.ecommons.ltk.ui.sourceediting.assist.IContentAssistComputer;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.TemplatesCompletionComputer;
 
 import de.walware.statet.redocs.internal.tex.r.RedocsTexRPlugin;
@@ -42,10 +40,14 @@ public class RChunkTemplatesCompletionComputer extends TemplatesCompletionComput
 	
 	
 	@Override
-	public IStatus computeCompletionProposals(final AssistInvocationContext context, final int mode,
-			final AssistProposalCollector<IAssistCompletionProposal> proposals, final IProgressMonitor monitor) {
+	public IStatus computeCompletionProposals(final AssistInvocationContext context, int mode,
+			final AssistProposalCollector proposals, final IProgressMonitor monitor) {
 		// Set to specific mode to force to include templates in default mode
-		return super.computeCompletionProposals(context, IContentAssistComputer.SPECIFIC_MODE, proposals, monitor);
+		if (mode == COMBINED_MODE) {
+			mode= SPECIFIC_MODE;
+		}
+		
+		return super.computeCompletionProposals(context, mode, proposals, monitor);
 	}
 	
 	@Override

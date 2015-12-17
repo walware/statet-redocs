@@ -14,9 +14,9 @@ package de.walware.statet.redocs.internal.tex.r.ui.sourceediting;
 import org.eclipse.core.filebuffers.IDocumentSetupParticipant;
 import org.eclipse.jface.text.ITextHover;
 import org.eclipse.jface.text.ITextViewerExtension2;
-import org.eclipse.jface.text.contentassist.ContentAssistant;
 import org.eclipse.jface.text.source.ISourceViewer;
 
+import de.walware.ecommons.ltk.ui.sourceediting.assist.ContentAssist;
 import de.walware.ecommons.templates.TemplateVariableProcessor;
 
 import de.walware.docmlet.tex.core.ITexCoreAccess;
@@ -42,8 +42,9 @@ public class LtxRweaveTemplateViewerConfigurator extends LtxRweaveSourceViewerCo
 			this.fProcessor= processor;
 		}
 		
+		
 		@Override
-		protected ContentAssistant createContentAssistant(final ISourceViewer sourceViewer) {
+		protected ContentAssist createContentAssistant(final ISourceViewer sourceViewer) {
 			return createTemplateVariableContentAssistant(sourceViewer, this.fProcessor);
 		}
 		

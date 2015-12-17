@@ -28,8 +28,6 @@ import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditor;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.AssistInvocationContext;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.AssistProposalCollector;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.ContentAssist;
-import de.walware.ecommons.ltk.ui.sourceediting.assist.IAssistCompletionProposal;
-import de.walware.ecommons.ltk.ui.sourceediting.assist.IContentAssistComputer;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.TemplateProposal;
 import de.walware.ecommons.ltk.ui.sourceediting.assist.TemplatesCompletionComputer;
 
@@ -71,16 +69,19 @@ public class RChunkTemplatesCompletionComputer extends TemplatesCompletionComput
 	
 	
 	@Override
-	public IStatus computeCompletionProposals(final AssistInvocationContext context, final int mode,
-			final AssistProposalCollector<IAssistCompletionProposal> proposals, final IProgressMonitor monitor) {
-		sessionStarted(context.getEditor(), null);
-		if (this.markupLanguage == null) {
-			return null;
+	public IStatus computeCompletionProposals(final AssistInvocationContext context, int mode,
+			final AssistProposalCollector proposals, final IProgressMonitor monitor) {
+		// Set to specific mode to force to include templates in default mode
+		if (mode == COMBINED_MODE) {
+			mode= SPECIFIC_MODE;
 		}
+		
+		sessionStarted(context.getEditor(), null);
 		try {
-			// Set to specific mode to force to include templates in default mode
-			return super.computeCompletionProposals(context, IContentAssistComputer.SPECIFIC_MODE,
-					proposals, monitor );
+			if (this.markupLanguage == null) {
+				return null;
+			}
+			return super.computeCompletionProposals(context, mode, proposals, monitor);
 		}
 		finally {
 			sessionEnded();

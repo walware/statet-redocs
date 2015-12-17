@@ -43,13 +43,10 @@ import de.walware.ecommons.ltk.ui.LTKUI;
 import de.walware.ecommons.ltk.ui.sourceediting.AbstractMarkOccurrencesProvider;
 import de.walware.ecommons.ltk.ui.sourceediting.ForwardSourceDocumentProvider;
 import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditorAddon;
-import de.walware.ecommons.ltk.ui.sourceediting.ISourceEditorCommandIds;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditor1;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditor1OutlinePage;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewer;
 import de.walware.ecommons.ltk.ui.sourceediting.SourceEditorViewerConfigurator;
-import de.walware.ecommons.ltk.ui.sourceediting.actions.MultiContentSectionHandler;
-import de.walware.ecommons.ltk.ui.sourceediting.actions.SpecificContentAssistHandler;
 import de.walware.ecommons.ltk.ui.sourceediting.folding.FoldingEditorAddon;
 import de.walware.ecommons.ui.SharedUIResources;
 
@@ -66,13 +63,13 @@ import de.walware.docmlet.wikitext.ui.editors.WikitextMarkOccurrencesLocator;
 import de.walware.docmlet.wikitext.ui.sourceediting.WikitextEditingSettings;
 
 import de.walware.statet.base.ui.IStatetUIMenuIds;
+import de.walware.statet.r.core.IRCoreAccess;
 import de.walware.statet.r.core.RCore;
 import de.walware.statet.r.core.rsource.ast.RAstNode;
 import de.walware.statet.r.core.source.IRDocumentConstants;
-import de.walware.statet.r.internal.ui.RUIPlugin;
 import de.walware.statet.r.launching.RCodeLaunching;
 import de.walware.statet.r.ui.RUI;
-import de.walware.statet.r.ui.editors.IREditor;
+import de.walware.statet.r.ui.editors.IRSourceEditor;
 import de.walware.statet.r.ui.editors.RCorrectIndentHandler;
 import de.walware.statet.r.ui.editors.RDefaultFoldingProvider;
 import de.walware.statet.r.ui.editors.RMarkOccurrencesLocator;
@@ -136,7 +133,7 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 	
 	private static class ThisCorrectIndentHandler extends RCorrectIndentHandler {
 		
-		public ThisCorrectIndentHandler(final IREditor editor) {
+		public ThisCorrectIndentHandler(final IRSourceEditor editor) {
 			super(editor);
 		}
 		
@@ -223,6 +220,11 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 	
 	
 	@Override
+	public IRCoreAccess getRCoreAccess() {
+		return this.combinedConfig.getRCoreAccess();
+	}
+	
+	@Override
 	public IDocContentSectionsRweaveExtension getDocumentContentInfo() {
 		return (IDocContentSectionsRweaveExtension) super.getDocumentContentInfo();
 	}
@@ -289,12 +291,6 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 		{	final IHandler2 handler= new InsertAssignmentHandler(this);
 			handlerService.activateHandler(LTKUI.INSERT_ASSIGNMENT_COMMAND_ID, handler);
 			markAsStateDependentHandler(handler, true);
-		}
-		{	final IHandler2 handler= new MultiContentSectionHandler(WikidocRweaveDocumentContentInfo.INSTANCE,
-					WikidocRweaveDocumentContentInfo.R, new SpecificContentAssistHandler(this,
-							RUIPlugin.getDefault().getREditorContentAssistRegistry() )
-					);
-			handlerService.activateHandler(ISourceEditorCommandIds.SPECIFIC_CONTENT_ASSIST_COMMAND_ID, handler);
 		}
 	}
 	

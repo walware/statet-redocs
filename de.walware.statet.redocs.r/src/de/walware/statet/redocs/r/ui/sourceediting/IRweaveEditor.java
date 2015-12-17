@@ -11,12 +11,12 @@
 
 package de.walware.statet.redocs.r.ui.sourceediting;
 
-import de.walware.statet.r.ui.editors.IREditor;
+import de.walware.statet.r.ui.editors.IRSourceEditor;
 
 import de.walware.statet.redocs.r.core.source.IDocContentSectionsRweaveExtension;
 
 
-public interface IRweaveEditor extends IREditor {
+public interface IRweaveEditor extends IRSourceEditor {
 	
 	
 	@Override

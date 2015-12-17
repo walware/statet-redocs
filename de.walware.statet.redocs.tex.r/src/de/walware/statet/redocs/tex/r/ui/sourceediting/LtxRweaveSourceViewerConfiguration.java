@@ -53,6 +53,7 @@ import de.walware.statet.r.core.IRCoreAccess;
 import de.walware.statet.r.core.source.IRDocumentConstants;
 import de.walware.statet.r.core.source.RHeuristicTokenScanner;
 import de.walware.statet.r.core.source.RPartitionNodeType;
+import de.walware.statet.r.ui.editors.IRSourceEditor;
 import de.walware.statet.r.ui.sourceediting.RAutoEditStrategy;
 import de.walware.statet.r.ui.sourceediting.RSourceViewerConfiguration;
 import de.walware.statet.r.ui.text.r.IRTextTokens;
@@ -64,6 +65,7 @@ import de.walware.statet.redocs.internal.tex.r.ui.sourceediting.RChunkTemplatesC
 import de.walware.statet.redocs.tex.r.core.source.ITexRweaveDocumentConstants;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveBracketPairMatcher;
 import de.walware.statet.redocs.tex.r.core.source.LtxRweaveDocumentContentInfo;
+import de.walware.statet.redocs.tex.r.ui.editors.ILtxRweaveEditor;
 
 
 /**
@@ -127,7 +129,7 @@ public class LtxRweaveSourceViewerConfiguration extends MultiContentSectionSourc
 	private static class RChunkConfiguration extends RSourceViewerConfiguration {
 		
 		public RChunkConfiguration(final IDocContentSections documentContentInfo,
-				final ISourceEditor sourceEditor,
+				final IRSourceEditor sourceEditor,
 				final IRCoreAccess coreAccess,
 				final IPreferenceStore preferenceStore) {
 			super(documentContentInfo, sourceEditor, coreAccess, preferenceStore, null);
@@ -166,7 +168,7 @@ public class LtxRweaveSourceViewerConfiguration extends MultiContentSectionSourc
 		this(null, null, null, null);
 	}
 	
-	public LtxRweaveSourceViewerConfiguration(final ISourceEditor sourceEditor,
+	public LtxRweaveSourceViewerConfiguration(final ILtxRweaveEditor sourceEditor,
 			final ITexCoreAccess texCoreAccess, final IRCoreAccess rCoreAccess,
 			final IPreferenceStore preferenceStore) {
 		super(LtxRweaveDocumentContentInfo.INSTANCE, sourceEditor);

@@ -55,6 +55,7 @@ import de.walware.statet.r.core.IRCoreAccess;
 import de.walware.statet.r.core.source.IRDocumentConstants;
 import de.walware.statet.r.core.source.RHeuristicTokenScanner;
 import de.walware.statet.r.core.source.RPartitionNodeType;
+import de.walware.statet.r.ui.editors.IRSourceEditor;
 import de.walware.statet.r.ui.sourceediting.RAutoEditStrategy;
 import de.walware.statet.r.ui.sourceediting.RSourceViewerConfiguration;
 import de.walware.statet.r.ui.text.r.IRTextTokens;
@@ -66,6 +67,7 @@ import de.walware.statet.redocs.internal.wikitext.r.ui.sourceediting.RChunkTempl
 import de.walware.statet.redocs.wikitext.r.core.source.IWikitextRweaveDocumentConstants;
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveBracketPairMatcher;
 import de.walware.statet.redocs.wikitext.r.core.source.WikidocRweaveDocumentContentInfo;
+import de.walware.statet.redocs.wikitext.r.ui.editors.IWikidocRweaveEditor;
 
 
 /**
@@ -130,7 +132,7 @@ public class WikidocRweaveSourceViewerConfiguration extends MultiContentSectionS
 	private static class RChunkConfiguration extends RSourceViewerConfiguration {
 		
 		public RChunkConfiguration(final IDocContentSections documentContentInfo,
-				final ISourceEditor sourceEditor,
+				final IRSourceEditor sourceEditor,
 				final IRCoreAccess coreAccess, final IPreferenceStore preferenceStore) {
 			super(documentContentInfo, sourceEditor, coreAccess, preferenceStore, null);
 		}
@@ -170,7 +172,7 @@ public class WikidocRweaveSourceViewerConfiguration extends MultiContentSectionS
 		this(null, null, null, null, WikidocSourceViewerConfiguration.FIXED_LINE_HEIGHT_STYLE);
 	}
 	
-	public WikidocRweaveSourceViewerConfiguration(final ISourceEditor sourceEditor,
+	public WikidocRweaveSourceViewerConfiguration(final IWikidocRweaveEditor sourceEditor,
 			final IWikitextCoreAccess wikitextCoreAccess, final IRCoreAccess rCoreAccess,
 			final IPreferenceStore preferenceStore,
 			final int styleFlags) {
