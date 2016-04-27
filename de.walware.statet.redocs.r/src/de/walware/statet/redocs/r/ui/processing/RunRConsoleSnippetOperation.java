@@ -112,6 +112,7 @@ public class RunRConsoleSnippetOperation extends DocProcessingOperation {
 						r.getTool().getLabel() ),
 				10 );
 		
+		r.briefAboutToChange();
 		final RWorkspace rWorkspace= r.getWorkspaceData();
 		final VariableText2 variableResolver= new VariableText2(
 				getStepConfig().getVariableResolver().getExtraVariables() ) {
@@ -146,7 +147,8 @@ public class RunRConsoleSnippetOperation extends DocProcessingOperation {
 			}
 		}
 		
-		{	final String code;
+		try {
+			final String code;
 			try {
 				code= variableResolver.performStringSubstitution(this.rCodeSnippet, null);
 			}
@@ -162,6 +164,9 @@ public class RunRConsoleSnippetOperation extends DocProcessingOperation {
 			if (r instanceof IRequireSynch) {
 				((IRequireSynch) r).synch(rMonitor);
 			}
+		}
+		finally {
+			r.briefChanged(RWorkspace.REFRESH_AUTO);
 		}
 		
 		return Status.OK_STATUS;
