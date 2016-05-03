@@ -65,8 +65,8 @@
 			
 			<repositories>
 				<repository>
-					<id>3rdparty-mylyn</id>
-					<url>${walware.repo.url.base}/3rdparty-mylyn</url>
+					<id>eclipse-mylyn</id>
+					<url>${walware.repo.url.base}/eclipse-mylyn</url>
 					<layout>p2</layout>
 				</repository>
 				<repository>

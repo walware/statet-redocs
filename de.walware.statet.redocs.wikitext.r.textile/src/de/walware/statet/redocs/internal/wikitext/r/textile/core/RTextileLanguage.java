@@ -55,8 +55,8 @@ public class RTextileLanguage extends TextileLanguage
 	public static final String TEXTILE_RWEAVE_LANGUAGE_NAME= "Textile+R"; //$NON-NLS-1$
 	
 	
-	private static final boolean DEBUG_LOG_BASE_EVENTS= "true".equalsIgnoreCase( //$NON-NLS-1$
-			Platform.getDebugOption("de.walware.statet.redocs.wikitext.r.textile/debug/Parser/logBaseEvents")); //$NON-NLS-1$
+	private static final boolean DEBUG_LOG_BASE_EVENTS= Boolean.parseBoolean(
+			Platform.getDebugOption("de.walware.statet.redocs.wikitext.r.textile/debug/Parser/logBaseEvents") ); //$NON-NLS-1$
 	
 	
 	private static final ImList<String> INDENT_PREFIXES= ImCollections.emptyList();

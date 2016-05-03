@@ -6,7 +6,7 @@ Bundle-SymbolicName: de.walware.statet.redocs.wikitext.r.debug;singleton:=true
 Bundle-Version: 3.5.2.qualifier
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.ecommons.ltk.ui,
  de.walware.statet.nico.ui,
@@ -15,4 +15,3 @@ Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.statet.r.debug.ui,
  de.walware.statet.redocs.wikitext.r,
  de.walware.docmlet.wikitext.ui
-Import-Package: com.ibm.icu.text;version="4.4.2.2"

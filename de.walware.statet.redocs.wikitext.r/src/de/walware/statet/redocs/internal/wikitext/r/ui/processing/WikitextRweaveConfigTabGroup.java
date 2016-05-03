@@ -22,8 +22,8 @@ import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import de.walware.jcommons.collections.ImCollections;
 import de.walware.jcommons.collections.ImList;
 
-import de.walware.ecommons.debug.ui.CheckedCommonTab;
 import de.walware.ecommons.debug.ui.config.LaunchConfigPresets;
+import de.walware.ecommons.debug.ui.util.CheckedCommonTab;
 
 import de.walware.docmlet.base.ui.processing.DocProcessingConfigMainTab;
 import de.walware.docmlet.base.ui.processing.PreviewTab;

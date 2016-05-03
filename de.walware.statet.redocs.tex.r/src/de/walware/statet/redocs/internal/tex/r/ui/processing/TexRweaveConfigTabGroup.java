@@ -15,7 +15,7 @@ import org.eclipse.debug.ui.AbstractLaunchConfigurationTabGroup;
 import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 
-import de.walware.ecommons.debug.ui.CheckedCommonTab;
+import de.walware.ecommons.debug.ui.util.CheckedCommonTab;
 
 
 /**

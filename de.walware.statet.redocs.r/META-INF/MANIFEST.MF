@@ -7,7 +7,7 @@ Bundle-Version: 3.5.2.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.r.Plugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.ecommons.databinding.core,
  de.walware.ecommons.text.core;visibility:=reexport,
@@ -19,7 +19,7 @@ Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.docmlet.base.ui,
  org.eclipse.core.variables,
  de.walware.statet.r.console.ui
-Import-Package: com.ibm.icu.text;version="4.4.2.2",
+Import-Package: com.ibm.icu.text;version="54.1",
  de.walware.ecommons,
  de.walware.ecommons.debug.core.util,
  de.walware.ecommons.io,

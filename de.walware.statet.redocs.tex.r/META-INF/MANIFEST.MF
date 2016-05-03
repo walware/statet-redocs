@@ -7,7 +7,7 @@ Bundle-Version: 3.5.2.qualifier
 Bundle-Activator: de.walware.statet.redocs.internal.tex.r.RedocsTexRPlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  org.eclipse.jface.databinding,
  org.eclipse.ltk.core.refactoring,
@@ -23,7 +23,7 @@ Require-Bundle: de.walware.statet.base.ui;bundle-version="[3.6.0,3.7.0)",
  de.walware.statet.r.ui,
  de.walware.statet.nico.ui,
  de.walware.statet.r.console.ui
-Import-Package: com.ibm.icu.text;version="4.4.2.2",
+Import-Package: com.ibm.icu.text;version="54.1",
  de.walware.ecommons,
  de.walware.ecommons.databinding,
  de.walware.ecommons.debug.core.util,
