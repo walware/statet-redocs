@@ -63,7 +63,7 @@ public class WikitextRweaveConfigTabGroup extends AbstractLaunchConfigurationTab
 					Collections.singletonMap(RunRConsoleSnippetOperation.R_SNIPPET_CODE_ATTR_NAME,
 							"knitr::pandoc(" +
 									"input= \"${resource_loc}\", " +
-									"format= \"${out_file_ext}\", " +
+									"format= \"latex\", " +
 									"encoding= \"${resource_enc:${source_file_path}}\")" ));
 		}
 		{	final ILaunchConfigurationWorkingCopy config= presets.add("PDF using RMarkdown, two-step");
