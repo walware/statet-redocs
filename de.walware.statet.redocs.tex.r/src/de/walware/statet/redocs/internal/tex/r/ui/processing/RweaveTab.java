@@ -224,11 +224,13 @@ public class RweaveTab extends LaunchConfigTabWithDbc {
 	}
 	
 	
+	private final WritableValue fDirValue;
+	
+	private final WritableValue fSelectionValue;
+	
 	private ResourceInputComposite fDirControl;
-	private WritableValue fDirValue;
 	
 	private ILaunchConfiguration[] fAvailableConfigs;
-	private WritableValue fSelectionValue;
 	
 	private ILaunchConfigurationListener fLaunchConfigurationListener;
 	private Button fSkipSelectControl;
@@ -239,6 +241,13 @@ public class RweaveTab extends LaunchConfigTabWithDbc {
 	private Button fCmdLaunchSelectControl;
 	private TableViewer fCmdLaunchTable;
 	private Button fCmdLaunchNewButton;
+	
+	
+	public RweaveTab() {
+		final Realm realm= getRealm();
+		this.fDirValue= new WritableValue(realm, "", String.class); //$NON-NLS-1$
+		this.fSelectionValue= new WritableValue(realm, null, String.class);
+	}
 	
 	
 	@Override
@@ -423,9 +432,6 @@ public class RweaveTab extends LaunchConfigTabWithDbc {
 	
 	@Override
 	protected void addBindings(final DataBindingContext dbc, final Realm realm) {
-		this.fDirValue= new WritableValue(realm, String.class);
-		this.fSelectionValue= new WritableValue(realm, String.class);
-		
 		final FileValidator validator= this.fDirControl.getValidator();
 		validator.setOnEmpty(IStatus.OK);
 		dbc.bindValue(this.fDirControl.getObservable(), this.fDirValue,

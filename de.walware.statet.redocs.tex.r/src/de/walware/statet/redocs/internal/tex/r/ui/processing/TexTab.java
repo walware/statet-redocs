@@ -133,6 +133,18 @@ public class TexTab extends LaunchConfigTabWithDbc {
 	public static final int OPEN_OFF= -1;
 	public static final int OPEN_ALWAYS= 0;
 	
+	
+	private final WritableValue fOutputDirValue;
+	
+	private final WritableValue fOutputFormatValue;
+	
+	private final WritableValue fOpenTexEnabledValue;
+	private final WritableValue fOpenTexOnErrorsEnabledValue;
+	
+	private final WritableValue fBuildTexTypeValue;
+	private final WritableValue fBuildTexBuilderIdValue;
+	private final WritableValue fBuildTexRCommandsValue;
+	
 	private Button fOpenTexFileControl;
 	private Button fOpenTexFileOnErrorsControl;
 	
@@ -145,16 +157,16 @@ public class TexTab extends LaunchConfigTabWithDbc {
 	private SnippetEditor fConsoleCommandEditor;
 	private Combo fOutputFormatControl;
 	
-	private WritableValue fOutputDirValue;
-	private WritableValue fOutputFormatValue;
-	private WritableValue fOpenTexEnabledValue;
-	private WritableValue fOpenTexOnErrorsEnabledValue;
-	private WritableValue fBuildTexTypeValue;
-	private WritableValue fBuildTexBuilderIdValue;
-	private WritableValue fBuildTexRCommandsValue;
-	
 	
 	public TexTab() {
+		final Realm realm= getRealm();
+		this.fOpenTexEnabledValue= new WritableValue(realm, false, Boolean.class);
+		this.fOpenTexOnErrorsEnabledValue= new WritableValue(realm, false, Boolean.class);
+		this.fOutputDirValue= new WritableValue(realm, null, String.class);
+		this.fBuildTexTypeValue= new WritableValue(realm, 0, Integer.class);
+		this.fBuildTexBuilderIdValue= new WritableValue(realm, 0, Integer.class);
+		this.fBuildTexRCommandsValue= new WritableValue(realm, "", String.class); //$NON-NLS-1$
+		this.fOutputFormatValue= new WritableValue(realm, "", String.class); //$NON-NLS-1$
 	}
 	
 	
@@ -349,14 +361,6 @@ public class TexTab extends LaunchConfigTabWithDbc {
 	
 	@Override
 	protected void addBindings(final DataBindingContext dbc, final Realm realm) {
-		this.fOpenTexEnabledValue= new WritableValue(realm, false, Boolean.class);
-		this.fOpenTexOnErrorsEnabledValue= new WritableValue(realm, false, Boolean.class);
-		this.fOutputDirValue= new WritableValue(realm, null, String.class);
-		this.fBuildTexTypeValue= new WritableValue(realm, 0, Integer.class);
-		this.fBuildTexBuilderIdValue= new WritableValue(realm, 0, Integer.class);
-		this.fBuildTexRCommandsValue= new WritableValue(realm, "", String.class); //$NON-NLS-1$
-		this.fOutputFormatValue= new WritableValue(realm, "", String.class); //$NON-NLS-1$
-		
 		final ISWTObservableValue openObs= SWTObservables.observeSelection(this.fOpenTexFileControl);
 		dbc.bindValue(openObs, this.fOpenTexEnabledValue, null, null);
 		dbc.bindValue(SWTObservables.observeSelection(this.fOpenTexFileOnErrorsControl), this.fOpenTexOnErrorsEnabledValue, null, null);

@@ -210,7 +210,7 @@ public class PreviewTab extends LaunchConfigTabWithDbc {
 	
 	
 	private List<ViewerConfiguration> availablePreviewConfigs;
-	private WritableValue selectionValue;
+	private final WritableValue selectionValue;
 	
 	private ILaunchConfigurationListener launchConfigurationListener;
 	private Button disableSelectControl;
@@ -223,6 +223,11 @@ public class PreviewTab extends LaunchConfigTabWithDbc {
 	private TexTab texTab;
 	private SelectionObservable selectionObservable;
 	
+	
+	public PreviewTab() {
+		final Realm realm= getRealm();
+		this.selectionValue= new WritableValue(realm, null, String.class);
+	}
 	
 	@Override
 	public String getName() {
@@ -392,8 +397,6 @@ public class PreviewTab extends LaunchConfigTabWithDbc {
 	
 	@Override
 	protected void addBindings(final DataBindingContext dbc, final Realm realm) {
-		this.selectionValue= new WritableValue(realm, String.class);
-		
 		this.selectionObservable= new SelectionObservable();
 		this.disableSelectControl.addSelectionListener(this.selectionObservable);
 		this.systemSelectControl.addSelectionListener(this.selectionObservable);
