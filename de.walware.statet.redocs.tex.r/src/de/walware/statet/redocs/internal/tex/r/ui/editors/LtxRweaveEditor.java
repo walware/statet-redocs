@@ -11,6 +11,7 @@
 
 package de.walware.statet.redocs.internal.tex.r.ui.editors;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -169,8 +170,8 @@ public class LtxRweaveEditor extends SourceEditor1 implements ILtxRweaveEditor, 
 	}
 	
 	@Override
-	protected void initializeKeyBindingScopes() {
-		setContexts(CONTEXT_IDS);
+	protected Collection<String> getContextIds() {
+		return CONTEXT_IDS;
 	}
 	
 	@Override

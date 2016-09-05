@@ -11,6 +11,7 @@
 
 package de.walware.statet.redocs.wikitext.r.ui.editors;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -203,8 +204,8 @@ public abstract class WikidocRweaveEditor extends SourceEditor1 implements IWiki
 	}
 	
 	@Override
-	protected void initializeKeyBindingScopes() {
-		setContexts(CONTEXT_IDS);
+	protected Collection<String> getContextIds() {
+		return CONTEXT_IDS;
 	}
 	
 	@Override
