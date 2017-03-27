@@ -2,7 +2,7 @@
 <feature
       id="de.walware.statet.redocs.wikitext.r"
       label="StatET for R - Wikitext Add-on (R Markdown, R Textile, Reproducible Documents)"
-      version="3.5.2.qualifier"
+      version="3.5.3.qualifier"
       provider-name="WalWare.de"
       license-feature="de.walware.opensource.license"
       license-feature-version="1.0.0">
